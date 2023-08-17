@@ -26,6 +26,7 @@ import {
   commentReply,
   DeletebookMarkArticle,
   deleteLikeBoard,
+  deletePoll,
   getArticle,
   insertLikePost,
   listReportType,
@@ -66,9 +67,10 @@ const BoardDetail = () => {
   const handleDelete = async () => {
     try {
       const response = await boardDelete(id);
+      handlePollDelete();
       navigation.goBack();
 
-      console.log("삭제 성공", response);
+      console.log(response);
     } catch (error) {
       alert(error);
     }
@@ -76,6 +78,12 @@ const BoardDetail = () => {
   // console.log(boardData)
   const handleUpdate = () => {
     navigation.navigate("editPost", { post: post });
+  };
+
+  const handlePollDelete = () => {
+    deletePoll(id).then(data => {
+      console.log("투표", data);
+    });
   };
 
   const handlecommentInsert = async () => {

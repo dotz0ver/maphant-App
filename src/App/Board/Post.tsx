@@ -132,7 +132,7 @@ const Post: React.FC = () => {
         0,
         isanonymous,
         postImageUrl.length == 0 ? undefined : postImageUrl,
-        { title: voteTitle, options: voteOptions },
+        { title: voteTitle, options: voteOptions }, // poll
         DBnewHashtags,
       );
       console.log("게시물 작성 성공", response);
