@@ -29,7 +29,7 @@ type BoardArticle = {
 
 //글 읽기
 type BoardPost = {
-  board: BoardArticle;
+  board: { pollInfo: PollInfo } & BoardArticle;
   answerList?: BoardArticle[]; //질문 게시판 답변
 };
 
@@ -53,6 +53,20 @@ type VoteBoard = {
   typeId: number;
   type: string;
 } & BoardArticleBase;
+
+type PollInfo = {
+  title: string;
+  expireDate: string;
+  state: string;
+  selectedOptionId: number;
+  pollOptions: PollOptions[];
+};
+
+type PollOptions = {
+  optionId: number;
+  optionName: string;
+  optionCount: number;
+};
 
 type BoardType = {
   id: number;
@@ -97,6 +111,8 @@ export type {
   commentType,
   hashTagType,
   HotBoard,
+  PollInfo,
+  PollOptions,
   ReportType,
   SortType,
   VoteBoard,

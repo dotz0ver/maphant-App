@@ -187,10 +187,14 @@ const deletePoll = (board_id: number): Promise<dataResponse> => DeleteAPI<dataRe
 const pollStatus = (poll_id: number): Promise<dataResponse> =>
   GetAPI<dataResponse>(`/poll/my-poll/${poll_id}`);
 
+const boardPollStatus = (board_id: number): Promise<dataResponse> =>
+  GetAPI<dataResponse>(`/poll/board/${board_id}`);
+
 export {
   boardComplete,
   boardDelete,
   boardEdit,
+  boardPollStatus,
   boardPost,
   bookMarkArticle,
   closePoll,
