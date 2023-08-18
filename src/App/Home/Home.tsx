@@ -3,12 +3,12 @@ import { BottomSheetFlatList, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
-  ActivityIndicator,
   Image,
   ImageSourcePropType,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
+  RefreshControl,
   ScrollView,
   StyleProp,
   StyleSheet,
@@ -23,13 +23,15 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 
 import { GetAPI } from "../../Api/fetchAPI";
-import { Container, ImageBox, Spacer, TextButton, TextThemed } from "../../components/common";
+import { Container, ImageBox, Spacer, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
+import reduxStore from "../../storage/reduxStore";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
 import { UserCategory } from "../../types/User";
 import { ThemeContext } from "../Style/ThemeContext";
-import reduxStore from "../../storage/reduxStore";
+import { ref } from "yup";
+import { set } from "react-native-reanimated";
 
 interface Tags {
   id: string | undefined;
@@ -42,30 +44,27 @@ const Home: React.FC = () => {
 
   const [text, setText] = useState<string>("");
   const [info, setInfo] = useState<[ImageSourcePropType, () => void][]>([
-    [
-      require("../../../assets/image1.jpg"),
-      () => {
-        alert("1");
-      },
-    ],
-    [
-      require("../../../assets/image2.jpg"),
-      () => {
-        alert("2");
-      },
-    ],
-    [
-      require("../../../assets/image3.jpg"),
-      () => {
-        alert("3");
-      },
-    ],
-  ]); // 들어갈 컨텐츠
+    [require("../../../assets/image1.jpg"), () => {}],
+    [require("../../../assets/image2.jpg"), () => {}],
+    [require("../../../assets/image3.jpg"), () => {}],
+  ]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [key, setKey] = useState(0);
+  const handleRefresh = () => {
+    setRefreshing(true);
+    console.log("refreshing");
+    setTimeout(() => {
+      setRefreshing(false);
+      setKey(prevKey => prevKey + 1);
+    }, 1000);
+  };
 
   return (
     //view화면
-    <Container isForceTopSafeArea={true} paddingHorizontal={0}>
-      <ScrollView>
+    <Container key={key} isForceTopSafeArea={true} paddingHorizontal={0}>
+      <ScrollView
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+      >
         <MainHeader />
         <SearchBar text={text} onTextChanged={setText} />
         <Carousel imageList={info} />
@@ -148,6 +147,7 @@ const HeaderCategory: React.FC = () => {
   const currentCategory = useSelector(UserStorage.userCategorySelector);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [userCategoryList, setUserCategoryList] = useState<UserCategory[]>([]);
+  const [categoryChanged, setCategoryChanged] = useState<boolean>(false);
   const profile = useSelector(UserStorage.userProfileSelector);
 
   const styles = StyleSheet.create({
@@ -166,6 +166,7 @@ const HeaderCategory: React.FC = () => {
   const onCategoryPress = useCallback((item: UserCategory) => {
     UserStorage.setUserCategoryCurrent(item);
     bottomSheetRef.current?.dismiss();
+    setCategoryChanged(!categoryChanged);
   }, []);
 
   const renderItem = useCallback(({ item }: { item: UserCategory }) => {
@@ -175,7 +176,12 @@ const HeaderCategory: React.FC = () => {
     };
 
     return (
-      <TouchableOpacity onPress={() => onCategoryPress(item)}>
+      <TouchableOpacity
+        onPress={() => {
+          onCategoryPress(item);
+          console.log(reduxStore.getState().userCategory);
+        }}
+      >
         <Text style={style_text}>
           {item.majorName} ({item.categoryName})
         </Text>
@@ -449,6 +455,7 @@ const HotPost: React.FC = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
+    console.log("useEffect");
     GetAPI("/board/hot?&page=1&recordSize=2").then(res => {
       console.log(res);
       if (res.success === false) {
@@ -584,7 +591,6 @@ const HotPost: React.FC = () => {
     <View style={styles.hotPostBox}>
       <View style={styles.boxTitleBox}>
         <Text style={styles.boxTitle}>Hot 게시글</Text>
-        <TextButton onPress={() => console.log(reduxStore.getState().userCategory)}>asd</TextButton>
       </View>
 
       <View style={styles.line}></View>
