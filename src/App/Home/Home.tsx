@@ -23,12 +23,13 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 
 import { GetAPI } from "../../Api/fetchAPI";
-import { Container, ImageBox, Spacer, TextThemed } from "../../components/common";
+import { Container, ImageBox, Spacer, TextButton, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
 import { UserCategory } from "../../types/User";
 import { ThemeContext } from "../Style/ThemeContext";
+import reduxStore from "../../storage/reduxStore";
 
 interface Tags {
   id: string | undefined;
@@ -555,15 +556,35 @@ const HotPost: React.FC = () => {
       alignItems: "center",
       marginLeft: "60%",
     },
+    noHotPostBox: {
+      height: 290,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    noHotPostText: {
+      fontSize: 20,
+      fontWeight: "bold",
+    },
   });
 
   if (hotPost.length === 0) {
-    return <View />;
+    return (
+      <View style={styles.hotPostBox}>
+        <View style={styles.boxTitleBox}>
+          <Text style={styles.boxTitle}>Hot 게시글</Text>
+        </View>
+        <View style={styles.line}></View>
+        <View style={styles.noHotPostBox}>
+          <Text style={styles.noHotPostText}>게시글이 존재하지 않습니다</Text>
+        </View>
+      </View>
+    );
   }
   return (
     <View style={styles.hotPostBox}>
       <View style={styles.boxTitleBox}>
         <Text style={styles.boxTitle}>Hot 게시글</Text>
+        <TextButton onPress={() => console.log(reduxStore.getState().userCategory)}>asd</TextButton>
       </View>
 
       <View style={styles.line}></View>
