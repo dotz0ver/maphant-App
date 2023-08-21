@@ -69,6 +69,7 @@ const BoardDetail = () => {
   const [commentLength, setCommentLength] = useState<number>(0);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [LoadingOverlay, setLoadingOverlay] = useState(false);
+  const [pollOptionId, setPollOptionId] = useState<number>(0);
 
   useEffect(() => {
     if (post.board === undefined && !LoadingOverlay) {
@@ -107,8 +108,8 @@ const BoardDetail = () => {
   };
   const handlePoll = async () => {
     try {
-      const response = await doPoll(id);
-      console.log("투표 성공", response);
+      const response = await doPoll(id, pollOptionId);
+      console.log(response);
     } catch (error) {
       alert(error);
     }
@@ -161,7 +162,7 @@ const BoardDetail = () => {
     getArticle(id)
       .then(data => {
         setPost(data.data as BoardPost);
-        console.error(data.data);
+        // console.error(data.data);
       })
       .catch();
   }, []);
@@ -436,34 +437,26 @@ const BoardDetail = () => {
                     <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
                   </View>
                 </View>
-                {/* {user.id === post.board.userId && ( */}
-                <View style={styles.buttonBox}>
-                  <TextButton
-                    fontColor={"#000"}
-                    style={styles.button}
-                    fontSize={13}
-                    onPress={handlePoll}
-                  >
-                    투표하기
-                  </TextButton>
-                  <TextButton
-                    fontColor={"#000"}
-                    style={styles.button}
-                    fontSize={13}
-                    onPress={handleUpdate}
-                  >
-                    수정
-                  </TextButton>
-                  <TextButton
-                    fontColor={"#000"}
-                    style={styles.button}
-                    fontSize={13}
-                    onPress={alert}
-                  >
-                    삭제
-                  </TextButton>
-                </View>
-                {/* )} */}
+                {post.board.isMyBoard && (
+                  <View style={styles.buttonBox}>
+                    <TextButton
+                      fontColor={"#000"}
+                      style={styles.button}
+                      fontSize={13}
+                      onPress={handleUpdate}
+                    >
+                      수정
+                    </TextButton>
+                    <TextButton
+                      fontColor={"#000"}
+                      style={styles.button}
+                      fontSize={13}
+                      onPress={alert}
+                    >
+                      삭제
+                    </TextButton>
+                  </View>
+                )}
               </View>
               <View style={styles.contextBox}>
                 <View>
@@ -483,7 +476,7 @@ const BoardDetail = () => {
                     </ScrollView>
                   )}
                 </View>
-                {/* {post.board.pollInfo !== null && (
+                {/* {post.board.pollInfo.state !== 2 && (
                   <View style={{ flex: 1, padding: 20, borderWidth: 1 }}>
                     <View>
                       <Text style={styles.title}>{post.board.pollInfo.title}</Text>
@@ -497,8 +490,29 @@ const BoardDetail = () => {
                       }}
                     >
                       {post.board.pollInfo.pollOptions.map(options => (
-                        <Text key={options.optionId}>{options.optionName}</Text>
+                        <TouchableOpacity
+                          style={{
+                            borderWidth: 1,
+                            borderColor: pollOptionId === options.optionId ? "#87b8f1" : "gray",
+                            padding: 10,
+                            marginVertical: 3,
+                            backgroundColor:
+                              pollOptionId === options.optionId ? "#f0f6fd" : "white",
+                          }}
+                          key={options.optionId}
+                          onPress={() => setPollOptionId(options.optionId)}
+                        >
+                          <Text>{options.optionName}</Text>
+                        </TouchableOpacity>
                       ))}
+                      <TextButton
+                        fontColor={"#000"}
+                        style={styles.button}
+                        fontSize={13}
+                        onPress={handlePoll}
+                      >
+                        투표하기
+                      </TextButton>
                     </View>
                   </View>
                 )} */}
