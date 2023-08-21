@@ -73,6 +73,7 @@ const BoardDetail = () => {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [LoadingOverlay, setLoadingOverlay] = useState(false);
   const [pollOptionId, setPollOptionId] = useState<number>(0);
+  const [poll_id, setPoll_id] = useState<number>(0);
 
   useEffect(() => {
     if (post.board === undefined && !LoadingOverlay) {
@@ -109,14 +110,7 @@ const BoardDetail = () => {
       console.log("투표", data);
     });
   };
-  const handlePoll = async () => {
-    try {
-      const response = await doPoll(id, pollOptionId);
-      console.log(response);
-    } catch (error) {
-      alert(error);
-    }
-  };
+
   const handlePollClose = async () => {
     try {
       const response = await boardClosePoll(id);
@@ -177,13 +171,12 @@ const BoardDetail = () => {
       })
       .catch();
   }, []);
-  console.info(post);
+
   useEffect(() => {
     commentArticle(id, 1, 50)
       .then(response => {
         setComments(response.data.list as commentType[]);
         setCommentLength(comments.length);
-        console.log(response.data.list);
         setReplies(comments.filter(comment => comment.parent_id > 0));
       })
       .catch();
@@ -193,7 +186,6 @@ const BoardDetail = () => {
     listReportType()
       .then(data => {
         setReportType(data.data as ReportType[]);
-        // console.log( data.data);
       })
       .catch(err => console.log(err));
   }, []);
@@ -202,7 +194,6 @@ const BoardDetail = () => {
     getArticle(id)
       .then(data => {
         setPost(data.data as BoardPost);
-        // console.error(data.data);
       })
       .catch();
   }, []);
@@ -219,12 +210,21 @@ const BoardDetail = () => {
   useEffect(() => {
     getPollId(id)
       .then(response => {
-        const poll_id = response.data.poll_id;
+        setPoll_id(response.data.poll_id);
         setPoll(poll_id);
         pollStatus(poll_id);
       })
       .catch();
   }, []);
+
+  const handlePoll = async () => {
+    try {
+      const response = await doPoll(poll_id, pollOptionId);
+      console.log(response);
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   const handleCommentLike = (comment_id: number, likeCnt: number) => {
     commentLike(user.id, comment_id)
@@ -374,10 +374,6 @@ const BoardDetail = () => {
   };
   console.log(post.board);
 
-  // const profileNavi = () => {
-  //   navigation.navigate("Profile", { id: post.board.userId } as never);
-  // };
-
   const ModalWrapperComment = ({ commentId }: { commentId: number }) => {
     const [selectedCommentReportIndex, setSelectedCommentReportIndex] = useState<number>();
 
@@ -438,7 +434,7 @@ const BoardDetail = () => {
               <View style={styles.header}>
                 <View>
                   <View>
-                    <Text style={styles.nickname}>{post.board.userId}</Text>
+                    <Text style={styles.nickname}>{post.board.userNickname}</Text>
                   </View>
                   <View>
                     <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
