@@ -5,12 +5,13 @@ import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { boardEdit } from "../../Api/board";
+import { uploadAPI } from "../../Api/Image";
 import { Container, Input, Spacer, TextButton } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
-import { BoardPost, PollOptions } from "../../types/Board";
-import { uploadAPI } from "../../utils/Image";
+import { BoardPost } from "../../types/Board";
 
 const Edit: React.FC = () => {
   const [title, setTitle] = useState<string>("");
@@ -22,7 +23,7 @@ const Edit: React.FC = () => {
   const [hashtags, setHashtags] = useState<string[]>([]);
   const [voteInputs, setVoteInputs] = useState(false);
   const [voteTitle, setVoteTitle] = useState<string>("");
-  const [voteOptions, setVoteOptions] = useState<PollOptions[]>([]);
+  const [voteOptions, setVoteOptions] = useState<string[]>([]);
 
   const [requsetpermission, setRequestPermission] = ImagePicker.useCameraPermissions();
   const [imageUrl, setImageUrl] = useState<string[]>([]);
@@ -54,7 +55,14 @@ const Edit: React.FC = () => {
   const handleUpdate = async () => {
     const DBnewHashtags = hashtags.map(word => word.replace(/^#/, ""));
     try {
-      const response = await boardEdit(post.board.id, title, body, isHide, tags);
+      const response = await boardEdit(
+        post.board.id,
+        title,
+        body,
+        isHide,
+        postImageUrl.length == 0 ? undefined : postImageUrl,
+        DBnewHashtags,
+      );
       console.log(response);
       navigation.goBack();
     } catch (error) {
@@ -214,7 +222,7 @@ const Edit: React.FC = () => {
           multiline={true}
           onEndEditing={addHashtag}
         ></TextInput>
-        {post.board.pollInfo !== null && (
+        {voteInputs && (
           <>
             <Spacer size={20} />
             <Container style={{ flexDirection: "row" }}>
@@ -259,7 +267,7 @@ const Edit: React.FC = () => {
         </View>
         <Spacer size={20} />
         <Input
-          style={{ height: 500 }}
+          style={{ minHeight: "40%" }}
           placeholder="본문"
           onChangeText={text => setBody(text)}
           value={body}
@@ -269,11 +277,19 @@ const Edit: React.FC = () => {
           <Spacer size={20} />
           {Array.isArray(imageUrl) &&
             imageUrl.map((uri, index) => (
-              <Image
-                key={index}
-                source={{ uri: uri }}
-                style={{ width: 200, height: 200, marginRight: 5 }} // 이미지 간 간격을 조절해줍니다.
-              />
+              <>
+                <Image
+                  key={index}
+                  source={{ uri: uri }}
+                  style={{ width: 200, height: 200, marginRight: 5 }} // 이미지 간 간격을 조절해줍니다.
+                />
+                <FontAwesome
+                  name="remove"
+                  size={24}
+                  color="black"
+                  onPress={() => setImageUrl([])}
+                />
+              </>
             ))}
         </ScrollView>
       </Container>
