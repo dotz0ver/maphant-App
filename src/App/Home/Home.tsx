@@ -92,11 +92,13 @@ const MainHeader: React.FC = () => {
       alignItems: "center",
       paddingLeft: "3%",
       paddingRight: "3%",
+      //backgroundColor: "skyblue",
     },
     iconContainer: {
       flex: 1,
       flexDirection: "row",
       justifyContent: "flex-end",
+      //backgroundColor: "red",
     },
   });
 
@@ -156,7 +158,7 @@ const HeaderCategory: React.FC = () => {
 
   const styles = StyleSheet.create({
     titleText: {
-      fontSize: 35,
+      fontSize: 25,
       marginLeft: "4%",
       fontWeight: "bold",
     },
@@ -172,6 +174,13 @@ const HeaderCategory: React.FC = () => {
     bottomSheetRef.current?.dismiss();
     setCategoryChanged(!categoryChanged);
   }, []);
+
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
 
   const renderItem = useCallback(({ item }: { item: UserCategory }) => {
     const style_text: StyleProp<TextStyle> = {
@@ -205,7 +214,7 @@ const HeaderCategory: React.FC = () => {
       }}
     >
       <TextThemed style={styles.titleText}>
-        {currentCategory?.majorName ?? "학과정보 없음"}
+        {truncateText(currentCategory?.majorName ?? "학과정보 없음", 12)}
       </TextThemed>
       <BottomSheetModal
         ref={bottomSheetRef}
@@ -213,6 +222,10 @@ const HeaderCategory: React.FC = () => {
         style={{ paddingHorizontal: 16 }}
       >
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>계열·학과를 선택해 주세요</Text>
+        <Text style={{ fontSize: 15, fontWeight: "bold" }}>현재 선택된 계열·학과</Text>
+        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+          {"->"} {currentCategory?.majorName} · ({currentCategory?.categoryName})
+        </Text>
         <Spacer size={20} />
         <BottomSheetFlatList
           data={userCategoryList}
@@ -470,7 +483,7 @@ const HotPost: React.FC = () => {
       });
   }, [category]);
 
-  const truncateText = (text, maxLength) => {
+  const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
       return text.slice(0, maxLength) + "...";
     }
