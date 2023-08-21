@@ -25,13 +25,10 @@ import { useSelector } from "react-redux";
 import { GetAPI } from "../../Api/fetchAPI";
 import { Container, ImageBox, Spacer, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
-import reduxStore from "../../storage/reduxStore";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
 import { UserCategory } from "../../types/User";
 import { ThemeContext } from "../Style/ThemeContext";
-import { ref } from "yup";
-import { set } from "react-native-reanimated";
 
 interface Tags {
   id: string | undefined;
@@ -40,8 +37,6 @@ interface Tags {
 // type homeScreenProps = NativeStackScreenProps
 
 const Home: React.FC = () => {
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
-
   const [text, setText] = useState<string>("");
   const [info, setInfo] = useState<[ImageSourcePropType, () => void][]>([
     [require("../../../assets/image1.jpg"), () => {}],
@@ -50,14 +45,23 @@ const Home: React.FC = () => {
   ]);
   const [refreshing, setRefreshing] = useState(false);
   const [key, setKey] = useState(0);
+
   const handleRefresh = () => {
     setRefreshing(true);
-    console.log("refreshing");
-    setTimeout(() => {
-      setRefreshing(false);
-      setKey(prevKey => prevKey + 1);
-    }, 1000);
   };
+
+  useEffect(() => {
+    if (refreshing) {
+      const timeout = setTimeout(() => {
+        setRefreshing(false);
+        setKey(prevKey => prevKey + 1);
+      }, 1000);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [refreshing]);
 
   return (
     //view화면
@@ -179,7 +183,6 @@ const HeaderCategory: React.FC = () => {
       <TouchableOpacity
         onPress={() => {
           onCategoryPress(item);
-          console.log(reduxStore.getState().userCategory);
         }}
       >
         <Text style={style_text}>
@@ -451,20 +454,28 @@ const TodaysHot: React.FC = () => {
 
 const HotPost: React.FC = () => {
   const [hotPost, setHotPost] = useState<BoardArticle[]>([]);
+  const category = useSelector(UserStorage.userCategorySelector);
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    console.log("useEffect");
-    GetAPI("/board/hot?&page=1&recordSize=2").then(res => {
-      console.log(res);
-      if (res.success === false) {
-        console.log(res.errors);
-      } else {
-        setHotPost(res.data.list);
-      }
-    });
-  }, []);
+    GetAPI("/board/hot?&page=1&recordSize=2")
+      .then(res => {
+        if (res.success === true) {
+          setHotPost(res.data.list);
+        }
+      })
+      .catch(err => {
+        alert("서버 오류 \n" + err);
+      });
+  }, [category]);
+
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
 
   const detailContent = (boardId: number) => {
     navigation.navigate("BoardDetail", { id: boardId });
@@ -529,7 +540,7 @@ const HotPost: React.FC = () => {
     },
     titleAndbodyBox: {
       height: 60,
-      // backgroundColor: "skyblue",
+      //backgroundColor: "skyblue",
     },
     postTitle: {
       fontSize: 15,
@@ -539,6 +550,16 @@ const HotPost: React.FC = () => {
       fontSize: 15,
       marginLeft: 5,
       // backgroundColor: "pink",
+    },
+    tagsBox: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingLeft: 5,
+    },
+    tags: {
+      fontSize: 15,
+      color: "red",
+      // backgroundColor: "skyblue",
     },
     timeAndlikeAndcomment: {
       flexDirection: "row",
@@ -611,9 +632,22 @@ const HotPost: React.FC = () => {
 
         <Spacer size={5} />
         <View style={styles.titleAndbodyBox}>
-          <Text style={styles.postTitle}>{hotPost[0].title}</Text>
+          <Text style={styles.postTitle}>{truncateText(hotPost[0].title, 20)}</Text>
           <Spacer size={2} />
-          <Text style={styles.postBody}>{hotPost[0].body}</Text>
+          <Text style={styles.postBody}>{truncateText(hotPost[0].body, 25)}</Text>
+          <Spacer size={4} />
+          <View style={styles.tagsBox}>
+            {hotPost[0].tags && hotPost[0].tags.length > 0 ? (
+              hotPost[0].tags.slice(0, 3).map((tag, index) => (
+                <Text style={styles.tags} key={index}>
+                  #{tag}{" "}
+                </Text>
+              ))
+            ) : (
+              <View />
+            )}
+            {hotPost[0].tags && hotPost[0].tags.length > 3 && <Text style={styles.tags}>...</Text>}
+          </View>
         </View>
 
         <Spacer size={5} />
@@ -649,9 +683,22 @@ const HotPost: React.FC = () => {
 
         <Spacer size={5} />
         <View style={styles.titleAndbodyBox}>
-          <Text style={styles.postTitle}>{hotPost[1].title}</Text>
+          <Text style={styles.postTitle}>{truncateText(hotPost[1].title, 20)}</Text>
           <Spacer size={2} />
-          <Text style={styles.postBody}>{hotPost[1].body}</Text>
+          <Text style={styles.postBody}>{truncateText(hotPost[1].body, 25)}</Text>
+          <Spacer size={4} />
+          <View style={styles.tagsBox}>
+            {hotPost[0].tags && hotPost[0].tags.length > 0 ? (
+              hotPost[0].tags.slice(0, 3).map((tag, index) => (
+                <Text style={styles.tags} key={index}>
+                  #{tag}{" "}
+                </Text>
+              ))
+            ) : (
+              <View />
+            )}
+            {hotPost[0].tags && hotPost[0].tags.length > 3 && <Text style={styles.tags}>...</Text>}
+          </View>
         </View>
 
         <Spacer size={5} />
