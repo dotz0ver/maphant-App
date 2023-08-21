@@ -337,8 +337,8 @@ const MyView = () => {
               <TextButton
                 style={styles.modalConfirmBtn}
                 onPress={() => {
-                  // console.log(confirmedIntroTxt);
-                  editIntro();
+                  if (confirmedIntroTxt != "") editIntro();
+                  setVisibleIntoModal(false);
                 }}
               >
                 수정
