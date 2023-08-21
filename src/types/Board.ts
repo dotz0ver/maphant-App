@@ -29,7 +29,7 @@ type BoardArticle = {
 
 //글 읽기
 type BoardPost = {
-  board: { pollInfo: PollInfo } & BoardArticle;
+  board: { isMyBoard: boolean; pollInfo: PollInfo } & BoardArticle;
   answerList?: BoardArticle[]; //질문 게시판 답변
 };
 
@@ -57,7 +57,7 @@ type VoteBoard = {
 type PollInfo = {
   title: string;
   expireDate: string;
-  state: string;
+  state: number;
   selectedOptionId: number;
   pollOptions: PollOptions[];
 };

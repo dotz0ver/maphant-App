@@ -171,7 +171,9 @@ const commentLike = (userId: number, commentId: number): Promise<dataResponse> =
 const commentLikeCnt = (comment_id: number): Promise<dataResponse> =>
   GetAPI<dataResponse>(`/comment/cnt-like/${comment_id}`);
 
-const doPoll = (pollId: number): Promise<dataResponse> => PostAPI<dataResponse>(`/poll/${pollId}`);
+const doPoll = (pollId: number, pollOptionId: number): Promise<dataResponse> =>
+  // @ts-ignore
+  PostAPI<dataResponse>(`/poll/${pollId}`, pollOptionId);
 
 const postPoll = (title: string, options: string[]): Promise<dataResponse> =>
   PostAPI<dataResponse>(`/board/poll/`, {
