@@ -27,9 +27,12 @@ import {
   DeletebookMarkArticle,
   deleteLikeBoard,
   deletePoll,
+  doPoll,
   getArticle,
+  getPollId,
   insertLikePost,
   listReportType,
+  pollStatus,
   ReportComment,
   ReportPost,
 } from "../../Api/board";
@@ -45,6 +48,7 @@ const BoardDetail = () => {
   const params = useRoute().params as { id: number; preRender?: BoardArticleBase };
   const { id, preRender } = params;
 
+  const [poll, setPoll] = useState<number>(0);
   const [comments, setComments] = useState<commentType[]>([]);
   const [replies, setReplies] = useState<commentType[]>([]);
   // const [post, setPost] = useState({ board: {} } as BoardPost);
@@ -100,6 +104,13 @@ const BoardDetail = () => {
     deletePoll(id).then(data => {
       console.log("투표", data);
     });
+  const handlePoll = async () => {
+    try {
+      const response = await doPoll(id);
+      console.log("투표 성공", response);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   const handlecommentInsert = async () => {
@@ -149,6 +160,7 @@ const BoardDetail = () => {
     getArticle(id)
       .then(data => {
         setPost(data.data as BoardPost);
+        console.error(data.data);
       })
       .catch();
   }, []);
@@ -171,6 +183,39 @@ const BoardDetail = () => {
       })
       .catch(err => console.log(err));
   }, []);
+
+  useEffect(() => {
+    getArticle(id)
+      .then(data => {
+        setPost(data.data as BoardPost);
+        console.error(data.data);
+      })
+      .catch();
+  }, []);
+
+  // useEffect(() => {
+  //   pollStatus(poll_id)
+  //     .then(data => {
+  //       setPoll(data.data as );
+  //       console.error(data.data);
+  //     })
+  //     .catch();
+  // }, []);
+
+  useEffect(() => {
+    getPollId(id)
+      .then(response => {
+        const poll_id = response.data.poll_id;
+        setPoll(poll_id);
+        pollStatus(poll_id);
+      })
+      .catch();
+  }, []);
+
+  // useEffect(() => {
+  //   pollStatus(poll_id)
+  //     .then
+  // })
 
   const handleCommentLike = (comment_id: number, likeCnt: number) => {
     commentLike(user.id, comment_id)
@@ -396,6 +441,14 @@ const BoardDetail = () => {
                     fontColor={"#000"}
                     style={styles.button}
                     fontSize={13}
+                    onPress={handlePoll}
+                  >
+                    투표하기
+                  </TextButton>
+                  <TextButton
+                    fontColor={"#000"}
+                    style={styles.button}
+                    fontSize={13}
                     onPress={handleUpdate}
                   >
                     수정
@@ -428,6 +481,27 @@ const BoardDetail = () => {
                       ))}
                     </ScrollView>
                   )}
+                </View>
+                {/* {post.board.pollInfo !== null && (
+                  <View style={{ flex: 1, padding: 20, borderWidth: 1 }}>
+                    <View>
+                      <Text style={styles.title}>{post.board.pollInfo.title}</Text>
+                    </View>
+                    <View
+                      style={{
+                        borderWidth: 1,
+                        borderColor: "gray",
+                        padding: 5,
+                        marginVertical: 3,
+                      }}
+                    >
+                      {post.board.pollInfo.pollOptions.map(options => (
+                        <Text key={options.optionId}>{options.optionName}</Text>
+                      ))}
+                    </View>
+                  </View>
+                )} */}
+                <View>
                   {post.board.tags != null && (
                     <ScrollView horizontal={true} style={styles.imageContainer}>
                       {post.board.tags.map((hash, index) => (
