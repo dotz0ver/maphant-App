@@ -491,7 +491,7 @@ const HotPost: React.FC = () => {
   };
 
   const detailContent = (boardId: number) => {
-    navigation.navigate("BoardDetail", { id: boardId });
+    navigation.navigate("게시판", { screen: "BoardDetail", params: { id: boardId } });
   };
 
   const styles = StyleSheet.create({
