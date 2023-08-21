@@ -20,6 +20,7 @@ import {
   boardDelete,
   boardEdit,
   bookMarkArticle,
+  closePoll,
   commentArticle,
   commentDelete,
   commentInsert,
@@ -117,6 +118,14 @@ const BoardDetail = () => {
   const handlePoll = async () => {
     try {
       const response = await doPoll(id, pollOptionId);
+      console.log(response);
+    } catch (error) {
+      alert(error);
+    }
+  };
+  const handlePollClose = async () => {
+    try {
+      const response = await closePoll(id);
       console.log(response);
     } catch (error) {
       alert(error);
@@ -222,11 +231,6 @@ const BoardDetail = () => {
       })
       .catch();
   }, []);
-
-  // useEffect(() => {
-  //   pollStatus(poll_id)
-  //     .then
-  // })
 
   const handleCommentLike = (comment_id: number, likeCnt: number) => {
     commentLike(user.id, comment_id)
@@ -485,8 +489,8 @@ const BoardDetail = () => {
                     </ScrollView>
                   )}
                 </View>
-                {/* {post.board.pollInfo.state !== 2 && (
-                  <View style={{ flex: 1, padding: 20, borderWidth: 1 }}>
+                {post.board.pollInfo.state !== 2 && (
+                  <View style={{ flex: 1, padding: 20}}>
                     <View>
                       <Text style={styles.title}>{post.board.pollInfo.title}</Text>
                     </View>
@@ -518,13 +522,21 @@ const BoardDetail = () => {
                         fontColor={"#000"}
                         style={styles.button}
                         fontSize={13}
+                        onPress={handlePollClose}
+                      >
+                        마감하기
+                      </TextButton>
+                      <TextButton
+                        fontColor={"#000"}
+                        style={styles.button}
+                        fontSize={13}
                         onPress={handlePoll}
                       >
                         투표하기
                       </TextButton>
                     </View>
                   </View>
-                )} */}
+                )}
                 <View>
                   {post.board.tags != null && (
                     <ScrollView horizontal={true} style={styles.imageContainer}>
