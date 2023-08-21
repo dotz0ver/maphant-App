@@ -35,6 +35,7 @@ import {
 } from "../../Api/board";
 import { Container, IconButton, Input, Spacer, TextButton } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
+import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticleBase, BoardPost, commentType, ReportType } from "../../types/Board";
 import { UserData } from "../../types/User";
@@ -46,8 +47,8 @@ const BoardDetail = () => {
 
   const [comments, setComments] = useState<commentType[]>([]);
   const [replies, setReplies] = useState<commentType[]>([]);
-  const [post, setPost] = useState({ board: {} } as BoardPost);
-  // const [post, setPost] = useState({ board: preRender } as BoardPost);
+  // const [post, setPost] = useState({ board: {} } as BoardPost);
+  const [post, setPost] = useState({ board: preRender } as BoardPost);
   const [body, setBody] = useState("");
   const [replyBody, setReplyBody] = useState<string>("");
   const [isAnonymous, setIsAnonymous] = useState(0);
@@ -63,6 +64,21 @@ const BoardDetail = () => {
   const navigation = useNavigation<NavigationProps>();
   const [commentLength, setCommentLength] = useState<number>(0);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [LoadingOverlay, setLoadingOverlay] = useState(false);
+
+  useEffect(() => {
+    if (post.board === undefined && !LoadingOverlay) {
+      setLoadingOverlay(true);
+      UIStore.showLoadingOverlay();
+    }
+    if (post.board !== undefined && LoadingOverlay) {
+      setLoadingOverlay(false);
+      UIStore.hideLoadingOverlay();
+    }
+
+    if (post.board === undefined) return;
+    setLikeCnt(post.board.likeCnt);
+  }, [post, LoadingOverlay]);
 
   const handleDelete = async () => {
     try {
