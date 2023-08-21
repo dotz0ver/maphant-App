@@ -116,7 +116,7 @@ const BoardDetail = () => {
       const response = await boardClosePoll(id);
       console.log(response);
     } catch (error) {
-      alert(error);
+      console.log("투표 마감 오류", error);
     }
   };
 
@@ -171,12 +171,13 @@ const BoardDetail = () => {
       })
       .catch();
   }, []);
-
+  console.info(post);
   useEffect(() => {
     commentArticle(id, 1, 50)
       .then(response => {
         setComments(response.data.list as commentType[]);
         setCommentLength(comments.length);
+        console.log(response.data.list);
         setReplies(comments.filter(comment => comment.parent_id > 0));
       })
       .catch();
@@ -186,6 +187,7 @@ const BoardDetail = () => {
     listReportType()
       .then(data => {
         setReportType(data.data as ReportType[]);
+        // console.log( data.data);
       })
       .catch(err => console.log(err));
   }, []);
@@ -194,6 +196,7 @@ const BoardDetail = () => {
     getArticle(id)
       .then(data => {
         setPost(data.data as BoardPost);
+        // console.error(data.data);
       })
       .catch();
   }, []);
@@ -222,7 +225,7 @@ const BoardDetail = () => {
       const response = await doPoll(poll_id, pollOptionId);
       console.log(response);
     } catch (error) {
-      alert(error);
+      console.log("투표 오류", error);
     }
   };
 
@@ -373,6 +376,10 @@ const BoardDetail = () => {
     );
   };
   console.log(post.board);
+
+  // const profileNavi = () => {
+  //   navigation.navigate("Profile", { id: post.board.userId } as never);
+  // };
 
   const ModalWrapperComment = ({ commentId }: { commentId: number }) => {
     const [selectedCommentReportIndex, setSelectedCommentReportIndex] = useState<number>();
