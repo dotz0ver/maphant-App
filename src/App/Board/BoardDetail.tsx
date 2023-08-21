@@ -687,9 +687,11 @@ const BoardDetail = () => {
                                   <IconButton
                                     name="thumbs-o-up"
                                     color="skyblue"
-                                    onPress={() => console.log("추천")}
+                                    onPress={() => {
+                                      handleCommentLike(reply.id, reply.like_cnt);
+                                    }}
                                   >
-                                    추천
+                                    {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
                                   </IconButton>
                                   <IconButton
                                     name="exclamation-circle"
