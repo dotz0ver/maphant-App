@@ -380,9 +380,9 @@ const BoardDetail = () => {
   };
   console.log(post.board);
 
-  const profileNavi = () => {
-    navigation.navigate("Profile", { id: post.board.userId } as never);
-  };
+  // const profileNavi = () => {
+  //   navigation.navigate("Profile", { id: post.board.userId } as never);
+  // };
 
   const ModalWrapperComment = ({ commentId }: { commentId: number }) => {
     const [selectedCommentReportIndex, setSelectedCommentReportIndex] = useState<number>();
@@ -596,7 +596,8 @@ const BoardDetail = () => {
                       >
                         <TouchableOpacity
                           onPress={() => {
-                            profileNavi();
+                            navigation.navigate("Profile", { id: comment.user_id } as never);
+                            console.error(comment.user_id);
                           }}
                         >
                           <Text style={styles.commentName}>{comment.nickname}</Text>
