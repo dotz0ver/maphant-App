@@ -181,16 +181,16 @@ const postPoll = (title: string, options: string[]): Promise<dataResponse> =>
     options,
   });
 
-const closePoll = (board_id: number): Promise<dataResponse> =>
+const boardClosePoll = (board_id: number): Promise<dataResponse> =>
   PostAPI<dataResponse>(`/poll/close/board/${board_id}`);
 
-const boardClosePoll = (poll_id: number): Promise<dataResponse> =>
+const closePoll = (poll_id: number): Promise<dataResponse> =>
 PostAPI<dataResponse>(`/poll/close/${poll_id}`);
 
-const deletePoll = (board_id: number): Promise<dataResponse> =>
+const boardDeletePoll = (board_id: number): Promise<dataResponse> =>
   DeleteAPI<dataResponse>(`/poll/board/${board_id}`);
 
-const boardDeletePoll = (poll_id: number): Promise<dataResponse> =>
+const deletePoll = (poll_id: number): Promise<dataResponse> =>
 DeleteAPI<dataResponse>(`/poll/${poll_id}`);
 
 const pollStatus = (poll_id: number): Promise<dataResponse> =>
