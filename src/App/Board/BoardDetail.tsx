@@ -49,6 +49,7 @@ import { dateFormat, dateTimeFormat } from "./Time";
 const BoardDetail = () => {
   const params = useRoute().params as { id: number; preRender?: BoardArticleBase };
   const { id, preRender } = params;
+  const navigation = useNavigation<NavigationProps>();
 
   const [poll, setPoll] = useState<number>(0);
   console.log("아이디", id);
@@ -68,7 +69,6 @@ const BoardDetail = () => {
   const [reportType, setReportType] = React.useState<ReportType[]>([]);
   const [commentId, setCommentId] = useState<number>(0);
   const user = useSelector(UserStorage.userProfileSelector)! as UserData;
-  const navigation = useNavigation<NavigationProps>();
   const [commentLength, setCommentLength] = useState<number>(0);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [LoadingOverlay, setLoadingOverlay] = useState(false);
@@ -100,14 +100,8 @@ const BoardDetail = () => {
     }
   };
   // console.log(boardData);
-  const handleUpdate = async () => {
-    try {
-      const response = await boardEdit(id, post.board.title, post.board.body, post.board.isHide);
-      console.log("수정 가능", response);
-      navigation.navigate("editPost", { post: post, boardType: boardData });
-    } catch (error) {
-      console.error("수정 오류", error);
-    }
+  const handleUpdate = () => {
+    navigation.navigate("editPost", { post: post });
   };
 
   const handlePollDelete = () => {
@@ -208,7 +202,7 @@ const BoardDetail = () => {
     getArticle(id)
       .then(data => {
         setPost(data.data as BoardPost);
-        console.error(data.data);
+        // console.error(data.data);
       })
       .catch();
   }, []);
@@ -489,9 +483,9 @@ const BoardDetail = () => {
                     </ScrollView>
                   )}
                 </View>
-                {post.board.pollInfo.state !== 2 && (
+                {post.board.pollInfo !== null && (
                   <View style={{ flex: 1, padding: 20 }}>
-                    <View style={{ marginBottom: 5 }}>
+                    <View>
                       <Text style={styles.title}>{post.board.pollInfo.title}</Text>
                     </View>
                     <View
