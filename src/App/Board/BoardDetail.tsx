@@ -104,6 +104,7 @@ const BoardDetail = () => {
     deletePoll(id).then(data => {
       console.log("투표", data);
     });
+  };
   const handlePoll = async () => {
     try {
       const response = await doPoll(id);
