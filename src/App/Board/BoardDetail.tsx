@@ -19,7 +19,6 @@ import { useSelector } from "react-redux";
 import {
   boardClosePoll,
   boardDelete,
-  boardEdit,
   bookMarkArticle,
   commentArticle,
   commentDelete,
@@ -42,7 +41,7 @@ import { Container, IconButton, Input, Spacer, TextButton } from "../../componen
 import { NavigationProps } from "../../Navigator/Routes";
 import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
-import { BoardArticleBase, BoardPost, commentType, ReportType } from "../../types/Board";
+import { BoardArticleBase, BoardPost, commentType, PollInfo, ReportType } from "../../types/Board";
 import { UserData } from "../../types/User";
 import { dateFormat, dateTimeFormat } from "./Time";
 
@@ -51,7 +50,6 @@ const BoardDetail = () => {
   const { id, preRender } = params;
   const navigation = useNavigation<NavigationProps>();
 
-  const [poll, setPoll] = useState<number>(0);
   console.log("아이디", id);
   const [comments, setComments] = useState<commentType[]>([]);
   const [replies, setReplies] = useState<commentType[]>([]);
@@ -74,6 +72,8 @@ const BoardDetail = () => {
   const [LoadingOverlay, setLoadingOverlay] = useState(false);
   const [pollOptionId, setPollOptionId] = useState<number>(0);
   const [poll_id, setPoll_id] = useState<number>(0);
+  const [poll, setPoll] = useState<PollInfo>();
+  const [myOption, setMyOption] = useState<number>(0);
 
   useEffect(() => {
     if (post.board === undefined && !LoadingOverlay) {
@@ -201,20 +201,11 @@ const BoardDetail = () => {
       .catch();
   }, []);
 
-  // useEffect(() => {
-  //   pollStatus(poll_id)
-  //     .then(data => {
-  //       setPoll(data.data as );
-  //       console.error(data.data);
-  //     })
-  //     .catch();
-  // }, []);
-
   useEffect(() => {
     getPollId(id)
       .then(response => {
         setPoll_id(response.data.poll_id);
-        setPoll(poll_id);
+        // setPoll(poll_id);
         pollStatus(poll_id);
       })
       .catch();
@@ -545,14 +536,16 @@ const BoardDetail = () => {
                       ) : (
                         <View style={{ justifyContent: "flex-start" }}></View>
                       )}
-                      <TextButton
-                        fontColor={"#000"}
-                        style={{ ...styles.button, justifyContent: "flex-end" }}
-                        fontSize={13}
-                        onPress={handlePoll}
-                      >
-                        투표하기
-                      </TextButton>
+                      {post.board.pollInfo.state == 0 && (
+                        <TextButton
+                          fontColor={"#000"}
+                          style={{ ...styles.button, justifyContent: "flex-end" }}
+                          fontSize={13}
+                          onPress={handlePoll}
+                        >
+                          투표하기
+                        </TextButton>
+                      )}
                     </View>
                   </View>
                 )}
