@@ -136,7 +136,6 @@ const Post: React.FC = () => {
         DBnewHashtags,
       );
       console.log("게시물 작성 성공", response);
-      // console.log(categoryId, userId, boardType.id, title, body);
       navigation.navigate("DetailList", { boardType: boardType });
     } catch (error) {
       console.error("게시물 작성 오류", error);

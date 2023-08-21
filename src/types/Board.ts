@@ -21,7 +21,6 @@ type BoardArticle = {
   reportCnt: number;
   state: string;
   typeId: string;
-  userId: number;
   boardId: number;
   id: number;
   tags?: hashTagType[];

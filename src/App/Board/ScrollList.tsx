@@ -39,7 +39,7 @@ function ScrollList(post: BoardArticle | HotBoard): JSX.Element {
         <Text style={styles.comment}>{post.body}</Text>
       </View>
       <View style={styles.bottom}>
-        <Text style={styles.userName}>{post.userId}</Text>
+        <Text style={styles.userName}>{post.userNickname}</Text>
         <Text style={styles.created}>{dateFormat(post.createdAt)}</Text>
       </View>
     </TouchableOpacity>

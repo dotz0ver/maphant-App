@@ -216,7 +216,7 @@ const QAdetail = () => {
           <View style={styles.qaheader}>
             <View>
               <View>
-                <Text style={styles.nickname}>{post.board.userId}</Text>
+                <Text style={styles.nickname}>{post.board.userNickname}</Text>
               </View>
               <View>
                 <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
@@ -286,7 +286,7 @@ const QAdetail = () => {
               <View style={{ margin: "3%" }}>
                 <View style={styles.answerheader}>
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.answername}>{answer.userId}</Text>
+                    <Text style={styles.answername}>{answer.userNickname}</Text>
                     <Text style={styles.answerdate}>{dateTimeFormat(answer.createdAt)}</Text>
                   </View>
                   <View style={styles.cbutBox}>
