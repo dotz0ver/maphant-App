@@ -21,7 +21,9 @@ function PostSummary(post: BoardArticle | HotBoard): JSX.Element {
   return (
     <>
       <View style={styles.head}>
-        <Text style={styles.title}>{post.title}</Text>
+        <Text style={styles.title} numberOfLines={1}>
+          {post.title}
+        </Text>
         <Text style={styles.userName}>{post.userNickname}</Text>
       </View>
       <View>
