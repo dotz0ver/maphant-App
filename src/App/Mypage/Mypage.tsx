@@ -261,12 +261,21 @@ const MyView = () => {
               {profile.role} - {profile.name}
             </Text>
           </View>
+          <Spacer size={5} />
           <View style={styles.paddingVertical}>
             <Text style={styles.fieldtxt}>
               {category !== null ? `${category.categoryName}` : "계열 선택안됨"}
             </Text>
+            <Spacer size={10} />
             <Text style={styles.fieldtxt}>
-              {category !== null ? `${category?.majorName}` : "학과 선택안됨"}
+              {category !== null ? (
+                <React.Fragment>
+                  {category.majorName.split("(")[0]} {"\n"}
+                  {category.majorName.split("(")[1]}
+                </React.Fragment>
+              ) : (
+                "학과 선택안됨"
+              )}
             </Text>
           </View>
         </View>
@@ -417,7 +426,7 @@ export default function MyPage() {
         {
           title: "내가 쓴 댓글",
           onclick: () => {
-            // navigation.navigate("Mycomment" as never);
+            navigation.navigate("Mycomment" as never);
           },
           href: "4",
         },
@@ -693,6 +702,8 @@ const styles = StyleSheet.create({
   },
   fieldtxt: {
     fontSize: 16,
+    // backgroundColor: "red",
+    textAlign: "right",
   },
   info: {
     flex: 1,
@@ -710,6 +721,12 @@ const styles = StyleSheet.create({
   paddingVertical: {
     paddingHorizontal: 10,
     paddingVertical: 5,
+    alignItems: "flex-end",
+    // backgroundColor: "skyblue",
+  },
+  paddingVerticalCategory: {
+    // paddingHorizontal: 10,
+    // paddingVertical: 5,
     alignItems: "flex-end",
     // backgroundColor: "skyblue",
   },
