@@ -132,6 +132,15 @@ const BoardDetail = () => {
     }
   };
 
+  const handlePoll = async () => {
+    try {
+      const response = await doPoll(id);
+      console.log("투표 성공", response);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   const handlecommentInsert = async () => {
     try {
       const response = await commentInsert(id, body, isAnonymous);
