@@ -17,10 +17,10 @@ import {
 import { useSelector } from "react-redux";
 
 import {
+  boardClosePoll,
   boardDelete,
   boardEdit,
   bookMarkArticle,
-  closePoll,
   commentArticle,
   commentDelete,
   commentInsert,
@@ -125,7 +125,7 @@ const BoardDetail = () => {
   };
   const handlePollClose = async () => {
     try {
-      const response = await closePoll(id);
+      const response = await boardClosePoll(id);
       console.log(response);
     } catch (error) {
       alert(error);
@@ -490,16 +490,16 @@ const BoardDetail = () => {
                   )}
                 </View>
                 {post.board.pollInfo.state !== 2 && (
-                  <View style={{ flex: 1, padding: 20}}>
-                    <View>
+                  <View style={{ flex: 1, padding: 20 }}>
+                    <View style={{ marginBottom: 5 }}>
                       <Text style={styles.title}>{post.board.pollInfo.title}</Text>
                     </View>
                     <View
                       style={{
-                        borderWidth: 1,
                         borderColor: "gray",
                         padding: 5,
                         marginVertical: 3,
+                        marginBottom: 10,
                       }}
                     >
                       {post.board.pollInfo.pollOptions.map(options => (
@@ -518,9 +518,11 @@ const BoardDetail = () => {
                           <Text>{options.optionName}</Text>
                         </TouchableOpacity>
                       ))}
+                    </View>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                       <TextButton
                         fontColor={"#000"}
-                        style={styles.button}
+                        style={{ ...styles.button, justifyContent: "flex-start" }}
                         fontSize={13}
                         onPress={handlePollClose}
                       >
@@ -528,7 +530,7 @@ const BoardDetail = () => {
                       </TextButton>
                       <TextButton
                         fontColor={"#000"}
-                        style={styles.button}
+                        style={{ ...styles.button, justifyContent: "flex-end" }}
                         fontSize={13}
                         onPress={handlePoll}
                       >
