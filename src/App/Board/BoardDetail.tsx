@@ -133,14 +133,13 @@ const BoardDetail = () => {
     }
   };
 
-  const handleCommentDelete = async (id: number) => {
-    try {
-      const response = await commentDelete(id);
-      console.log(response);
-      setCommentLength(commentLength - 1);
-    } catch (error) {
-      console.log("댓글 삭제 오류", error);
-    }
+  const handleCommentDelete = (id: number) => {
+    commentDelete(id)
+      .then(data => {
+        setCommentLength(commentLength - 1);
+        console.log(data);
+      })
+      .catch(error => Alert.alert(error));
   };
 
   const handleReplyInput = async (parent_id: number, body: string) => {
@@ -611,24 +610,26 @@ const BoardDetail = () => {
                             navigation.navigate("Profile", { id: comment.user_id } as never);
                             console.error(comment.user_id);
                           }}
+                          disabled={comment.is_anonymous == 1}
                         >
                           <Text style={styles.commentName}>{comment.nickname}</Text>
                         </TouchableOpacity>
                         <Text style={styles.commentDate}>{dateFormat(comment.created_at)}</Text>
                       </View>
-
-                      <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
-                        <TextButton
-                          style={styles.button}
-                          fontSize={13}
-                          fontColor={"#000"}
-                          onPress={() => {
-                            alertComment(comment.id);
-                          }}
-                        >
-                          삭제
-                        </TextButton>
-                      </View>
+                      {comment.isMyComment && (
+                        <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
+                          <TextButton
+                            style={styles.button}
+                            fontSize={13}
+                            fontColor={"#000"}
+                            onPress={() => {
+                              alertComment(comment.id);
+                            }}
+                          >
+                            삭제
+                          </TextButton>
+                        </View>
+                      )}
                     </View>
                     <View style={{ paddingHorizontal: 10 }}>
                       <View style={styles.commentContext}>

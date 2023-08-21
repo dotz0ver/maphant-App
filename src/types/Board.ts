@@ -85,7 +85,6 @@ type ReportType = {
 
 type commentType = {
   id: number;
-  user_id: number;
   nickname: string;
   board_id: number;
   parent_id: number;
@@ -95,6 +94,7 @@ type commentType = {
   like_cnt: number;
   comment_id: number;
   time: string;
+  isMyComment: boolean;
 };
 
 type hashTagType = {
