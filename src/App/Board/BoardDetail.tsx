@@ -511,6 +511,7 @@ const BoardDetail = () => {
                           }}
                           key={options.optionId}
                           onPress={() => setPollOptionId(options.optionId)}
+                          disabled={post.board.pollInfo.state == 0 ? false : true}
                         >
                           <Text>{options.optionName}</Text>
                         </TouchableOpacity>
