@@ -70,7 +70,7 @@ const TermsSet: React.FC = () => {
         </Container>
       </TouchableOpacity>
 
-      <Container style={{ borderWidth: 1, borderColor: "#6666" }}>
+      <Container style={{ borderWidth: 2, borderColor: "#6666", padding: 10 }}>
         <Container paddingHorizontal={2}>
           <TouchableOpacity onPress={() => toggleExpansion("terms")}>
             <Container style={{ flexDirection: "row" }}>
@@ -82,7 +82,7 @@ const TermsSet: React.FC = () => {
             </Container>
           </TouchableOpacity>
           {expandedItems.includes("terms") && (
-            <Text>
+            <Text style={{ padding: 5 }}>
               개인정보 수집 이용 동의서 1. 수집하는 개인정보 항목 학교, 학과, 학번 2. 개인정보의
               수집 및 이용 목적 제공하신 정보는 과끼리 앱 사용 확인을 위해 사용합니다. 본인 확인
               식별 (동명이인 등) 절차에 이용(학교, 학과,학번) 2의사소통 및 정보 전달 등에 이용
@@ -104,7 +104,7 @@ const TermsSet: React.FC = () => {
             </Container>
           </TouchableOpacity>
           {expandedItems.includes("another") && (
-            <Text>
+            <Text style={{ padding: 5 }}>
               개인정보 보호법에 따라 과끼리에 회원가입을 신청하시는 분께 수집하는 개인정보의 항목,
               개인정보의 항목, 개인정보의 수집 및 이용 목적, 개인정보의 보유 및 이용 기간, 동의
               거부권 및 동의 거부 시 불이익에 관한 사항을 안내드리오니 자세히 읽은 후 동의하여
@@ -124,7 +124,7 @@ const TermsSet: React.FC = () => {
           </TouchableOpacity>
 
           {expandedItems.includes("community") && (
-            <Text>
+            <Text style={{ padding: 5 }}>
               개인정보 보호법에 따라 과끼리에 회원가입을 신청하시는 분께 수집하는 개인정보의 항목,
               개인정보의 항목, 개인정보의 수집 및 이용 목적, 개인정보의 보유 및 이용 기간, 동의
               거부권 및 동의 거부 시 불이익에 관한 사항을 안내드리오니 자세히 읽은 후 동의하여
@@ -135,7 +135,7 @@ const TermsSet: React.FC = () => {
       </Container>
       <TextButton
         style={{
-          backgroundColor: "#000",
+          backgroundColor: "#5299EB",
           paddingVertical: 15,
           paddingHorizontal: 20,
           borderRadius: 30,

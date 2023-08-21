@@ -2,7 +2,6 @@
   "name": "my-app",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
-
   "scripts": {
     "start": "expo start --dev-client",
     "android": "expo run:android",
@@ -44,7 +43,6 @@
     "formik": "^2.4.2",
     "js-sha512": "^0.8.0",
     "lodash": "^4.17.21",
-    "metro": "^0.77.0",
     "metro-config": "^0.78.0",
     "react": "18.2.0",
     "react-native": "0.71.8",
@@ -74,6 +72,7 @@
     "eslint-plugin-react": "^7.33.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unused-imports": "^3.0.0",
+    "metro": "^0.78.1",
     "typescript": "^4.9.4"
   },
   "private": true

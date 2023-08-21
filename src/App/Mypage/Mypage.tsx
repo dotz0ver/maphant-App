@@ -417,7 +417,7 @@ export default function MyPage() {
         {
           title: "내가 쓴 댓글",
           onclick: () => {
-            navigation.navigate("Mycomment" as never);
+            // navigation.navigate("Mycomment" as never);
           },
           href: "4",
         },

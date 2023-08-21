@@ -52,7 +52,7 @@ const App = () => {
   useEffect(() => {
     UserStorage.loadUserDataOnStartUp();
 
-    registerForPushNotificationsAsync().then(token => alert(token));
+    registerForPushNotificationsAsync();
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       alert(notification);
