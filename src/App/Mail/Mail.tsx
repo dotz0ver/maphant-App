@@ -60,7 +60,6 @@ const Mail: React.FC = () => {
   useEffect(() => {
     fetchChatRooms();
   }, [fetchChatRooms]);
-
   return (
     <Container style={{ flex: 1 }}>
       <View style={styles.header}>

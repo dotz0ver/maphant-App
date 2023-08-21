@@ -1,15 +1,16 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
-
 import { bringBoardList } from "../../Api/member/Others";
 import { Container } from "../../components/common";
 import { OtherUserForm } from "../../Navigator/MypageRoute";
 import { OWriteBoardList, Pagination } from "../../types/User";
 import getCurrentTime from "../Time";
-
+import { NavigationProps } from "../../Navigator/Routes";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 const WriteBoard: React.FC = () => {
+  const navigation = useNavigation<NavigationProps>();
   const route = useRoute();
   const params = route.params as OtherUserForm;
   const [writeboardList, setWriteBoardList] = useState<OWriteBoardList[]>([]);
@@ -20,46 +21,80 @@ const WriteBoard: React.FC = () => {
       .then(res => {
         setWriteBoardList(res.data.list);
         setPage(res.data.pagination);
-        console.log("????");
       })
       .catch(e => console.error(e));
   }, []);
   console.log(page);
+  {
+    console.log(writeboardList);
+  }
   return (
-    <Container style={{ backgroundColor: "white", display: "flex", flex: 1 }}>
-      <Container style={{ alignItems: "center", flex: 0.1, justifyContent: "center" }}>
-        <Text style={{ fontSize: 20, color: "#5299EB", fontWeight: "bold" }}>
-          작성한 게시글 목록 페이지
-        </Text>
-      </Container>
-      <Container style={{ flex: 1 }}>
-        <View>
-          <Text style={{}}>Total page : {page.totalRecordCount} </Text>
-        </View>
-        <View style={{ width: "100%", height: 2, backgroundColor: "#5299EB" }} />
-        <FlatList
-          data={writeboardList}
-          renderItem={({ item, index }) => (
-            <>
-              {index >= 0 && <View style={lineStyle} />}
-              <TouchableOpacity style={{ padding: 18 }} key={item.id}>
-                <View style={{}}>
-                  <Text style={{ fontSize: 17, fontWeight: "bold" }}>{item.title}</Text>
-                  <Text style={{ marginTop: 10, fontSize: 15 }} numberOfLines={3}>
+    <View style={{ display: "flex", flex: 1 }}>
+      <View style={{ padding: 10, backgroundColor: "#fff" }}>
+        <Text style={{ fontWeight: "bold" }}>Total page : {page.totalRecordCount} </Text>
+      </View>
+      <FlatList
+        style={{ marginTop: 3 }}
+        data={writeboardList}
+        renderItem={({ item, index }) => (
+          <>
+            <Pressable
+              style={{ flex: 1, padding: 5, backgroundColor: "#fff" }}
+              key={item.id}
+              onPress={() => {
+                console.log(navigation);
+                navigation.navigate("BoardDetail", { id: item.id });
+              }}
+            >
+              <Container
+                style={{
+                  paddingHorizontal: 20,
+                }}
+              >
+                <View>
+                  <Text style={{ color: "gray" }}>{item.type}</Text>
+                </View>
+                <Container>
+                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.title}</Text>
+                </Container>
+                <Container>
+                  <Text style={{ fontSize: 13 }} numberOfLines={2}>
                     {item.body}
                   </Text>
-                  <Text style={{ marginTop: 10, fontSize: 10, color: "gray" }}>
-                    생성일 :{getCurrentTime(new Date(item.created_at))}
-                  </Text>
+                </Container>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginBottom: 5,
+                  }}
+                >
+                  <Container style={{ flexDirection: "row" }}>
+                    <Feather name="thumbs-up" size={13} color="tomato" />
+
+                    <Text style={{ fontSize: 10, marginRight: 10 }}> &#9;{item.like_cnt}</Text>
+
+                    <FontAwesome name="comment-o" size={13} color="blue" />
+                    <Text style={{ fontSize: 10 }}> &#9;{item.comment_cnt}</Text>
+                  </Container>
+                  <Container>
+                    <Text>{getCurrentTime(new Date(item.created_at))}</Text>
+                  </Container>
                 </View>
-              </TouchableOpacity>
-              {index === writeboardList.length - 1 && <View style={lineStyle} />}
-            </>
-          )}
-          keyExtractor={item => item.id.toString()}
-        />
-      </Container>
-    </Container>
+              </Container>
+            </Pressable>
+            <View
+              style={{
+                width: "100%",
+                height: 2,
+                backgroundColor: "#e8eaec",
+              }}
+            />
+          </>
+        )}
+        keyExtractor={item => item.id.toString()}
+      />
+    </View>
   );
 };
 

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { GetAPI } from "../../Api/fetchAPI";
+import { TextButton } from "../../components/common";
 import { BoardArticle } from "../../types/Board";
 
 export default function (): JSX.Element {
@@ -15,26 +16,41 @@ export default function (): JSX.Element {
 
 function Bookmark(): JSX.Element {
   const [bookmark, setBookmark] = useState<BoardArticle[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSetting, setIsSetting] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [endPage, setEndPage] = React.useState<number>(0);
+  const [pages, setPages] = useState<number>(1);
+  const [isComplete, setIsComplete] = useState<boolean>(false);
+
+  const recordSize: number = 10;
+  const pageSize: number = 20;
   const navigation = useNavigation();
 
   const extractBoardIds = () => {
-    return GetAPI("/bookmark/my-list").then(res => {
-      if (res.success === false) {
-        console.log(res.errors);
-        return;
-      } else {
-        const boardIds = res.data.map(item => item.boardId);
-        return Promise.resolve(boardIds);
-      }
-    });
+    return GetAPI(`/bookmark/my-list?page=${pages}&recordSize=${recordSize}&pageSize=${pageSize}`)
+      .then(res => {
+        setEndPage(res.data.pagination.endPage);
+        return res;
+      })
+      .then(res => {
+        if (res.success === false) {
+          console.log(res.errors);
+          return;
+        } else {
+          const boardIds = res.data.list.map(item => item.boardId);
+          return Promise.resolve({ boardIds, endPage: res.data.pagination.endPage });
+        }
+      });
   };
 
   useEffect(() => {
-    extractBoardIds().then(async boardIds => {
+    extractBoardIds().then(async props => {
+      const { boardIds, endPage } = props;
+      console.log(boardIds);
+      console.log(endPage);
       const bookmarks: BoardArticle[] = [];
       for (let i = boardIds.length - 1; i >= 0; i--) {
-        await GetAPI(`/board/${boardIds[i]}`).then(res => {
+        await GetAPI(`/board/${boardIds[i]}/`).then(res => {
           if (res.success === false) {
             console.log(res.errors);
             return;
@@ -43,25 +59,51 @@ function Bookmark(): JSX.Element {
           }
         });
       }
-      setBookmark(bookmarks);
-      setIsLoading(false);
+      setBookmark([...bookmark, ...bookmarks]);
+      setIsSetting(false);
     });
-  }, []);
+  }, [pages]);
+
+  const loadMorelikes = async () => {
+    if (!isLoading) {
+      setIsLoading(true);
+
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
+      if (pages === endPage) {
+        setIsComplete(true);
+      } else if (pages < endPage) {
+        setPages(pages + 1);
+      }
+      setIsLoading(false);
+    }
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function handleScroll(event: any) {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const contentHeight = event.nativeEvent.contentSize.height;
+    const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
+
+    if (offsetY + scrollViewHeight >= contentHeight - 20) {
+      loadMorelikes();
+    }
+  }
 
   const detailContent = (boards: BoardArticle) => {
     console.log(boards.id);
-    navigation.navigate("QnAdetail", { id: boards.id });
+    navigation.navigate("BoardDetail", { id: boards.id });
   };
 
   return (
     <>
-      {isLoading ? (
+      {isSetting ? (
         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
       ) : (
-        <ScrollView scrollEventThrottle={16}>
-          {bookmark.map((bookmark, index) => (
+        <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
+          {bookmark.map(bookmark => (
             <>
               <Pressable key={bookmark.id} onPress={() => detailContent(bookmark)}>
                 <View style={styles.container}>
@@ -112,6 +154,19 @@ function Bookmark(): JSX.Element {
               <View style={{ borderBottomWidth: 1, borderColor: "#e8eaec", height: 0 }}></View>
             </>
           ))}
+          {(isLoading || isComplete) && (
+            <View style={styles.loadingContainer}>
+              <Text style={styles.loadingText}>
+                {isLoading ? (
+                  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <ActivityIndicator size="large" color="#0000ff" />
+                  </View>
+                ) : (
+                  "이전 글이 없습니다."
+                )}
+              </Text>
+            </View>
+          )}
         </ScrollView>
       )}
     </>
@@ -154,7 +209,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
     justifyContent: "flex-start",
     fontWeight: "bold",
   },
@@ -183,5 +238,14 @@ const styles = StyleSheet.create({
   comment: {
     flex: 9,
     fontSize: 10,
+  },
+  loadingContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 50,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: "gray",
   },
 });

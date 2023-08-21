@@ -1,24 +1,25 @@
+import { useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { Text, FlatList, View, TouchableOpacity } from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 import { likeBoardList } from "../../Api/member/Others";
 import { Container } from "../../components/common";
-import { OLikeContentList } from "../../types/User";
+import { OLikeContentList, OtherUserId } from "../../types/User";
 import getCurrentTime from "../Time";
 
 const LikeContent: React.FC = () => {
+  const route = useRoute();
+  const params = route.params as OtherUserId;
   const lineStyle = { width: "100%", height: 1.3, backgroundColor: "#5299EB" };
 
   const [likeList, setLikeList] = useState<OLikeContentList[]>([]);
   useEffect(() => {
-    likeBoardList()
+    likeBoardList(params.id)
       .then(res => {
-        console.log(res.data);
         setLikeList(res.data.list);
       })
-      .catch(e => console.log(e));
+      .catch(e => console.error(e));
   }, []);
-  console.info(likeList);
   return (
     <Container style={{ backgroundColor: "white", display: "flex", flex: 1 }}>
       <Container style={{ alignItems: "center", flex: 0.1, justifyContent: "center" }}>

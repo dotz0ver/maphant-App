@@ -2,46 +2,39 @@ import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import { useSelector } from "react-redux";
 
-import { DeleteAPI, GetAPI, PostAPI } from "../../Api/fetchAPI";
+import { GetAPI } from "../../Api/fetchAPI";
 import { TextButton } from "../../components/common";
-import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
 
 export default function (): JSX.Element {
   switch (0) {
     default:
-      return Mycomment();
+      return Mylike();
   }
 }
 
-function Mycomment(): JSX.Element {
-  const [comments, setComments] = useState<BoardArticle[] & { body: string }[]>([]);
+function Mylike(): JSX.Element {
+  const [likes, setLikes] = React.useState<BoardArticle[]>([]);
   const [endPage, setEndPage] = React.useState<number>(0);
   const [pages, setPages] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isComplete, setIsComplete] = useState<boolean>(false);
   const navigation = useNavigation();
-
   const recordSize: number = 10;
-  const userID: number = useSelector(UserStorage.userProfileSelector)!.id;
-
   useEffect(() => {
-    GetAPI(`/profile/comment?page=${pages}&recordSize=${recordSize}&targetUserId=${userID}`).then(
-      res => {
-        if (res.success === false) {
-          console.log(res.errors);
-          return;
-        } else {
-          setComments([...comments, ...res.data.list]);
-          setEndPage(res.data.pagination.endPage);
-        }
-      },
-    );
+    GetAPI(`/profile/like?page=${pages}&recordSize=${recordSize}`).then(res => {
+      if (res.success === false) {
+        console.log(res.errors);
+        return;
+      } else {
+        setLikes([...likes, ...res.data.list]);
+        setEndPage(res.data.pagination.endPage);
+      }
+    });
   }, [pages]);
 
-  const loadMorecomments = async () => {
+  const loadMorelikes = async () => {
     if (!isLoading) {
       setIsLoading(true);
 
@@ -63,28 +56,25 @@ function Mycomment(): JSX.Element {
     const scrollViewHeight = event.nativeEvent.layoutMeasurement.height;
 
     if (offsetY + scrollViewHeight >= contentHeight - 20) {
-      loadMorecomments();
+      loadMorelikes();
     }
   }
 
-  const detailContent = (comments: BoardArticle) => {
-    console.log(comments.board_id);
-    navigation.navigate("BoardDetail", { id: comments.board_id });
+  const detailContent = (likes: BoardArticle) => {
+    console.log(likes);
+    navigation.navigate("BoardDetail", { id: likes.id });
   };
 
   return (
     <>
       <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
-        {comments.map(comment => (
+        {likes.map(like => (
           <>
-            <Pressable onPress={() => detailContent(comment)}>
+            <Pressable onPress={() => detailContent(like)}>
               <View style={styles.container}>
                 <View style={styles.head}>
-                  <View style={{ marginRight: 20 }}>
-                    <Text>{comment.board_type}</Text>
-                  </View>
+                  <Text>{like.type}</Text>
                 </View>
-
                 <View
                   style={{
                     marginTop: 10,
@@ -92,27 +82,18 @@ function Mycomment(): JSX.Element {
                   }}
                 >
                   <View>
-                    <Text style={styles.title}>{comment.board_title}</Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    marginBottom: 10,
-                  }}
-                >
-                  <View>
-                    <Text style={styles.comment}>내 댓글 : {comment.body}</Text>
+                    <Text style={styles.title}>{like.title}</Text>
                   </View>
                 </View>
 
                 <View style={styles.head}>
                   <Feather name="thumbs-up" size={13} color="tomato" />
-                  <Text style={styles.good}>&#9; {comment.like_cnt}</Text>
+                  <Text style={styles.good}>&#9; {like.like_cnt}</Text>
                   <View style={{ flex: 1 }}></View>
-                  {/* <FontAwesome name="comment-o" size={13} color="blue" />
-                  <Text style={styles.comment}>&#9; {comments.comment_cnt}</Text> */}
+                  <FontAwesome name="comment-o" size={13} color="blue" />
+                  <Text style={styles.comment}>&#9; {like.comment_cnt}</Text>
                   <Text style={{ justifyContent: "flex-end", fontSize: 10 }}></Text>
-                  <Text style={styles.time}>{dateToString(comment.created_at)}</Text>
+                  <Text style={styles.time}>{dateToString(like.created_at)}</Text>
                 </View>
               </View>
             </Pressable>
@@ -127,7 +108,7 @@ function Mycomment(): JSX.Element {
                   <ActivityIndicator size="large" color="#0000ff" />
                 </View>
               ) : (
-                "이전 댓글이 없습니다."
+                "이전 글이 없습니다."
               )}
             </Text>
           </View>
@@ -170,15 +151,12 @@ const styles = StyleSheet.create({
   },
   head: {
     flexDirection: "row",
+    justifyContent: "space-between",
   },
   title: {
     fontSize: 15,
     justifyContent: "flex-start",
     fontWeight: "bold",
-  },
-  comment: {
-    fontSize: 10,
-    justifyContent: "flex-start",
   },
   board: {
     fontSize: 10,

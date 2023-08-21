@@ -49,7 +49,6 @@ const Chatroom: React.FC = () => {
   useEffect(() => {
     if (params.roomId) fetchChatLists(params.roomId);
   }, [params.roomId]);
-  console.log("징징");
 
   function getCurrentTime(targetDate: Date) {
     const hours = targetDate.getHours();
@@ -133,9 +132,15 @@ const Chatroom: React.FC = () => {
           <TouchableOpacity onPress={() => navigation.dispatch(StackActions.popToTop())}>
             <ImageBox source={require("../../../assets/arrow-circle.png")} width={35}></ImageBox>
           </TouchableOpacity>
-          <Text style={{ fontSize: 23, fontWeight: "bold", marginRight: windowWidth / 2 - 66 }}>
-            채팅방이름
-          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Profile", { id: params.id } as never);
+            }}
+          >
+            <Text style={{ fontSize: 23, fontWeight: "bold", marginRight: windowWidth / 2 - 66 }}>
+              {params.nickname}
+            </Text>
+          </TouchableOpacity>
         </Container>
         <Container style={{ flex: 10 }}>
           <FlatList

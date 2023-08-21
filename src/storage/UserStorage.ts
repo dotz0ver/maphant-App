@@ -16,9 +16,9 @@ class UserStorage {
     const profile = await this.getUserProfile();
     const category = await this.getUserCategoryCurrent();
 
-    reduxStore.dispatch(userSlice.actions.setToken(token));
     reduxStore.dispatch(userSlice.actions.setProfile(profile));
     reduxStore.dispatch(userCategorySlice.actions.setUserCategory(category));
+    reduxStore.dispatch(userSlice.actions.setToken(token));
   }
 
   static async getUserToken(): Promise<UserTokenData | null> {
@@ -52,8 +52,8 @@ class UserStorage {
 
     const savedCategory = await this.getUserCategoryCurrent();
     if (savedCategory === null || !profile.category.includes(savedCategory)) {
-      if (profile.category.length === 0)
-        Toast.show("회원 정보에 계열·학과 정보가 존재하지 않습니다.");
+      if (profile.category.length === 0) return;
+      // Toast.show("회원 정보에 계열·학과 정보가 존재하지 않습니다.");
       else await this.setUserCategoryCurrent(profile.category[0]);
     }
 

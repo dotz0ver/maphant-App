@@ -86,7 +86,7 @@ const Signup = () => {
     const keys = Object.keys(errors);
     if (keys.length == 0) return next();
 
-    Toast.show("회원가입 정보를 확인해 주세요.");
+    // Toast.show("회원가입 정보를 확인해 주세요.");
   }, []);
 
   return (

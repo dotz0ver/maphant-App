@@ -1,14 +1,13 @@
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import React, { useState } from "react";
+import { sha512 } from "js-sha512";
+import React, { useEffect, useState } from "react";
 import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
 
-// import { useSelector } from "react-redux";
-import { PostAPI } from "../../Api/fetchAPI";
+import { GetAPI, statusResponse } from "../../Api/fetchAPI";
 import { Spacer, TextButton } from "../../components/common";
-// import UserStorage from "../../storage/UserStorage";
-
-// const userID = useSelector(UserStorage.userProfileSelector)!.id;
+import UserStorage from "../../storage/UserStorage";
 
 // const getUserImg = (userID: number) => {
 //   GetAPI(`/profile?targetUserId=${userID}`).then(res => {
@@ -16,52 +15,100 @@ import { Spacer, TextButton } from "../../components/common";
 //   });
 // };
 
-const postUserImg = () => {
-  PostAPI("/profile", {}).then(res => {
-    console.log(res);
-  });
-};
-
 // const img = getUserImg(userID);
 
-const DefaultImg: React.FC = () => {
-  // const url: string = imgSrc[0].img;
-  // console.log(img);
-  return (
-    <Image
-      style={{
-        width: 100,
-        height: 100,
-        tintColor: "#5299EB",
-      }}
-      source={require("../../../assets/user.png")}
-      // source={url}
-    />
-  );
-};
+function uploadAPI<T extends statusResponse>(
+  method: string = "PATCH",
+  url: string,
+  body?: FormData,
+) {
+  return UserStorage.getUserToken().then(token => {
+    const abortController = new AbortController();
+    const abortSignal = abortController.signal;
+    setTimeout(() => abortController.abort(), 10000);
 
-const SelectedImg: React.FC = () => {
-  return (
-    <Image
-      style={{
-        width: 100,
-        height: 100,
-        tintColor: "#5299EB",
-      }}
-      source={{ uri: imageUrl }}
-    />
-  );
-};
+    const options: RequestInit = {
+      method: method,
+      signal: abortSignal,
+      headers: {},
+    };
+    console.info(token);
+    if (token != undefined) {
+      // @ts-expect-error
+      options.headers["x-auth"] = token.token;
+      // @ts-expect-error
+      options.headers["x-timestamp"] = Math.floor(Date.now() / 1000);
+      // @ts-expect-error
+      options.headers["x-sign"] = sha512(
+        // @ts-expect-error
+        `${options.headers["x-timestamp"]}${token.privKey}`,
+      );
+    }
+
+    if (method != "GET") {
+      options.body = body;
+    }
+
+    const url_complete = `https://dev.api.tovelop.esm.kr${url}`;
+    console.info(url_complete, options);
+    return fetch(url_complete, options)
+      .catch(err => {
+        console.warn(method, url_complete, body, err);
+        if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
+          return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
+        }
+
+        return Promise.reject("서버와 통신 중 오류가 발생했습니다.");
+      })
+      .then(res => {
+        console.log(res);
+        console.info(res.body);
+        // 특수 처리 (로그인 실패시에도 401이 들어옴)
+        // 로그인의 경우는 바로 내려 보냄
+        if (url == "/user/login") {
+          return res.json();
+        }
+
+        if (res.status === 401) {
+          // 로그인 안됨 (unauthorized)
+          UserStorage.removeUserData();
+          return Promise.reject("로그인 토큰이 만료되었습니다.");
+        }
+
+        return res.json();
+      })
+      .then(json => {
+        console.log(json);
+        const resp = json as T;
+
+        return Promise.resolve({ json: resp });
+      });
+  });
+}
 
 const Myimg: React.FC = () => {
   const [imgUploadMoal, setImgUploadModal] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [requsetpermission, setRequestPermission] = ImagePicker.useCameraPermissions();
   const [defaultImg, setDefaultImg] = useState(true);
-  const [selectedImg, setSelectedImg] = useState(false);
+  const [defaultImgSrc, setDefaultImgSrc] = useState(
+    "https://tovelope.s3.ap-northeast-2.amazonaws.com/image_1.jpg",
+  );
+
+  const userID = useSelector(UserStorage.userProfileSelector)!.id;
+
+  useEffect(() => {
+    GetAPI(`/profile?targerUserId=${userID}`).then(res => {
+      if (res.success == true) {
+        // console.log("res.data is ", res.data[0]);
+        // console.log("res.data.profile_img is ", res.data[0].profile_img);
+        setDefaultImgSrc(res.data[0].profile_img);
+      }
+    });
+  }, []);
 
   const uploadImage = async () => {
-    console.log("hi");
+    // console.log("hi");
     //권한 승인
     if (!requsetpermission?.granted) {
       const permission = await setRequestPermission();
@@ -82,8 +129,51 @@ const Myimg: React.FC = () => {
       return null;
     }
     //이미지 업로드 결과 및 이미지 경로 업데이트
-    console.log(result.assets[0].uri);
+    // console.log(result.assets[0].uri);
     setImageUrl(result.assets[0].uri);
+
+    const formData = new FormData();
+    formData.append("file", {
+      name: "profile_img.jpg",
+      type: "image/jpeg",
+      uri: result.assets[0].uri,
+    });
+
+    // console.log(formData);
+    try {
+      const res = await uploadAPI("PATCH", "/profile", formData);
+      // console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteImage = async () => {
+    // console.log("hi");
+    //권한 승인
+
+    const formData = new FormData();
+    formData.append("file", {
+      name: "default_profile_img.jpg",
+      type: "image/jpeg",
+      uri: "https://tovelope.s3.ap-northeast-2.amazonaws.com/image_1.jpg",
+    });
+
+    // console.log(formData);
+    try {
+      const res = await uploadAPI("PATCH", "/profile", formData);
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+
+    GetAPI(`/profile?targerUserId=${userID}`).then(res => {
+      if (res.success == true) {
+        // console.log(res.data[0].profile_img);
+        // console.log(res.data[0]);
+        setDefaultImgSrc(res.data[0].profile_img);
+      }
+    });
   };
 
   return (
@@ -91,6 +181,7 @@ const Myimg: React.FC = () => {
       <TouchableOpacity
         onPress={() => {
           setImgUploadModal(true);
+          // console.log(defaultImgSrc);
         }}
       >
         <Image
@@ -101,7 +192,7 @@ const Myimg: React.FC = () => {
             borderColor: "#aaa",
             borderWidth: 2,
           }}
-          source={defaultImg == true ? require("../../../assets/user.png") : { uri: imageUrl }}
+          source={defaultImg == true ? { uri: defaultImgSrc } : { uri: imageUrl }}
         />
       </TouchableOpacity>
       <Modal animationType="fade" transparent={true} visible={imgUploadMoal}>
@@ -134,11 +225,9 @@ const Myimg: React.FC = () => {
                   height: 150,
                   borderRadius: 75,
                   borderColor: "#aaa",
-                  borderWidth: 5,
+                  borderWidth: 2,
                 }}
-                source={
-                  defaultImg == true ? require("../../../assets/user.png") : { uri: imageUrl }
-                }
+                source={defaultImg == true ? { uri: defaultImgSrc } : { uri: imageUrl }}
               />
               <Spacer size={10} />
             </View>
@@ -147,9 +236,9 @@ const Myimg: React.FC = () => {
               <TextButton
                 style={styles.modalConfirmBtn}
                 onPress={() => {
-                  setImgUploadModal(false);
+                  deleteImage();
                   setDefaultImg(true);
-                  setSelectedImg(false);
+                  setImgUploadModal(false);
                 }}
               >
                 삭제
@@ -159,7 +248,12 @@ const Myimg: React.FC = () => {
                 onPress={() => {
                   uploadImage();
                   setDefaultImg(false);
-                  setSelectedImg(true);
+                  // console.log();
+                  // console.log();
+                  // console.log("defaultImg is ", defaultImg);
+                  // console.log("defaultImgSrc is ", defaultImgSrc);
+                  // console.log();
+                  // console.log();
                 }}
               >
                 수정

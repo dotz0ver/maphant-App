@@ -5,7 +5,7 @@ import UIStore from "../storage/UIStore";
 import UserStorage from "../storage/UserStorage";
 import constraints from "./constraints";
 
-type Method = "GET" | "POST" | "PUT" | "DELETE";
+type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 type statusResponse = {
   success: boolean;
   errors?: string;
@@ -57,10 +57,9 @@ function fetchAPI<T extends statusResponse>(
   }
 
   const url_complete = `${constraints.SERVER_URL}${url}`;
-
   return fetch(url_complete, options)
     .catch(err => {
-      console.error(err);
+      console.log(err);
       if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
         return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
       }
@@ -76,6 +75,7 @@ function fetchAPI<T extends statusResponse>(
       }
 
       if (res.status === 401) {
+        res.json().then(j => console.error(j));
         // 로그인 안됨 (unauthorized)
         UserStorage.removeUserData();
         return Promise.reject("로그인 토큰이 만료되었습니다.");
@@ -134,6 +134,13 @@ function DeleteAPI<T extends statusResponse = dataResponse>(
 ) {
   return fetchAPI<T>("DELETE", url, body, showLoadingOverlay);
 }
+function PatchAPI<T extends statusResponse = dataResponse>(
+  url: string,
+  body?: object,
+  showLoadingOverlay: boolean = false,
+) {
+  return fetchAPI<T>("PATCH", url, body, showLoadingOverlay);
+}
 
 export type { dataResponse, statusResponse };
-export { DeleteAPI, GetAPI, PostAPI, PutAPI };
+export { DeleteAPI, GetAPI, PatchAPI, PostAPI, PutAPI };

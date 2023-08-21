@@ -17,7 +17,7 @@ type UserData = {
 // 상대방 소개글, 프로필 이미지, 닉네임
 type OtherUserData = {
   body: string;
-  profile_img: string[];
+  profile_img: string;
   user_nickname: string;
 };
 

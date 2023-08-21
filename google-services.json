@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "581829106132",
+    "project_id": "maphant-4e45a",
+    "storage_bucket": "maphant-4e45a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:581829106132:android:17bcbaf7ad56df6609de41",
+        "android_client_info": {
+          "package_name": "com.tovelop.maphant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "581829106132-id1dth7amdl4oqvdv8de045410jeva6q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNVDpZQaYUdxpW7Ws7EEt8iEkbHFfE9_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "581829106132-id1dth7amdl4oqvdv8de045410jeva6q.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "581829106132-4l6a8vu76q9gup5d9vphlthejg2ngam1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tovelop"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

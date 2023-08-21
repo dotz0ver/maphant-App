@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 
 import {
   boardDelete,
+  boardEdit,
   bookMarkArticle,
   commentArticle,
   commentDelete,
@@ -49,6 +50,7 @@ const BoardDetail = () => {
   const { id, preRender } = params;
 
   const [poll, setPoll] = useState<number>(0);
+  console.log("아이디", id);
   const [comments, setComments] = useState<commentType[]>([]);
   const [replies, setReplies] = useState<commentType[]>([]);
   // const [post, setPost] = useState({ board: {} } as BoardPost);
@@ -96,9 +98,15 @@ const BoardDetail = () => {
       alert(error);
     }
   };
-  // console.log(boardData)
-  const handleUpdate = () => {
-    navigation.navigate("editPost", { post: post });
+  // console.log(boardData);
+  const handleUpdate = async () => {
+    try {
+      const response = await boardEdit(id, post.board.title, post.board.body, post.board.isHide);
+      console.log("수정 가능", response);
+      navigation.navigate("editPost", { post: post, boardType: boardData });
+    } catch (error) {
+      console.error("수정 오류", error);
+    }
   };
 
   const handlePollDelete = () => {
@@ -166,6 +174,7 @@ const BoardDetail = () => {
       })
       .catch();
   }, []);
+  console.info(post);
   useEffect(() => {
     commentArticle(id, 1, 50)
       .then(response => {
@@ -181,7 +190,7 @@ const BoardDetail = () => {
     listReportType()
       .then(data => {
         setReportType(data.data as ReportType[]);
-        console.log(data.data);
+        // console.log( data.data);
       })
       .catch(err => console.log(err));
   }, []);
@@ -368,7 +377,7 @@ const BoardDetail = () => {
   console.log(post.board);
 
   const profileNavi = () => {
-    navigation.navigate("Profile");
+    navigation.navigate("Profile", { id: post.board.userId } as never);
   };
 
   const ModalWrapperComment = ({ commentId }: { commentId: number }) => {
@@ -559,6 +568,7 @@ const BoardDetail = () => {
           {comments
             .filter(comment => comment.parent_id === null)
             .map(comment => (
+              // comment.parent_id == null ? (
               <>
                 <View style={styles.commentBox} key={comment.id}>
                   <ModalWrapperComment commentId={commentId} />
@@ -652,11 +662,9 @@ const BoardDetail = () => {
                                   <IconButton
                                     name="thumbs-o-up"
                                     color="skyblue"
-                                    onPress={() => {
-                                      handleCommentLike(reply.id, reply.like_cnt);
-                                    }}
+                                    onPress={() => console.log("추천")}
                                   >
-                                    {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
+                                    추천
                                   </IconButton>
                                   <IconButton
                                     name="exclamation-circle"
@@ -693,38 +701,46 @@ const BoardDetail = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-        style={{ padding: 5, borderRadius: 5 }}
+        style={{
+          // borderTopColor: "#aaa",
+          // borderBottomColor: "#aaa",
+          // borderTopWidth: 1,
+          // borderBottomWidth: 1,
+          backgroundColor: "white",
+        }}
       >
         <View
           style={{
+            padding: 5,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: 5,
           }}
         >
           <Checkbox
-            style={{ marginRight: 5 }}
+            style={{ marginHorizontal: 3 }}
             value={checkList.includes("anonymous")}
             onValueChange={isChecked => {
               check("anonymous", isChecked);
               setIsAnonymous(isChecked ? 1 : 0);
             }}
           ></Checkbox>
-          <Text>익명</Text>
+          <Text style={{ marginHorizontal: 3 }}>익명</Text>
           <Input
             style={{
               flex: 1,
-              backgroundColor: "white",
+              backgroundColor: "#D8E1EC",
               paddingVertical: 15,
               paddingHorizontal: 12,
               marginRight: 5,
+              borderRadius: 50,
             }}
             placeholder={checked ? "대댓글을 작성해 주세요 ..." : "댓글을 작성해 주세요 ..."}
             value={checked ? replyBody : body}
             onChangeText={checked ? setReplyBody : setBody}
           ></Input>
           <TextButton
+            fontSize={13}
             onPress={() => {
               checked ? handleReplyInput(parent_id, replyBody) : handlecommentInsert();
             }}
@@ -828,6 +844,7 @@ const styles = StyleSheet.create({
   // },
   scroll: {
     height: "30%",
+    backgroundColor: "white",
   },
   replyBox: {
     backgroundColor: "#f2f2f2",

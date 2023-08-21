@@ -40,39 +40,9 @@ const Styles: any = (theme: Theme) => {
     },
     title: {
       color: theme.colors.text,
-      fontSize: 20,
+      fontSize: 16,
       justifyContent: "flex-start",
       fontWeight: "bold",
-    },
-    board: {
-      fontSize: 15,
-      color: "red",
-
-      justifyContent: "flex-start",
-    },
-    userName: {
-      fontSize: 10,
-      color: "gray",
-    },
-    comment: {
-      fontSize: 15,
-      marginVertical: 5,
-    },
-    bottom: {
-      flex: 1,
-      flexDirection: "row",
-      justifyContent: "space-between",
-    },
-    good: {
-      flex: 1,
-      fontSize: 10,
-      justifyContent: "flex-start",
-    },
-    command: {
-      color: theme.colors.text,
-
-      flex: 9,
-      fontSize: 10,
     },
   });
 

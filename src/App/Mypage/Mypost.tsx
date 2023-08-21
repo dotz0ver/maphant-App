@@ -24,17 +24,19 @@ function MyPost(): JSX.Element {
   const navigation = useNavigation();
 
   const userID = useSelector(UserStorage.userProfileSelector)!.id;
-
+  const recordSize: number = 10;
   useEffect(() => {
-    GetAPI(`/profile/board?page=${pages}&recordSize=${5}&targetUserId=${userID}`).then(res => {
-      if (res.success === false) {
-        console.log(res.errors);
-        return;
-      } else {
-        setPosts([...posts, ...res.data.list]);
-        setEndPage(res.data.pagination.endPage);
-      }
-    });
+    GetAPI(`/profile/board?page=${pages}&recordSize=${recordSize}&targetUserId=${userID}`).then(
+      res => {
+        if (res.success === false) {
+          console.log(res.errors);
+          return;
+        } else {
+          setPosts([...posts, ...res.data.list]);
+          setEndPage(res.data.pagination.endPage);
+        }
+      },
+    );
   }, [pages]);
 
   const loadMorePosts = async () => {
@@ -65,7 +67,7 @@ function MyPost(): JSX.Element {
 
   const detailContent = (posts: BoardArticle) => {
     console.log(posts);
-    navigation.navigate("QnAdetail", { id: posts.id });
+    navigation.navigate("BoardDetail", { id: posts.id });
   };
 
   return (
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
     justifyContent: "flex-start",
     fontWeight: "bold",
   },

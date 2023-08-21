@@ -1,8 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
+import * as Notifications from "expo-notifications";
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 import Toast from "react-native-root-toast";
 
+import { sendFcm } from "../../Api/member/Fcm";
 import UserAPI from "../../Api/memberAPI";
 import { Container, ImageBox, Input, Spacer, TextButton } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
@@ -17,29 +19,29 @@ const Login: React.FC = () => {
 
   const loginHandler = () => {
     if (!email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
-      Toast.show("이메일 형식을 확인해주세요", { duration: Toast.durations.SHORT });
+      // Toast.show("이메일 형식을 확인해주세요", { duration: Toast.durations.SHORT });
       return;
     } else if (password.length < 4) {
-      Toast.show("비밀번호는 4자리 이상 입니다", { duration: Toast.durations.SHORT });
+      // Toast.show("비밀번호는 4자리 이상 입니다", { duration: Toast.durations.SHORT });
       return;
     }
-
     UIStore.showLoadingOverlay();
     UserAPI.login(email, password)
       .then(res => {
         UserStorage.setUserToken(res["pubKey"], res["privKey"]).then(() => {
           return UserAPI.getProfile().then(res => {
+            Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
             UserStorage.setUserProfile(res.data);
           });
         });
       })
       .catch(message => {
         if (message == "Not found") {
-          Toast.show("존재하지 않는 이메일 입니다", { duration: Toast.durations.SHORT });
+          // Toast.show("존재하지 않는 이메일 입니다", { duration: Toast.durations.SHORT });
           return;
         }
         if (message == "Invalid password") {
-          Toast.show("비밀번호가 틀렸습니다", { duration: Toast.durations.SHORT });
+          // Toast.show("비밀번호가 틀렸습니다", { duration: Toast.durations.SHORT });
           return;
         }
       })
@@ -90,6 +92,7 @@ const Login: React.FC = () => {
           </Container>
           <Spacer size={30} />
           <TextButton
+            fontColor="#aaa"
             backgroundColor="transparent"
             paddingVertical={16}
             onPress={() => {
@@ -101,6 +104,7 @@ const Login: React.FC = () => {
         </View>
         <View>
           <TextButton
+            fontColor="#aaa"
             backgroundColor="transparent"
             paddingVertical={16}
             onPress={() => {
