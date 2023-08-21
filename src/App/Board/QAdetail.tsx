@@ -222,16 +222,16 @@ const QAdetail = () => {
                 <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
               </View>
             </View>
-            {/* {user.id === post.board.userId && ( */}
-            <View style={styles.qaButtonBox}>
-              <TextButton style={styles.button} fontColor={"#000"} onPress={handleUpdate}>
-                수정
-              </TextButton>
-              <TextButton style={styles.button} fontColor={"#000"} onPress={alert}>
-                삭제
-              </TextButton>
-            </View>
-            {/* )} */}
+            {post.board.isMyBoard && (
+              <View style={styles.qaButtonBox}>
+                <TextButton style={styles.button} fontColor={"#000"} onPress={handleUpdate}>
+                  수정
+                </TextButton>
+                <TextButton style={styles.button} fontColor={"#000"} onPress={alert}>
+                  삭제
+                </TextButton>
+              </View>
+            )}
           </View>
           <View style={styles.qacontextBox}>
             <View>
