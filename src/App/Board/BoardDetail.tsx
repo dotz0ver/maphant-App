@@ -488,8 +488,17 @@ const BoardDetail = () => {
                 </View>
                 {post.board.pollInfo !== null && (
                   <View style={{ flex: 1, padding: 20 }}>
-                    <View>
-                      <Text style={styles.title}>{post.board.pollInfo.title}</Text>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                      {post.board.title !== post.board.pollInfo.title ? (
+                        <Text style={{ ...styles.title, justifyContent: "flex-start" }}>
+                          {post.board.pollInfo.title}
+                        </Text>
+                      ) : (
+                        <View style={{ justifyContent: "flex-start" }}></View>
+                      )}
+                      <Text style={{ fontSize: 10, color: "gray", justifyContent: "flex-end" }}>
+                        마감일 : {dateFormat(post.board.pollInfo.expireDate)}
+                      </Text>
                     </View>
                     <View
                       style={{
@@ -514,18 +523,28 @@ const BoardDetail = () => {
                           disabled={post.board.pollInfo.state == 0 ? false : true}
                         >
                           <Text>{options.optionName}</Text>
+                          <Text style={{ fontSize: 10, color: "gray" }}>
+                            {options.optionCount}명 참여
+                          </Text>
                         </TouchableOpacity>
                       ))}
+                      {post.board.pollInfo.state == 1 ? (
+                        <Text style={{ fontSize: 10, color: "gray" }}>마감되었습니다.</Text>
+                      ) : null}
                     </View>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                      <TextButton
-                        fontColor={"#000"}
-                        style={{ ...styles.button, justifyContent: "flex-start" }}
-                        fontSize={13}
-                        onPress={handlePollClose}
-                      >
-                        마감하기
-                      </TextButton>
+                      {post.board.isMyBoard ? (
+                        <TextButton
+                          fontColor={"#000"}
+                          style={{ ...styles.button, justifyContent: "flex-start" }}
+                          fontSize={13}
+                          onPress={handlePollClose}
+                        >
+                          마감하기
+                        </TextButton>
+                      ) : (
+                        <View style={{ justifyContent: "flex-start" }}></View>
+                      )}
                       <TextButton
                         fontColor={"#000"}
                         style={{ ...styles.button, justifyContent: "flex-end" }}
