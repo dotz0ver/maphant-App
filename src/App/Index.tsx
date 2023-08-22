@@ -15,31 +15,40 @@ import Mypage from "./Mypage/Index";
 const tabs: {
   name: string;
   icon: React.ReactNode;
+  selectedIcon: React.ReactNode;
   component: React.FC;
   showHeader?: boolean;
   useSafeArea?: boolean;
 }[] = [
   {
     name: "홈",
-    icon: <AntDesign name="home" size={24} color="#000" />,
+    icon: <AntDesign name="home" size={24} color="gray" />,
+    selectedIcon: <AntDesign name="home" size={24} color="#5299EB" />,
+
     component: Home,
     useSafeArea: false,
   },
   {
     name: "게시판",
-    icon: <FontAwesome5 name="book" size={24} color="#000" />,
+    icon: <FontAwesome5 name="book" size={24} color="gray" />,
+    selectedIcon: <AntDesign name="book" size={24} color="#5299EB" />,
+
     component: Board,
     useSafeArea: false,
   },
   {
     name: "메일",
-    icon: <Ionicons name="mail" size={24} color="#000" />,
+    icon: <Ionicons name="mail" size={24} color="gray" />,
+    selectedIcon: <AntDesign name="mail" size={24} color="#5299EB" />,
+
     component: Mail,
     useSafeArea: false,
   },
   {
     name: "내 정보",
-    icon: <AntDesign name="user" size={24} color="#000" />,
+    icon: <AntDesign name="user" size={24} color="gray" />,
+    selectedIcon: <AntDesign name="user" size={24} color="#5299EB" />,
+
     component: Mypage,
     useSafeArea: false,
   },
@@ -80,7 +89,7 @@ const MainScreen: () => JSX.Element = () => {
             component={tab.component}
             options={{
               headerShown: tab.showHeader ?? false,
-              tabBarIcon: () => tab.icon,
+              tabBarIcon: ({ focused }) => (!focused ? tab.icon : tab.selectedIcon),
             }}
           />
         ))}
