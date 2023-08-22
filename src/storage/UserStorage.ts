@@ -16,9 +16,9 @@ class UserStorage {
     const profile = await this.getUserProfile();
     const category = await this.getUserCategoryCurrent();
 
-    reduxStore.dispatch(userSlice.actions.setToken(token));
     reduxStore.dispatch(userSlice.actions.setProfile(profile));
     reduxStore.dispatch(userCategorySlice.actions.setUserCategory(category));
+    reduxStore.dispatch(userSlice.actions.setToken(token));
   }
 
   static async getUserToken(): Promise<UserTokenData | null> {

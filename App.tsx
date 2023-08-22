@@ -1,9 +1,9 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { DarkTheme, DefaultTheme, NavigationContainer } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Image, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import Spinner from "react-native-loading-spinner-overlay";
 import { RootSiblingParent } from "react-native-root-siblings";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider, useSelector } from "react-redux";
@@ -12,7 +12,6 @@ import MainScreen from "./src/App/Index";
 import Login from "./src/App/Login/Index";
 import { ThemeContext } from "./src/App/Style/ThemeContext";
 import reduxStore from "./src/storage/reduxStore";
-import UIStore from "./src/storage/UIStore";
 import UserStorage from "./src/storage/UserStorage";
 
 Notifications.setNotificationHandler({
@@ -45,15 +44,15 @@ async function registerForPushNotificationsAsync() {
 
 const App = () => {
   const isLogged = useSelector(UserStorage.isUserLoggedInSelector);
-  const showLoadingOverlay = useSelector(UIStore.isLoadingUIVisibleSelector);
   const isUserDataLoading = useSelector(UserStorage.isUserDataLoadingSelector);
+  const [showImage, setShowImage] = useState(true);
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
 
   useEffect(() => {
     UserStorage.loadUserDataOnStartUp();
 
-    registerForPushNotificationsAsync().then(token => alert(token));
+    registerForPushNotificationsAsync();
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       alert(notification);
@@ -71,12 +70,36 @@ const App = () => {
     };
   }, [isUserDataLoading]);
 
-  return (
-    <>
-      <Spinner visible={showLoadingOverlay} textContent={"Loading..."} />
-      {isLogged || isUserDataLoading ? <MainScreen /> : <Login />}
-    </>
-  );
+  useEffect(() => {
+    if (isUserDataLoading) setShowImage(true);
+    else
+      setTimeout(() => {
+        setShowImage(false);
+      }, 1000);
+  }, [isUserDataLoading]);
+
+  if (showImage)
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#ffffff",
+        }}
+      >
+        <Image
+          source={require("./assets/maphant_logo_eng.jpeg")}
+          style={{
+            width: "100%",
+            height: "100%",
+            resizeMode: "contain",
+          }}
+        />
+      </View>
+    );
+
+  return <>{isLogged || isUserDataLoading ? <MainScreen /> : <Login />}</>;
 };
 
 const AppWrapper = () => {

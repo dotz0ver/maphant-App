@@ -2,18 +2,28 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Field, Formik, FormikErrors } from "formik";
 import React, { useCallback, useEffect, useState } from "react";
-import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Toast from "react-native-root-toast";
 import { useSelector } from "react-redux";
 
-import { PostAPI } from "../../Api/fetchAPI";
-import { categorymajor, fieldList, majorList } from "../../Api/member/signUp";
+import { DeleteAPI, GetAPI, PostAPI } from "../../Api/fetchAPI";
+import { categoryList, majorList } from "../../Api/member/signUp";
 import UserAPI from "../../Api/memberAPI";
 import { Container, Input, Spacer, TextButton } from "../../components/common";
 import SearchByFilter from "../../components/Input/SearchByFilter";
 import { NavigationProps } from "../../Navigator/Routes";
-import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
+import { set } from "react-native-reanimated";
 
 interface ISearchForm {
   field: string;
@@ -22,8 +32,6 @@ interface ISearchForm {
 
 const ProfileModify: React.FC = () => {
   const profile = useSelector(UserStorage.userProfileSelector);
-  console;
-  const category = useSelector(UserStorage.userCategorySelector);
 
   type UserType = {
     email?: string;
@@ -35,11 +43,6 @@ const ProfileModify: React.FC = () => {
     studentNumber?: number;
   };
 
-  type UserCategory = {
-    field?: string;
-    major?: string;
-  };
-
   const usetModifying: UserType = {
     email: profile?.email,
     password: "",
@@ -48,11 +51,6 @@ const ProfileModify: React.FC = () => {
     name: profile?.name,
     phoneNumber: "",
     studentNumber: profile?.sno,
-  };
-
-  const useCategoryModifying: UserCategory = {
-    field: category?.categoryName,
-    major: category?.majorName,
   };
 
   const [userEmail, setUserEmail] = useState("");
@@ -67,7 +65,8 @@ const ProfileModify: React.FC = () => {
   const [modifyingNicknameModal, setModyfyingNicknameModal] = useState(false);
   const [modifyingPhoneNumModal, setModyfyingPhoneNumModal] = useState(false);
   const [modifyingFieldModal, setModyfyingFieldModal] = useState(false);
-
+  const [pressedStates, setPressedStates] = useState(Array(profile?.category?.length).fill(false));
+  const [deleteState, setDeleteState] = useState(false);
   const navigation = useNavigation<NavigationProps>();
 
   const onSubmit = useCallback((errors: FormikErrors<ISearchForm>, next: () => void) => {
@@ -81,11 +80,6 @@ const ProfileModify: React.FC = () => {
     return msg;
   }, []);
 
-  const SearchForm: ISearchForm = {
-    field: "",
-    major: "",
-  };
-
   useEffect(() => {
     PostAPI("/user/changeinfo/olddata").then(res => {
       if (res.success == true) {
@@ -98,6 +92,64 @@ const ProfileModify: React.FC = () => {
       }
     });
   }, []);
+
+  const handlePress = (index: number) => {
+    const newPressedStates = [...pressedStates];
+    newPressedStates[index] = !newPressedStates[index];
+    setPressedStates(newPressedStates);
+  };
+
+  const [categoryList, setCategoryList] = useState<string[]>([]);
+  const [majorList, setMajorList] = useState<string[]>([]);
+  const [filteredCategoryList, setFilteredCategoryList] = useState<string[]>([]);
+  const [filteredMajorList, setFilteredMajorList] = useState<string[]>([]);
+  const [searchCategoryText, setSearchCategoryText] = useState<string>("");
+  const [searchMajorText, setSearchMajorText] = useState<string>("");
+  const [key, setKey] = useState<number>(0);
+
+  useEffect(() => {
+    GetAPI(`/user/categorylist`).then(res => setCategoryList(res.data));
+
+    GetAPI(`/user/majorlist`).then(res => setMajorList(res.data));
+  }, []);
+
+  const handleSearch = (listType: string) => (text: string) => {
+    const filteredList =
+      listType === "category"
+        ? categoryList.filter((item: string) => item.toLowerCase().includes(text.toLowerCase()))
+        : majorList.filter((item: string) => item.toLowerCase().includes(text.toLowerCase()));
+
+    if (listType === "category") {
+      setFilteredCategoryList(filteredList);
+      setSearchCategoryText(text);
+    } else if (listType === "major") {
+      setFilteredMajorList(filteredList);
+      setSearchMajorText(text);
+    }
+  };
+
+  const renderItem =
+    (listType: string) =>
+    // eslint-disable-next-line react/display-name
+    ({ item }) =>
+      (
+        <TouchableOpacity
+          style={styles.itemContainer}
+          onPress={() => handleSelectField(item, listType)}
+        >
+          <Text style={{ fontSize: 15 }}>{item}</Text>
+        </TouchableOpacity>
+      );
+
+  const handleSelectField = (selectedField: string, listType: string) => {
+    if (listType === "category") {
+      setSearchCategoryText(selectedField);
+      setKey(key + 1);
+    } else if (listType === "major") {
+      setSearchMajorText(selectedField);
+      setKey(key + 1);
+    }
+  };
 
   return (
     <Container style={{ backgroundColor: "white" }} paddingHorizontal={10}>
@@ -424,13 +476,24 @@ const ProfileModify: React.FC = () => {
                 <View style={styles.modifyingContainer}>
                   {profile?.category?.map((category, index) => {
                     return (
-                      <View key={index}>
+                      <Pressable
+                        key={index}
+                        style={[
+                          styles.pressable,
+                          pressedStates[index] ? styles.pressablePressed : null,
+                        ]}
+                        onPress={() => {
+                          handlePress(index);
+                          console.log(profile.category.at(index));
+                        }}
+                      >
                         <Text style={styles.fieldtext}>{category.categoryName}</Text>
                         <Text style={styles.fieldtext}>- {category.majorName}</Text>
-                      </View>
+                        <Spacer size={10} />
+                      </Pressable>
                     );
                   })}
-                  {/* <Text style={styles.fieldtext}>{useCategoryModifying.field}</Text>
+                  {/* <Text style={/styles.fieldtext}>{useCategoryModifying.field}</Text>
                   <Text style={styles.fieldtext}>- {useCategoryModifying.major}</Text>
                   <Text style={styles.fieldtext}>{useCategoryModifying.field}</Text>
                   <Text style={styles.fieldtext}>- {useCategoryModifying.major}</Text>
@@ -439,103 +502,142 @@ const ProfileModify: React.FC = () => {
                 </View>
               </View>
               <View style={styles.modifyingFieldBtn}>
+                {pressedStates.includes(true) && (
+                  <TextButton
+                    fontSize={16}
+                    onPress={() => {
+                      const trueIndex = pressedStates.reduce((indices, state, index) => {
+                        if (state === true) {
+                          return [...indices, index];
+                        }
+                        return indices;
+                      }, []);
+
+                      for (let i = 0; i < trueIndex.length; i++) {
+                        DeleteAPI("/user/changeinfo/categorymajor", {
+                          category: profile?.category[trueIndex[i]].categoryName,
+                          major: profile?.category[trueIndex[i]].majorName,
+                        })
+                          .then(res => {
+                            if (res.success && deleteState === false) {
+                              alert("선택된 항목들이 삭제되었습니다");
+                              setDeleteState(true);
+                            }
+                          })
+                          .catch(error => {
+                            alert(`삭제에 실패하였습니다 : ${error}`);
+                          })
+                          .finally(() => {
+                            UserAPI.getProfile().then(response => {
+                              UserStorage.setUserProfile(response.data);
+                            });
+                          });
+                      }
+                      setDeleteState(false);
+                    }}
+                  >
+                    삭제
+                  </TextButton>
+                )}
+                <Spacer size={10} />
                 <TextButton
                   fontSize={16}
                   onPress={() => {
                     setModyfyingFieldModal(true);
                   }}
                 >
-                  수정
+                  추가
                 </TextButton>
               </View>
             </View>
-            <Modal animationType="fade" transparent={true} visible={modifyingFieldModal}>
-              <View style={styles.modalBackground}>
-                <View style={styles.modalFieldContainer}>
-                  <Formik
-                    initialValues={SearchForm}
-                    // validationSchema={validationSchema}
-                    onSubmit={async values => {
-                      UIStore.showLoadingOverlay();
-                      await categorymajor(usetModifying.email, values.field, values.major)
-                        .then(response => {
-                          if (response.success) {
-                            console.log("학과, 계열 추가완료");
-                          }
-                        })
-                        .catch(error => {
-                          alert(`학과 등록에 실패하였습니다.: ${error}`);
-                        })
-                        .finally(() => UIStore.hideLoadingOverlay());
-                    }}
-                  >
-                    {({ handleSubmit, errors }) => (
-                      <Container style={styles.modalContainer}>
-                        <Text style={styles.text}>계열 추가하기</Text>
-                        <Container style={styles.FlistContainer}>
-                          <Field
-                            placeholder="계열 입력해 주세요."
-                            name="field"
-                            list={fieldList}
-                            component={SearchByFilter}
-                          />
-                        </Container>
-                        <Spacer size={10} />
-                        <Text style={styles.text}>학과 추가하기</Text>
-                        <Container style={styles.MlistContainer}>
-                          <Field
-                            placeholder="전공 입력해 주세요."
-                            name="major"
-                            list={majorList}
-                            component={SearchByFilter}
-                          />
-                        </Container>
-                        <View style={styles.modalBtnDirection}>
-                          <TextButton
-                            style={styles.modalConfirmBtn}
-                            onPress={() => {
-                              setModyfyingFieldModal(false);
-                            }}
-                          >
-                            취소
-                          </TextButton>
-                          <TextButton
-                            style={styles.modalConfirmBtn}
-                            onPress={() => {
-                              onSubmit(errors, handleSubmit);
 
-                              // PostAPI("/user/changeinfo/nickname", {
-                              //   nickname: tmpNickname,
-                              // })
-                              //   .then(res => {
-                              //     if (res.success == true) {
-                              //       console.log(tmpNickname, "으로 닉네임 수정 성공");
-                              //       setNickname(tmpNickname);
-                              //       setModyfyingNicknameModal(false);
-                              //     }
-                              //   })
-                              //   .catch(err => alert(err));
-                              // UserAPI.getProfile().then(res => {
-                              //   UserStorage.setUserProfile(res.data);
-                              // });
-                            }}
-                          >
-                            추가
-                          </TextButton>
-                        </View>
-                      </Container>
-                    )}
-                  </Formik>
+            <Modal animationType="fade" transparent={true} visible={modifyingFieldModal}>
+              <View style={styles.myModalBackground}>
+                <View style={styles.myModalContainer}>
+                  <View style={styles.myModalcategoryContainer}>
+                    <Text style={styles.text}>계열 선택</Text>
+                    <TextInput
+                      placeholder="계열 검색"
+                      value={searchCategoryText}
+                      onChangeText={handleSearch("category")}
+                      style={styles.myModalInput}
+                    />
+                    <Spacer size={10} />
+                    <FlatList
+                      key={key}
+                      data={filteredCategoryList}
+                      renderItem={renderItem("category")}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                  </View>
+                  <View style={styles.myModalcategoryContainer}>
+                    <Text style={styles.text}>학과 선택</Text>
+                    <TextInput
+                      placeholder="학과 검색"
+                      value={searchMajorText}
+                      onChangeText={handleSearch("major")}
+                      style={styles.myModalInput}
+                    />
+                    <Spacer size={10} />
+                    <FlatList
+                      key={key}
+                      data={filteredMajorList}
+                      renderItem={renderItem("major")}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                  </View>
+
+                  <View style={styles.myModalBtnDirection}>
+                    <TextButton
+                      style={styles.myModalConfirmBtn}
+                      onPress={() => {
+                        setModyfyingFieldModal(false);
+                        setSearchCategoryText("");
+                        setSearchMajorText("");
+                      }}
+                    >
+                      취소
+                    </TextButton>
+                    <TextButton
+                      style={styles.myModalConfirmBtn}
+                      onPress={() => {
+                        PostAPI("/user/changeinfo/categorymajor", {
+                          category: searchCategoryText,
+                          major: searchMajorText,
+                        })
+                          .then(response => {
+                            console.info(response);
+                            if (response.success) {
+                              alert("학과, 계열 추가완료");
+                            } else {
+                              alert("학과, 계열을 선택해주세요");
+                            }
+                          })
+                          .catch(error => {
+                            alert(`학과 등록에 실패하였습니다.: ${error}`);
+                          })
+                          .finally(() => {
+                            UserAPI.getProfile().then(response => {
+                              UserStorage.setUserProfile(response.data);
+                            });
+                            setModyfyingFieldModal(false);
+                            setSearchCategoryText("");
+                            setSearchMajorText("");
+                          });
+                      }}
+                    >
+                      추가
+                    </TextButton>
+                  </View>
                 </View>
               </View>
             </Modal>
-
             <TextButton
               style={{
                 marginVertical: 20,
               }}
               onPress={() => {
-                navigation.navigate("Mypage");
+                navigation.navigate("Mypage" as never);
               }}
             >
               저장
@@ -627,6 +729,61 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 20,
     // paddingHorizontal: 40,
+  },
+  pressable: {
+    padding: 10,
+    borderRadius: 5,
+  },
+  pressablePressed: {
+    backgroundColor: "skyblue",
+  },
+
+  myModalBtnDirection: {
+    width: "100%",
+    height: "14%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  myModalContainer: {
+    // flex: 0.8,
+    width: "90%",
+    height: "80%",
+    borderRadius: 25,
+    backgroundColor: "#ffffff",
+    padding: 15,
+  },
+  myModalBackground: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  myModalcategoryContainer: {
+    // flex: 1,
+    width: "100%",
+    height: "43%",
+    borderRadius: 25,
+    backgroundColor: "#ffffff",
+    padding: 15,
+    flexDirection: "column",
+  },
+  myModalInput: {
+    width: "100%",
+    paddingVertical: "5%",
+    paddingHorizontal: "5%",
+    backgroundColor: "#D8E1EC",
+    borderRadius: 25,
+  },
+  itemContainer: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: "lightgray",
+  },
+  myModalConfirmBtn: {
+    width: 140,
+    height: 50,
   },
 });
 
