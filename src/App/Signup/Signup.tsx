@@ -52,7 +52,7 @@ const validationSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "비밀번호가 일치하지 않습니다.")
     .required("필수 정보입니다."),
-  phoneNumber: Yup.string().matches(/^\d{3}-\d{4}-\d{4}$/, "000-0000-0000 형식으로 입력해주세요."),
+  // phoneNumber: Yup.string().matches(/^\d{3}-\d{4}-\d{4}$/, "000-0000-0000 형식으로 입력해주세요."),
   nickname: Yup.string()
     // .matches(/^[a-zA-Z0-9가-힣_-]{3,20}$/, "닉네임은 3자 이상 20자 이하이어야 합니다.")
     .required("필수 정보입니다.")
@@ -99,9 +99,8 @@ const Signup = () => {
     confirmPassword: "",
     nickname: "",
     name: "",
-    phoneNumber: "",
-    studentNumber: "",
     university: "",
+    studentNumber: "",
   };
 
   const navigation = useNavigation<NavigationProp<{ Confirm: ISignupForm }>>();
@@ -113,130 +112,109 @@ const Signup = () => {
   }, []);
   const placeholderTextColor = "#636363";
 
+  const getFieldPlaceholder = (fieldName: string) => {
+    switch (fieldName) {
+      case "email":
+        return "이메일";
+      case "password":
+        return "비밀번호";
+      case "confirmPassword":
+        return "비밀번호 확인";
+      case "nickname":
+        return "닉네임";
+      case "name":
+        return "이름";
+      case "phoneNumber":
+        return "전화번호";
+      case "studentNumber":
+        return "학번";
+      case "university":
+        return "학교 검색";
+      default:
+        return "";
+    }
+  };
+
   return (
     <Container isForceKeyboardAvoiding={true} style={{ backgroundColor: "white" }}>
-      <FlatList
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ backgroundColor: "white" }}
-        data={[SignupForm]}
-        renderItem={() => (
-          <Formik
-            validateOnChange
-            initialValues={SignupForm}
-            validationSchema={validationSchema}
-            onSubmit={async values => {
-              UIStore.showLoadingOverlay();
-              await signup(values)
-                .then(() => {
-                  return navigation.navigate("Confirm", values);
-                })
-                .catch(error => {
-                  alert(`회원가입 실패: ${error}\n다시 시도해주세요.`);
-                })
-                .finally(() => {
-                  UIStore.hideLoadingOverlay();
-                });
+      <Formik
+        validateOnChange
+        initialValues={SignupForm}
+        validationSchema={validationSchema}
+        onSubmit={async values => {
+          UIStore.showLoadingOverlay();
+          await signup(values)
+            .then(() => {
+              return navigation.navigate("Confirm", values);
+            })
+            .catch(error => {
+              alert(`회원가입 실패: ${error}\n다시 시도해주세요.`);
+            })
+            .finally(() => {
+              UIStore.hideLoadingOverlay();
+            });
+        }}
+      >
+        {({ handleSubmit, errors }) => (
+          <Container
+            style={{
+              flex: 1,
+              backgroundColor: "#fff",
+              justifyContent: "center",
+              paddingHorizontal: 30,
             }}
           >
-            {({ handleSubmit, errors }) => (
-              <Container
-                style={{
-                  flex: 1,
-                  backgroundColor: "#fff",
-                  justifyContent: "center",
-                  paddingHorizontal: 30,
-                }}
-              >
-                <Field
-                  placeholder="이메일"
-                  name="email"
-                  component={CustomInput}
-                  onKeyPress={processChange}
-                  placeholderTextColor={placeholderTextColor}
-                />
-                <Spacer size={10} />
-
-                <Field
-                  placeholder="비밀번호"
-                  name="password"
-                  component={CustomInput}
-                  secureTextEntry
-                  onKeyPress={processChange}
-                  placeholderTextColor={placeholderTextColor}
-                />
-                <Spacer size={10} />
-
-                <Field
-                  placeholder="비밀번호 확인"
-                  name="confirmPassword"
-                  component={CustomInput}
-                  secureTextEntry
-                  onKeyPress={processChange}
-                  placeholderTextColor={placeholderTextColor}
-                />
-                <Spacer size={10} />
-
-                <Field
-                  placeholder="닉네임"
-                  name="nickname"
-                  component={CustomInput}
-                  onKeyPress={processChange}
-                  placeholderTextColor={placeholderTextColor}
-                />
-                <Spacer size={10} />
-
-                <Field
-                  placeholder="이름"
-                  name="name"
-                  component={CustomInput}
-                  onKeyPress={processChange}
-                  placeholderTextColor={placeholderTextColor}
-                />
-                <Spacer size={10} />
-
-                <Field
-                  placeholder="학교 검색"
-                  name="university"
-                  component={SearchByFilter}
-                  list={universityList}
-                  onKeyPress={processChange}
-                  placeholderTextColor={placeholderTextColor}
-                />
-
-                <Spacer size={10} />
-
-                <Field
-                  placeholder="학번"
-                  name="studentNumber"
-                  component={CustomInput}
-                  onKeyPress={processChange}
-                  placeholderTextColor={placeholderTextColor}
-                />
-                <Spacer size={40} />
-                <TextButton
+            <FlatList
+              keyboardShouldPersistTaps="handled"
+              contentContainerStyle={{ backgroundColor: "white" }}
+              data={Object.keys(SignupForm)} // 각 필드 키를 배열로 전달
+              renderItem={({ item }) => (
+                <>
+                  <Field
+                    placeholder={getFieldPlaceholder(item)}
+                    name={item}
+                    component={item === "university" ? SearchByFilter : CustomInput}
+                    onKeyPress={processChange}
+                    list={item === "university" ? universityList : undefined}
+                    secureTextEntry={item === "password" || item === "confirmPassword"}
+                    placeholderTextColor={placeholderTextColor}
+                  />
+                  <Spacer size={10} />
+                </>
+              )}
+              keyExtractor={item => item}
+              ListFooterComponent={
+                <Container
                   style={{
-                    opacity: Object.keys(errors).length > 0 ? 0.5 : 1,
-                  }}
-                  backgroundColor="#5299EB"
-                  fontColor="white"
-                  paddingHorizontal={20}
-                  paddingVertical={15}
-                  borderRadius={30}
-                  fontSize={18}
-                  disabled={Object.keys(errors).length > 0 ? true : false}
-                  onPress={() => {
-                    onSubmit(errors, handleSubmit);
+                    flex: 1,
+                    backgroundColor: "#fff",
+                    justifyContent: "center",
+                    paddingHorizontal: 30,
                   }}
                 >
-                  회원가입
-                </TextButton>
-
-                <Spacer size={70} />
-              </Container>
-            )}
-          </Formik>
+                  <Spacer size={40} />
+                  <TextButton
+                    style={{
+                      opacity: Object.keys(errors).length > 0 ? 0.5 : 1,
+                    }}
+                    backgroundColor="#5299EB"
+                    fontColor="white"
+                    paddingHorizontal={20}
+                    paddingVertical={15}
+                    borderRadius={30}
+                    fontSize={18}
+                    disabled={Object.keys(errors).length > 0}
+                    onPress={() => onSubmit(errors, handleSubmit)}
+                  >
+                    회원가입
+                  </TextButton>
+                  <Spacer size={50} />
+                </Container>
+              }
+            />
+          </Container>
         )}
-      />
+      </Formik>
     </Container>
   );
 };
