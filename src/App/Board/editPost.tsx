@@ -31,6 +31,7 @@ const Edit: React.FC = () => {
 
   const editparams = useRoute().params as { post: BoardPost };
   const post = editparams?.post;
+  console.log("post", post.board.imagesUrl);
 
   useEffect(() => {
     // 받아온 게시판 타입(boardType)을 이용하여 필요한 작업 수행
@@ -39,7 +40,7 @@ const Edit: React.FC = () => {
     setIsHide(post.board.isHide);
     setIsAnonymous(post.board.isAnonymous);
     if (post.board.tags) setHashtags(post.board.tags.map(word => "#" + word));
-    if (post.board.imagesUrl) setImageUrl(post.board.imagesUrl);
+    if (post.board.imagesUrl) setPostImageUrl(post.board.imagesUrl);
   }, []);
 
   const check = (name: string, isChecked: boolean) => {
@@ -58,7 +59,7 @@ const Edit: React.FC = () => {
         title,
         body,
         isHide,
-        postImageUrl.length == 0 ? imageUrl : postImageUrl,
+        postImageUrl.length == 0 ? undefined : postImageUrl,
         DBnewHashtags,
       );
       console.log(response);
@@ -116,8 +117,6 @@ const Edit: React.FC = () => {
     }
     setImageUrl(selectedImages.map(image => image.uri));
 
-    console.log("selectedImages", selectedImages);
-
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function uploadImageAsync(images: any[]) {
       const formData = new FormData();
@@ -131,8 +130,6 @@ const Edit: React.FC = () => {
           name: `image_${index + 1}.jpg`,
         });
       });
-
-      console.log(formData);
 
       try {
         // const response = await uploadAPI(formData);
@@ -266,8 +263,8 @@ const Edit: React.FC = () => {
         ></Input>
         <ScrollView horizontal={true} style={{ flexDirection: "row" }}>
           <Spacer size={20} />
-          {Array.isArray(imageUrl) &&
-            imageUrl.map((uri, index) => (
+          {Array.isArray(postImageUrl) &&
+            postImageUrl.map((uri, index) => (
               <>
                 <Image
                   source={{ uri: uri }}
