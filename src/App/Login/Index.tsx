@@ -15,5 +15,6 @@ export default () => (
         key={route.name}
       />
     ))}
+    <Stack.Screen name="Uncertified" component={SigninRoutes[6].component} />
   </Stack.Navigator>
 );

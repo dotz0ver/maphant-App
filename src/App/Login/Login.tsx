@@ -19,10 +19,10 @@ const Login: React.FC = () => {
 
   const loginHandler = () => {
     if (!email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
-      // Toast.show("이메일 형식을 확인해주세요", { duration: Toast.durations.SHORT });
+      Toast.show("이메일 형식을 확인해주세요", { duration: Toast.durations.SHORT });
       return;
     } else if (password.length < 4) {
-      // Toast.show("비밀번호는 4자리 이상 입니다", { duration: Toast.durations.SHORT });
+      Toast.show("비밀번호는 4자리 이상 입니다", { duration: Toast.durations.SHORT });
       return;
     }
     UIStore.showLoadingOverlay();
@@ -30,18 +30,22 @@ const Login: React.FC = () => {
       .then(res => {
         UserStorage.setUserToken(res["pubKey"], res["privKey"]).then(() => {
           return UserAPI.getProfile().then(res => {
-            Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
-            UserStorage.setUserProfile(res.data);
+            if (res.data.state === "0") {
+              navigation.navigate("Uncertified", { email: email });
+            } else {
+              Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
+              UserStorage.setUserProfile(res.data);
+            }
           });
         });
       })
       .catch(message => {
         if (message == "Not found") {
-          // Toast.show("존재하지 않는 이메일 입니다", { duration: Toast.durations.SHORT });
+          Toast.show("존재하지 않는 이메일 입니다", { duration: Toast.durations.SHORT });
           return;
         }
         if (message == "Invalid password") {
-          // Toast.show("비밀번호가 틀렸습니다", { duration: Toast.durations.SHORT });
+          Toast.show("비밀번호가 틀렸습니다", { duration: Toast.durations.SHORT });
           return;
         } else if (message == "탈퇴된 사용자입니다.") {
           Toast.show("탈퇴된 사용자입니다.", { duration: Toast.durations.SHORT });
