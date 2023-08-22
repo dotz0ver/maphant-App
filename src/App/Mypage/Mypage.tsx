@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 
 import { GetAPI, PostAPI, statusResponse } from "../../Api/fetchAPI";
 import DeleteAPI from "../../Api/member/DeleteUser";
-import { Input, Spacer, TextButton } from "../../components/common";
+import { Input, Spacer, TextButton, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
 import { UserData } from "../../types/User";
@@ -132,7 +132,9 @@ function Section({ item }: { item: sectionItem }) {
               style={{ marginTop: 3 }}
               color={item.color || "black"}
             />
-            <Text style={{ marginLeft: 12, fontSize: 16, fontWeight: "bold" }}>{item.title}</Text>
+            <TextThemed style={{ marginLeft: 12, fontSize: 16, fontWeight: "bold" }}>
+              {item.title}
+            </TextThemed>
           </View>
         </View>
       )}
@@ -155,7 +157,7 @@ function Section({ item }: { item: sectionItem }) {
                 }}
               >
                 <View>
-                  <Text style={styles.text}>{content.title}</Text>
+                  <TextThemed style={styles.text}>{content.title}</TextThemed>
                 </View>
                 <View
                   style={{
@@ -255,20 +257,20 @@ const MyView = () => {
         </View>
         <View style={styles.userinfoContainer}>
           <View style={styles.paddingVertical}>
-            <Text style={styles.nickName}>{profile.nickname}</Text>
+            <TextThemed style={styles.nickName}>{profile.nickname}</TextThemed>
           </View>
           <View style={styles.paddingVertical}>
-            <Text style={styles.name}>
+            <TextThemed style={styles.name}>
               {profile.role} - {profile.name}
-            </Text>
+            </TextThemed>
           </View>
           <Spacer size={5} />
           <View style={styles.paddingVertical}>
-            <Text style={styles.fieldtxt}>
+            <TextThemed style={styles.fieldtxt}>
               {category !== null ? `${category.categoryName}` : "계열 선택안됨"}
-            </Text>
+            </TextThemed>
             <Spacer size={10} />
-            <Text style={styles.fieldtxt}>
+            <TextThemed style={styles.fieldtxt}>
               {category !== null ? (
                 <React.Fragment>
                   {category.majorName.split("(")[0]} {"\n"}
@@ -277,7 +279,7 @@ const MyView = () => {
               ) : (
                 "학과 선택안됨"
               )}
-            </Text>
+            </TextThemed>
           </View>
         </View>
       </View>
@@ -289,13 +291,13 @@ const MyView = () => {
             setVisibleIntoModal(true);
           }}
         >
-          <Text style={styles.introTxt}>
+          <TextThemed style={styles.introTxt}>
             {introduceTxt == null
               ? "소개글을 입력해주세요"
               : introduceTxt == ""
               ? "소개글을 입력해주세요"
               : `${introduceTxt}`}
-          </Text>
+          </TextThemed>
         </TouchableOpacity>
       </View>
       <Modal animationType="fade" transparent={true} visible={visibleIntroModal}>
@@ -463,7 +465,7 @@ export default function MyPage() {
   ];
 
   return (
-    <View style={{ backgroundColor: "white" }}>
+    <View style={{}}>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         {/* ------------ 로그아웃 모달창 */}
         <Modal animationType="fade" transparent={true} visible={visibleLogoutModal}>
@@ -481,7 +483,7 @@ export default function MyPage() {
               style={{
                 flex: 0.6,
                 borderRadius: 25,
-                backgroundColor: "#ffffff",
+                backgroundColor: "#ffffff", //모달 이부분 고치기
                 padding: 25,
               }}
             >
@@ -669,7 +671,6 @@ export default function MyPage() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     paddingHorizontal: 16,
     paddingVertical: 30,
     marginTop: 18,
@@ -677,14 +678,14 @@ const styles = StyleSheet.create({
   view: {
     flex: 1,
     marginTop: 18,
-    backgroundColor: "#D8E1EC",
+    backgroundColor: "rgba(82, 153, 235, 0.3)",
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   profileView: {
     marginTop: 18,
-    backgroundColor: "#D8E1EC",
+    backgroundColor: "rgba(82, 153, 235, 0.5)",
     borderRadius: 8,
     paddingHorizontal: 14,
     paddingVertical: 8,
