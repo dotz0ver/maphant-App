@@ -171,7 +171,7 @@ const Post: React.FC = () => {
     setVoteOptions(updatedOptions);
   };
 
-  const handleRemoveVoteOption = indexToRemove => {
+  const handleRemoveVoteOption = (indexToRemove: number) => {
     setVoteOptions(voteOptions.filter((_, index) => index !== indexToRemove));
   };
 

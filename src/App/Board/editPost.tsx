@@ -21,9 +21,6 @@ const Edit: React.FC = () => {
   const [isAnonymous, setIsAnonymous] = useState<number>(0);
   const [hashtagInput, setHashtagInput] = useState("");
   const [hashtags, setHashtags] = useState<string[]>([]);
-  const [voteInputs, setVoteInputs] = useState(false);
-  const [voteTitle, setVoteTitle] = useState<string>("");
-  const [voteOptions, setVoteOptions] = useState<string[]>([]);
 
   const [requsetpermission, setRequestPermission] = ImagePicker.useCameraPermissions();
   const [imageUrl, setImageUrl] = useState<string[]>([]);
@@ -41,7 +38,8 @@ const Edit: React.FC = () => {
     setBody(post.board.body);
     setIsHide(post.board.isHide);
     setIsAnonymous(post.board.isAnonymous);
-    // setHashtags(post.board.tags.map(word => "#" + word));
+    if (post.board.tags) setHashtags(post.board.tags.map(word => "#" + word));
+    if (post.board.imagesUrl) setImageUrl(post.board.imagesUrl);
   }, []);
 
   const check = (name: string, isChecked: boolean) => {
@@ -60,7 +58,7 @@ const Edit: React.FC = () => {
         title,
         body,
         isHide,
-        postImageUrl.length == 0 ? undefined : postImageUrl,
+        postImageUrl.length == 0 ? imageUrl : postImageUrl,
         DBnewHashtags,
       );
       console.log(response);
@@ -84,22 +82,9 @@ const Edit: React.FC = () => {
     }
   };
 
-  const voteHandling = async () => {
-    setVoteInputs(!voteInputs);
-  };
-
-  const addVoteOptions = async () => {
-    setVoteOptions([...voteOptions, ""]);
-  };
-
-  const handleVoteOptionChange = (index: number, text: string) => {
-    const updatedOptions = [...voteOptions];
-    updatedOptions[index] = text;
-    setVoteOptions(updatedOptions);
-  };
-
-  const handleRemoveVoteOption = (indexToRemove: number) => {
-    setVoteOptions(voteOptions.filter((_, index) => index !== indexToRemove));
+  const updateImageUrl = (newImageUrl: string[]) => {
+    setPostImageUrl(newImageUrl);
+    setImageUrl(newImageUrl);
   };
 
   const uploadImage = async () => {
@@ -152,17 +137,23 @@ const Edit: React.FC = () => {
       try {
         // const response = await uploadAPI(formData);
         const response = uploadAPI("POST", "/image", formData);
-        console.log("Image upload response:", (await response).json);
+        // console.log("Image upload response:", (await response).json);
         const jsonResponse = (await response).json;
         for (const item of jsonResponse) {
           const imageUrl = item.url;
           postImageUrl.push(imageUrl);
+          updateImageUrl(postImageUrl);
         }
         setPostImageUrl(postImageUrl);
       } catch (error) {
         console.error("Image upload error:", error);
       }
     }
+  };
+
+  const handleRemoveImage = (indexToRemove: number) => {
+    const newImageUrl = imageUrl.filter((_, index) => index !== indexToRemove);
+    updateImageUrl(newImageUrl);
   };
 
   return (
@@ -194,9 +185,9 @@ const Edit: React.FC = () => {
           </Container>
         </Container>
         <Container style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={voteHandling}>
+          {/* <TouchableOpacity onPress={voteHandling}>
             <AntDesign name="cloud" size={24} color="black" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </Container>
         <Container style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={uploadImage}>
@@ -222,7 +213,7 @@ const Edit: React.FC = () => {
           multiline={true}
           onEndEditing={addHashtag}
         ></TextInput>
-        {voteInputs && (
+        {/* {voteInputs && (
           <>
             <Spacer size={20} />
             <Container style={{ flexDirection: "row" }}>
@@ -244,7 +235,7 @@ const Edit: React.FC = () => {
                       key={index}
                       placeholder={`투표 선택지 ${index + 1}`}
                       onChangeText={text => handleVoteOptionChange(index, text)}
-                      value={option.optionName}
+                      value={option}
                     />
                     <TouchableOpacity onPress={() => handleRemoveVoteOption(index)}>
                       <Text style={{ color: "black" }}>X</Text>
@@ -255,7 +246,7 @@ const Edit: React.FC = () => {
               ))}
             </Container>
           </>
-        )}
+        )} */}
         <Spacer size={10} />
         <View style={{ flexDirection: "row" }}>
           {hashtags.map((tag, index) => (
@@ -279,7 +270,6 @@ const Edit: React.FC = () => {
             imageUrl.map((uri, index) => (
               <>
                 <Image
-                  key={index}
                   source={{ uri: uri }}
                   style={{ width: 200, height: 200, marginRight: 5 }} // 이미지 간 간격을 조절해줍니다.
                 />
@@ -287,7 +277,7 @@ const Edit: React.FC = () => {
                   name="remove"
                   size={24}
                   color="black"
-                  onPress={() => setImageUrl([])}
+                  onPress={() => handleRemoveImage(index)}
                 />
               </>
             ))}
