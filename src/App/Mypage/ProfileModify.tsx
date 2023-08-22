@@ -23,6 +23,7 @@ import { Container, Input, Spacer, TextButton } from "../../components/common";
 import SearchByFilter from "../../components/Input/SearchByFilter";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
+import { set } from "react-native-reanimated";
 
 interface ISearchForm {
   field: string;
@@ -96,8 +97,6 @@ const ProfileModify: React.FC = () => {
     const newPressedStates = [...pressedStates];
     newPressedStates[index] = !newPressedStates[index];
     setPressedStates(newPressedStates);
-
-    console.log(pressedStates);
   };
 
   const [categoryList, setCategoryList] = useState<string[]>([]);
@@ -106,6 +105,7 @@ const ProfileModify: React.FC = () => {
   const [filteredMajorList, setFilteredMajorList] = useState<string[]>([]);
   const [searchCategoryText, setSearchCategoryText] = useState<string>("");
   const [searchMajorText, setSearchMajorText] = useState<string>("");
+  const [key, setKey] = useState<number>(0);
 
   useEffect(() => {
     GetAPI(`/user/categorylist`).then(res => setCategoryList(res.data));
@@ -144,8 +144,10 @@ const ProfileModify: React.FC = () => {
   const handleSelectField = (selectedField: string, listType: string) => {
     if (listType === "category") {
       setSearchCategoryText(selectedField);
+      setKey(key + 1);
     } else if (listType === "major") {
       setSearchMajorText(selectedField);
+      setKey(key + 1);
     }
   };
 
@@ -562,6 +564,7 @@ const ProfileModify: React.FC = () => {
                     />
                     <Spacer size={10} />
                     <FlatList
+                      key={key}
                       data={filteredCategoryList}
                       renderItem={renderItem("category")}
                       keyExtractor={(item, index) => index.toString()}
@@ -577,6 +580,7 @@ const ProfileModify: React.FC = () => {
                     />
                     <Spacer size={10} />
                     <FlatList
+                      key={key}
                       data={filteredMajorList}
                       renderItem={renderItem("major")}
                       keyExtractor={(item, index) => index.toString()}
@@ -588,6 +592,8 @@ const ProfileModify: React.FC = () => {
                       style={styles.myModalConfirmBtn}
                       onPress={() => {
                         setModyfyingFieldModal(false);
+                        setSearchCategoryText("");
+                        setSearchMajorText("");
                       }}
                     >
                       취소
@@ -600,8 +606,11 @@ const ProfileModify: React.FC = () => {
                           major: searchMajorText,
                         })
                           .then(response => {
+                            console.info(response);
                             if (response.success) {
                               alert("학과, 계열 추가완료");
+                            } else {
+                              alert("학과, 계열을 선택해주세요");
                             }
                           })
                           .catch(error => {
@@ -612,6 +621,8 @@ const ProfileModify: React.FC = () => {
                               UserStorage.setUserProfile(response.data);
                             });
                             setModyfyingFieldModal(false);
+                            setSearchCategoryText("");
+                            setSearchMajorText("");
                           });
                       }}
                     >
