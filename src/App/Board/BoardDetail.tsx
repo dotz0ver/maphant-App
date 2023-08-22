@@ -15,6 +15,7 @@ import {
   View,
 } from "react-native";
 import { useSelector } from "react-redux";
+
 import {
   boardClosePoll,
   boardDelete,
@@ -47,7 +48,7 @@ import {
 import { NavigationProps } from "../../Navigator/Routes";
 import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
-import { BoardArticleBase, BoardPost, commentType, PollInfo, ReportType } from "../../types/Board";
+import { BoardArticleBase, BoardPost, commentType, ReportType } from "../../types/Board";
 import { UserData } from "../../types/User";
 import { dateFormat, dateTimeFormat } from "./Time";
 
@@ -664,7 +665,6 @@ const BoardDetail = () => {
                         <TouchableOpacity
                           onPress={() => {
                             navigation.navigate("Profile", { id: comment.user_id } as never);
-                            console.error(comment.user_id);
                           }}
                           disabled={comment.is_anonymous == 1}
                         >
@@ -820,8 +820,7 @@ const BoardDetail = () => {
             onChangeText={checked ? setReplyBody : setBody}
           ></Input>
           <TextButton
-                      fontSize={13}
-
+            fontSize={13}
             onPress={() => {
               checked ? handleReplyInput(parent_id, replyBody) : handlecommentInsert();
             }}
