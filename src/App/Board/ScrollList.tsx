@@ -62,9 +62,10 @@ const styles = StyleSheet.create({
   },
   comment: {
     fontSize: 15,
+    fontColor: "#727272",
     marginVertical: 10,
     paddingBottom: 10,
-    marginRight: "50%",
+    margin: "1%",
   },
   bottom: {
     flex: 1,
