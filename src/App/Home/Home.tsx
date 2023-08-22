@@ -526,7 +526,7 @@ const HotPost: React.FC = () => {
       height: 143,
       marginLeft: 20,
       marginRight: 20,
-      backgroundColor: "yellow",
+      // backgroundColor: "yellow",
     },
     nameAndtypeBox: {
       flexDirection: "row",
@@ -534,7 +534,7 @@ const HotPost: React.FC = () => {
       width: "100%",
       paddingLeft: 10,
       paddingRight: 10,
-      backgroundColor: "skyblue",
+      // backgroundColor: "skyblue",
     },
     profileImage: {
       width: 30,
@@ -584,7 +584,7 @@ const HotPost: React.FC = () => {
     },
     timeAndlikeAndcomment: {
       flexDirection: "row",
-      backgroundColor: "pink",
+      // backgroundColor: "pink",
       alignItems: "center",
       height: 25,
     },
@@ -602,10 +602,11 @@ const HotPost: React.FC = () => {
     },
     timeTextWrapper: {
       width: "30%",
+      paddingRight: 10,
       flexDirection: "row",
       justifyContent: "flex-end",
       alignItems: "center",
-      backgroundColor: "skyblue",
+      // backgroundColor: "skyblue",
     },
     noHotPostBox: {
       height: 290,
@@ -733,13 +734,15 @@ const HotPost: React.FC = () => {
 
         <Spacer size={5} />
         <View style={styles.timeAndlikeAndcomment}>
-          <View style={styles.likeTextWrapper}>
-            <Feather name="thumbs-up" size={13} color="tomato" />
-            <TextThemed style={styles.iconText}>{hotPost[1].likeCnt}</TextThemed>
-          </View>
-          <View style={styles.commentTextWrapper}>
-            <FontAwesome name="comment-o" size={13} color="blue" />
-            <TextThemed style={styles.iconText}>{hotPost[1].commentCnt}</TextThemed>
+          <View style={{ width: "70%", flexDirection: "row" }}>
+            <View style={styles.likeTextWrapper}>
+              <Feather name="thumbs-up" size={13} color="tomato" />
+              <TextThemed style={styles.iconText}>{hotPost[1].likeCnt}</TextThemed>
+            </View>
+            <View style={styles.commentTextWrapper}>
+              <FontAwesome name="comment-o" size={13} color="blue" />
+              <TextThemed style={styles.iconText}>{hotPost[1].commentCnt}</TextThemed>
+            </View>
           </View>
           <View style={styles.timeTextWrapper}>
             <TextThemed>{dateToString(hotPost[1].createdAt)}</TextThemed>
