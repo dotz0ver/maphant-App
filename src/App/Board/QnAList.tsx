@@ -52,7 +52,7 @@ const QnABoard: React.FC = () => {
             </TextThemed>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("DetailList", { boardType: boardType });
+                navigation.navigate("HotDetailList" as never);
               }}
             >
               <Text style={styles.detail}>더보기</Text>
@@ -94,7 +94,7 @@ const QnABoard: React.FC = () => {
             </TextThemed>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("DetailList", { boardType: boardType });
+                navigation.navigate("VoteDetailList", { boardType: boardType });
               }}
             >
               <Text style={styles.detail}>더보기</Text>

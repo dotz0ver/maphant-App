@@ -1,12 +1,14 @@
 import BoardDetail from "../App/Board/BoardDetail";
 import BoardList, { BoardType } from "../App/Board/BoardList";
 import Edit from "../App/Board/editPost";
+import HotDetailList from "../App/Board/HotList";
 import DetailList from "../App/Board/List";
 import Post from "../App/Board/Post";
 import QA_answer from "../App/Board/QA_answer";
 import QAdetail from "../App/Board/QAdetail";
 import QnABoard from "../App/Board/QnAList";
 import TotalList from "../App/Board/TotalList";
+import VoteDetailList from "../App/Board/VoteList";
 import VoteTotalList from "../App/Board/VoteTotalList";
 import Profile from "../App/Mypage/Profile";
 import { BoardArticle } from "../types/Board";
@@ -50,8 +52,16 @@ const Routes: RouteType[] = [
     component: TotalList,
   },
   {
+    name: "HotDetailList",
+    component: HotDetailList,
+  },
+  {
     name: "VoteBoard",
     component: VoteTotalList,
+  },
+  {
+    name: "VoteDetailList",
+    component: VoteDetailList,
   },
   {
     name: "Profile",
@@ -70,6 +80,8 @@ export type NavigationProp = {
   QA_answer: { id: number; preRender?: BoardArticle };
   HotBoard: undefined;
   VoteBoard: undefined;
+  HotDetailList: undefined;
+  VoteDetailList: undefined;
 };
 
 export default Routes;
