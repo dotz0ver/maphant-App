@@ -30,7 +30,8 @@ const Login: React.FC = () => {
       .then(res => {
         UserStorage.setUserToken(res["pubKey"], res["privKey"]).then(() => {
           return UserAPI.getProfile().then(res => {
-            if (res.data.state === "0") {
+            console.warn(res.data.state);
+            if (res.data["state"] == "0") {
               navigation.navigate("Uncertified", { email: email });
             } else {
               Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));

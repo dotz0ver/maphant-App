@@ -192,9 +192,10 @@ const MyView = () => {
   const [visibleIntroModal, setVisibleIntoModal] = useState(false);
   const [introduceTxt, setIntroduceTxt] = useState("");
   let confirmedIntroTxt: string = "";
+  // const [userID, setUserID] = useState(0);
   const userID = useSelector(UserStorage.userProfileSelector)!.id;
-
   useEffect(() => {
+    // setUserID(useSelector(UserStorage.userProfileSelector)!.id);
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
         // console.log(res.data);
