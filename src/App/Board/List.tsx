@@ -1,3 +1,4 @@
+//글자 흰색으로
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
@@ -155,7 +156,6 @@ const DetailList: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     paddingHorizontal: 20,
     paddingVertical: 10,
   },

@@ -462,7 +462,7 @@ export default function MyPage() {
   ];
 
   return (
-    <View style={{ backgroundColor: "white" }}>
+    <View style={{}}>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         {/* ------------ 로그아웃 모달창 */}
         <Modal animationType="fade" transparent={true} visible={visibleLogoutModal}>
@@ -480,7 +480,7 @@ export default function MyPage() {
               style={{
                 flex: 0.6,
                 borderRadius: 25,
-                backgroundColor: "#ffffff",
+                backgroundColor: "#ffffff", //모달 이부분 고치기
                 padding: 25,
               }}
             >
@@ -668,7 +668,6 @@ export default function MyPage() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
     paddingHorizontal: 16,
     paddingVertical: 30,
     marginTop: 18,

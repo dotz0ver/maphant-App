@@ -1,5 +1,5 @@
-import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { StackActions, useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, Text } from "react-native";
 import { useWindowDimensions } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
@@ -11,13 +11,12 @@ import { NavigationProps } from "../../Navigator/Routes";
 import { ReceiveList } from "../../types/DM";
 const Chatroom: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
-
-  const windowWidth = useWindowDimensions().width; // window 가로 길이s
-  // SearchUser.tsx에서 입력한 유저의  id, nickname을 가져오기 위해 사용한 것
   const route = useRoute();
   const params = route.params as MailFormParams;
+
   const [receiveContent, setReceiveContent] = useState<ReceiveList[]>([]);
   const [content, setContent] = useState("");
+
   const fetchChatLists = async (roomId: number) => {
     //대화내용 받아오는거 같음
     chartLists(roomId) //그 대화내용의 방 id
@@ -137,7 +136,7 @@ const Chatroom: React.FC = () => {
               navigation.navigate("Profile", { id: params.id } as never);
             }}
           >
-            <Text style={{ fontSize: 23, fontWeight: "bold", marginRight: windowWidth / 2 - 66 }}>
+            <Text style={{ fontSize: 23, fontWeight: "bold", marginLeft: 20 }}>
               {params.nickname}
             </Text>
           </TouchableOpacity>

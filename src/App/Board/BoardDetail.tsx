@@ -1,3 +1,4 @@
+//글자색상 흰색으로 바꿔야함
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Checkbox from "expo-checkbox";
 import React, { useEffect, useState } from "react";
@@ -15,7 +16,6 @@ import {
   View,
 } from "react-native";
 import { useSelector } from "react-redux";
-
 import {
   boardDelete,
   boardEdit,
@@ -33,7 +33,14 @@ import {
   ReportComment,
   ReportPost,
 } from "../../Api/board";
-import { Container, IconButton, Input, Spacer, TextButton } from "../../components/common";
+import {
+  Container,
+  IconButton,
+  Input,
+  Spacer,
+  TextButton,
+  TextThemed,
+} from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticleBase, BoardPost, commentType, ReportType } from "../../types/Board";
@@ -368,7 +375,7 @@ const BoardDetail = () => {
               <View style={styles.header}>
                 <View>
                   <View>
-                    <Text style={styles.nickname}>{post.board.userId}</Text>
+                    <TextThemed style={styles.nickname}>{post.board.userId}</TextThemed>
                   </View>
                   <View>
                     <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
@@ -397,10 +404,10 @@ const BoardDetail = () => {
               </View>
               <View style={styles.contextBox}>
                 <View>
-                  <Text style={styles.title}>{post.board.title}</Text>
+                  <TextThemed style={styles.title}>{post.board.title}</TextThemed>
                 </View>
                 <View>
-                  <Text style={styles.context}>{post.board.body}</Text>
+                  <TextThemed style={styles.context}>{post.board.body}</TextThemed>
                   {post.board.imagesUrl != null && (
                     <ScrollView horizontal={true} style={styles.imageContainer}>
                       {post.board.imagesUrl.map((imageUrl, index) => (
@@ -473,7 +480,7 @@ const BoardDetail = () => {
                             profileNavi();
                           }}
                         >
-                          <Text style={styles.commentName}>{comment.nickname}</Text>
+                          <TextThemed style={styles.commentName}>{comment.nickname}</TextThemed>
                         </TouchableOpacity>
                         <Text style={styles.commentDate}>{dateFormat(comment.created_at)}</Text>
                       </View>
@@ -493,7 +500,7 @@ const BoardDetail = () => {
                     </View>
                     <View style={{ paddingHorizontal: 10 }}>
                       <View style={styles.commentContext}>
-                        <Text style={styles.context}>{comment.body}</Text>
+                        <TextThemed style={styles.context}>{comment.body}</TextThemed>
                       </View>
                       <View style={styles.cbutBox}>
                         <IconButton
@@ -539,7 +546,9 @@ const BoardDetail = () => {
                             <View style={{ margin: "2%" }}>
                               <View style={styles.commentHeader}>
                                 <View style={{ flexDirection: "column" }}>
-                                  <Text style={styles.commentName}>{reply.nickname}</Text>
+                                  <TextThemed style={styles.commentName}>
+                                    {reply.nickname}
+                                  </TextThemed>
                                   <Text style={styles.commentDate}>
                                     {dateFormat(reply.created_at)}
                                   </Text>
@@ -572,7 +581,7 @@ const BoardDetail = () => {
                                 </View>
                               </View>
                               <View style={styles.commentContext}>
-                                <Text style={styles.context}>{reply.body}</Text>
+                                <TextThemed style={styles.context}>{reply.body}</TextThemed>
                               </View>
                             </View>
                           </View>
@@ -611,11 +620,22 @@ const BoardDetail = () => {
               setIsAnonymous(isChecked ? 1 : 0);
             }}
           ></Checkbox>
+<<<<<<< Updated upstream
           <Text style={{ marginHorizontal: 3 }}>익명</Text>
+||||||| Stash base
+          <Text>익명</Text>
+=======
+          <TextThemed>익명</TextThemed>
+>>>>>>> Stashed changes
           <Input
             style={{
               flex: 1,
+<<<<<<< Updated upstream
               backgroundColor: "#D8E1EC",
+||||||| Stash base
+              backgroundColor: "white",
+=======
+>>>>>>> Stashed changes
               paddingVertical: 15,
               paddingHorizontal: 12,
               marginRight: 5,
@@ -642,7 +662,6 @@ const BoardDetail = () => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    backgroundColor: "white",
     flex: 1,
   },
   nameBox: {
@@ -733,7 +752,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   replyBox: {
-    backgroundColor: "#f2f2f2",
     borderRadius: 8,
     padding: 10,
     marginBottom: 10,

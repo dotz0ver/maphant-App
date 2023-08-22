@@ -1,3 +1,4 @@
+//글색 하얀색으로 바꿔줘야함
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
@@ -116,7 +117,6 @@ const QnABoard: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     padding: 30,
   },
   detail: {
