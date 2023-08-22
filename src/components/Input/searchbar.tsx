@@ -1,18 +1,16 @@
-import { useState } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Dimensions, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
-const searchbar = () => {
-  const [text, setText] = useState<string>("");
+interface SearchBarProps {
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
+  onClearText: () => void;
+}
+const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChange, onClearText }) => {
   const clearTextHandler = () => {
-    setText("");
+    onClearText();
   };
+
   return (
     <View style={styles.searchContainer}>
       <View style={styles.searchBox}>
@@ -20,34 +18,32 @@ const searchbar = () => {
           <Icon name="search" size={28} color="black" style={{}} />
         </View>
         <TextInput
-          value={text}
-          onChangeText={setText}
+          value={searchQuery}
+          onChangeText={onSearchChange}
           returnKeyType="search"
-          // onEndEditing={() => console.log("Search Text Update Done")}
-          // onTouchStart={() => console.log("start")}
-          // onTouchEnd={() => console.log("end")}
           style={{
             flex: 1,
-            //backgroundColor: "pink",
             height: "100%",
             marginLeft: "3%",
             marginRight: "3%",
           }}
         />
+
         <TouchableOpacity onPress={clearTextHandler}>
           <Icon name="close" size={28} color="black" style={{}} />
         </TouchableOpacity>
       </View>
     </View>
-    // <View style={styles.search}>
-    //   <AntDesign name="search1" size={24} color="black" padding />
-    //   <TextInput onChangeText={setText} value={text} style={styles.searchbar}></TextInput>
-    //   <TouchableOpacity onPress={clearTextHandler}>
-    //     <Icon name="close" size={28} color="black" style={{}} />
-    //   </TouchableOpacity>
-    // </View>
   );
 };
+
+// <View style={styles.search}>
+//   <AntDesign name="search1" size={24} color="black" padding />
+//   <TextInput onChangeText={setText} value={text} style={styles.searchbar}></TextInput>
+//   <TouchableOpacity onPress={clearTextHandler}>
+//     <Icon name="close" size={28} color="black" style={{}} />
+//   </TouchableOpacity>
+// </View>
 const styles = StyleSheet.create({
   search: {
     flex: 1,
@@ -86,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default searchbar;
+export default SearchBar;

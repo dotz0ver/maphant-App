@@ -7,7 +7,7 @@ import * as Yup from "yup";
 
 import { categorymajor, fieldList, majorList } from "../../Api/member/signUp";
 import { Container, TextButton } from "../../components/common";
-import Search from "../../components/Member/Search";
+import SearchByFilter from "../../components/Input/SearchByFilter";
 import { NavigationProps } from "../../Navigator/Routes";
 import { SignUpFormParams } from "../../Navigator/SigninRoutes";
 import UIStore from "../../storage/UIStore";
@@ -39,7 +39,7 @@ const SearchUniversity: React.FC = () => {
     const msg = Object.values(errors)
       .map(val => `${val}`)
       .join("\n");
-    return Toast.show(msg);
+    return msg;
   }, []);
   const SearchForm: ISearchForm = {
     field: "",
@@ -74,7 +74,7 @@ const SearchUniversity: React.FC = () => {
                   placeholder="계열 입력해 주세요."
                   name="field"
                   list={fieldList}
-                  component={Search}
+                  component={SearchByFilter}
                 />
               </Container>
               <Container style={styles.MlistContainer}>
@@ -82,7 +82,7 @@ const SearchUniversity: React.FC = () => {
                   placeholder="전공 입력해 주세요."
                   name="major"
                   list={majorList}
-                  component={Search}
+                  component={SearchByFilter}
                 />
               </Container>
               <TextButton

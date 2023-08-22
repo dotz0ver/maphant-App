@@ -1,3 +1,4 @@
+import { BoardType } from "./Board";
 type RouteType = {
   name: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -8,4 +9,11 @@ type RouteType = {
   };
 };
 
-export type { RouteType };
+type NavigationProps = {
+  DetailList: {
+    boardType: BoardType;
+  };
+  // QnABoard: {};
+};
+
+export type { NavigationProps, RouteType };

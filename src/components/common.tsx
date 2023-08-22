@@ -15,11 +15,14 @@ import {
   StyleProp,
   Text,
   TextInput,
+  TextProps,
   TextStyle,
   TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 // 컴포넌트들에 대한 타입 정의를 함
 // 각 컴포넌트가 어떤 props를 받을 수 있는지, 해당 props들이 어떤 타입을 가져야 하는지
@@ -65,6 +68,7 @@ type ContainerProps = {
   isFullWindow?: boolean;
   isItemCenter?: boolean;
   isForceKeyboardAvoiding?: boolean;
+  isForceTopSafeArea?: boolean;
 } & ChildrenProps;
 // 문자열과 함수, 부울 타입의 props
 type InputProps = {
@@ -78,9 +82,21 @@ type InputProps = {
   ref?: LegacyRef<TextInput>;
   multiline?: boolean;
   inputRef?: LegacyRef<TextInput>;
+  onSubmitEditing?: () => void;
 } & DefaultProps;
 
+type IconButtonProps = {
+  flexDirection?: "row" | "column";
+  marginHorizontal?: number;
+  name: string;
+  color?: ColorValue;
+  size?: number;
+  fontSize?: number;
+  fontColor?: ColorValue;
+} & TextButtonProps;
+
 const Container: React.FC<ContainerProps> = props => {
+  const safeAreaInsets = useSafeAreaInsets();
   const theme = useTheme();
   //props 기본값
   const {
@@ -92,6 +108,7 @@ const Container: React.FC<ContainerProps> = props => {
     isFullWindow = false,
     isItemCenter = false,
     isForceKeyboardAvoiding = false,
+    isForceTopSafeArea = false,
     borderRadius,
   } = props;
   const isRootContainer = isFullScreen || isFullWindow;
@@ -126,6 +143,10 @@ const Container: React.FC<ContainerProps> = props => {
     });
   }, []);
 
+  let paddingBottom = 0;
+  if (isForceKeyboardAvoiding) paddingBottom = 50;
+  if (isFullWindow) paddingBottom += safeAreaInsets.bottom;
+
   const style_computed: StyleProp<ViewStyle> = {
     backgroundColor: isRootContainer ? theme.colors.background : "transparent",
     paddingHorizontal: isRootContainer && paddingHorizontal === undefined ? 16 : paddingHorizontal,
@@ -135,7 +156,8 @@ const Container: React.FC<ContainerProps> = props => {
     marginLeft: isItemCenter ? "auto" : undefined,
     marginRight: isItemCenter ? "auto" : undefined,
     borderRadius,
-    paddingBottom: isForceKeyboardAvoiding ? 50 : undefined,
+    paddingBottom: paddingBottom,
+    paddingTop: isFullScreen || isForceTopSafeArea ? safeAreaInsets.top : undefined,
     ...(style as object),
   };
 
@@ -211,7 +233,7 @@ const TextButton: React.FC<TextButtonProps> = props => {
     children,
     backgroundColor = "#5299EB",
     fontSize = 16,
-    fontColor,
+    fontColor = "white",
     widthFull = false,
     paddingHorizontal = 20,
     paddingVertical = 15,
@@ -258,6 +280,7 @@ const Input: React.FC<InputProps> = props => {
   const theme = useTheme();
   const {
     style = {},
+    ref,
     placeholder = "",
     onChangeText,
     value,
@@ -270,6 +293,7 @@ const Input: React.FC<InputProps> = props => {
     borderRadius = 16,
     inputMode = "text",
     multiline = false,
+    onSubmitEditing,
   } = props;
 
   const style_container: StyleProp<ViewStyle> = {
@@ -297,9 +321,67 @@ const Input: React.FC<InputProps> = props => {
         secureTextEntry={secureTextEntry}
         inputMode={inputMode}
         multiline={multiline}
+        onSubmitEditing={onSubmitEditing}
       />
     </View>
   );
 };
 
-export { Container, ImageBox, Input, Spacer, TextButton };
+type TextThemedPropsType = {
+  onDarkColor?: ColorValue;
+  onLightColor?: ColorValue;
+} & TextProps;
+
+const TextThemed: React.FC<TextThemedPropsType> = props => {
+  const theme = useTheme();
+  const textColor = (theme.dark ? props.onDarkColor : props.onLightColor) ?? theme.colors.text;
+
+  const propsPassed = { ...props };
+  propsPassed.style = { color: textColor, ...(props.style as object) };
+
+  return <Text {...propsPassed} />;
+};
+
+const IconButton: React.FC<IconButtonProps> = props => {
+  const {
+    style = {},
+    children,
+    backgroundColor = "#f2f2f2",
+    paddingHorizontal = 11,
+    paddingVertical = 5,
+    marginHorizontal = 4,
+    borderRadius = 4,
+    flexDirection = "row",
+    onPress,
+    fontSize = 9,
+    fontColor,
+    name,
+    color,
+    size = 15,
+  } = props;
+
+  const style_container: StyleProp<ViewStyle> = {
+    paddingHorizontal,
+    paddingVertical,
+    marginHorizontal,
+    backgroundColor,
+    borderRadius,
+    flexDirection,
+    alignItems: "center",
+    justifyContent: "center",
+    ...(style as object),
+  };
+  const style_text: StyleProp<TextStyle> = {
+    fontSize,
+    textAlign: "center",
+    color: fontColor,
+    marginLeft: 5,
+  };
+  return (
+    <TouchableOpacity style={style_container} onPress={onPress}>
+      <Icon name={name} color={color} size={size} />
+      <Text style={style_text}>{children}</Text>
+    </TouchableOpacity>
+  );
+};
+export { Container, IconButton, ImageBox, Input, Spacer, TextButton, TextThemed };

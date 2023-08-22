@@ -1,16 +1,17 @@
 import { sha512 } from "js-sha512";
 
+import reduxStore from "../storage/reduxStore";
 import UIStore from "../storage/UIStore";
 import UserStorage from "../storage/UserStorage";
 import constraints from "./constraints";
 
-type Method = "GET" | "POST" | "PUT" | "DELETE";
+type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 type statusResponse = {
   success: boolean;
   errors?: string;
 };
-type dataResponse = {
-  data?: object;
+type dataResponse<T = object> = {
+  data: T;
 } & statusResponse;
 
 function fetchAPI<T extends statusResponse>(
@@ -21,81 +22,95 @@ function fetchAPI<T extends statusResponse>(
 ): Promise<T> {
   if (showLoadingOverlay) UIStore.showLoadingOverlay();
 
-  return UserStorage.getUserToken().then(token => {
-    const abortController = new AbortController();
-    const abortSignal = abortController.signal;
-    setTimeout(() => abortController.abort(), 5000);
+  const token = reduxStore.getState().user;
+  const category = reduxStore.getState().userCategory;
 
-    const options: RequestInit = {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      signal: abortSignal,
-    };
-    if (token != undefined) {
-      // @ts-expect-error
-      options.headers["x-auth"] = token.token;
-      // @ts-expect-error
-      options.headers["x-timestamp"] = Math.floor(Date.now() / 1000);
-      // @ts-expect-error
-      options.headers["x-sign"] = sha512(
-        // @ts-expect-error
-        `${options.headers["x-timestamp"]}${token.privKey}`,
-      );
-    }
+  const abortController = new AbortController();
+  const abortSignal = abortController.signal;
+  setTimeout(() => abortController.abort(), 5000);
 
-    if (method != "GET") {
-      options.body = JSON.stringify(body);
-    }
+  const options: RequestInit = {
+    method: method,
+    signal: abortSignal,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
 
-    const url_complete = `${constraints.SERVER_URL}${url}`;
+  if (token != undefined && token.token != undefined) {
+    // @ts-ignore
+    options.headers["x-auth"] = token.token;
+    // @ts-ignore
+    options.headers["x-timestamp"] = Math.floor(Date.now() / 1000);
+    // @ts-ignore
+    options.headers["x-sign"] = sha512(`${options.headers["x-timestamp"]}${token.privKey}`);
+  }
+  if (category != null) {
+    // @ts-ignore
+    options.headers["x-category"] = category.categoryId;
+    // @ts-ignore
+    options.headers["x-major"] = category.majorId;
+  }
 
-    return fetch(url_complete, options)
-      .catch(err => {
-        console.warn(method, url_complete, body, err);
-        if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
-          return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
-        }
+  if (method != "GET") {
+    options.body = JSON.stringify(body);
+  }
 
-        return Promise.reject("서버와 통신 중 오류가 발생했습니다.");
-      })
-      .then(res => {
-        // 특수 처리 (로그인 실패시에도 401이 들어옴)
-        // 로그인의 경우는 바로 내려 보냄
-        if (url == "/user/login") {
-          return res.json();
-        }
+  const url_complete = `${constraints.SERVER_URL}${url}`;
+  return fetch(url_complete, options)
+    .catch(err => {
+      console.log(err);
+      if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
+        return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
+      }
 
-        if (res.status === 401) {
-          // 로그인 안됨 (unauthorized)
-          UserStorage.removeUserData();
-          return Promise.reject("로그인 토큰이 만료되었습니다.");
-        }
-
+      return Promise.reject("서버와 통신 중 오류가 발생했습니다.");
+    })
+    .then(res => {
+      // 특수 처리 (로그인 실패시에도 401이 들어옴)
+      // 로그인의 경우는 바로 내려 보냄
+      if (url == "/user/login") {
+        console.info(res);
         return res.json();
-      })
-      .then(json => {
-        console.log(url_complete, json);
-        const resp = json as T;
+      }
 
-        if (json.status !== true && resp.success === false) {
-          console.error(method, url_complete, body, resp.errors ?? json.message);
-          return Promise.reject(resp.errors ?? json.message);
-        }
+      if (res.status === 401) {
+        res.json().then(j => console.error(j));
+        // 로그인 안됨 (unauthorized)
+        UserStorage.removeUserData();
+        return Promise.reject("로그인 토큰이 만료되었습니다.");
+      }
 
-        return Promise.resolve(resp);
-      })
-      .finally(() => {
-        if (showLoadingOverlay) UIStore.hideLoadingOverlay();
-      });
-  });
+      return res.json();
+    })
+    .then(json => {
+      const resp = json as T;
+
+      if (json.status !== true && resp.success === false) {
+        return Promise.reject(resp.errors ?? json.message);
+      }
+
+      return Promise.resolve(resp);
+    })
+    .finally(() => {
+      if (showLoadingOverlay) UIStore.hideLoadingOverlay();
+    });
 }
 
 function GetAPI<T extends statusResponse = dataResponse>(
   url: string,
+  params?: Record<string, string | number>,
   showLoadingOverlay: boolean = false,
 ) {
+  if (params != undefined) {
+    const urlParams = new URLSearchParams();
+    Object.keys(params)
+      .filter(key => params[key] !== undefined)
+      .forEach(key => urlParams.append(key, params[key].toString()));
+
+    url = `${url}?${urlParams.toString()}`;
+  }
+
   return fetchAPI<T>("GET", url, undefined, showLoadingOverlay);
 }
 function PostAPI<T extends statusResponse = dataResponse>(
@@ -119,6 +134,13 @@ function DeleteAPI<T extends statusResponse = dataResponse>(
 ) {
   return fetchAPI<T>("DELETE", url, body, showLoadingOverlay);
 }
+function PatchAPI<T extends statusResponse = dataResponse>(
+  url: string,
+  body?: object,
+  showLoadingOverlay: boolean = false,
+) {
+  return fetchAPI<T>("PATCH", url, body, showLoadingOverlay);
+}
 
 export type { dataResponse, statusResponse };
-export { DeleteAPI, GetAPI, PostAPI, PutAPI };
+export { DeleteAPI, GetAPI, PatchAPI, PostAPI, PutAPI };

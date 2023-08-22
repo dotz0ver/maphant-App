@@ -1,71 +1,115 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { listArticle } from "../../Api/board";
+import { listArticle, listHotBoard, listVoteBoard } from "../../Api/board";
+import { Container } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
-import { BoardArticle, BoardType } from "../../types/Board";
+import { BoardArticle, BoardType, HotBoard, VoteBoard } from "../../types/Board";
 import ScrollList from "./ScrollList";
-// const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const QnABoard: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
   const params = useRoute().params as { boardType: BoardType };
   const boardType = params?.boardType;
   const [boardData, setboardData] = useState<BoardArticle[]>([]);
-
+  const [hotBoard, setHotBoard] = useState<HotBoard[]>([]);
+  const [voteBoard, setVoteBoard] = useState<VoteBoard[]>([]);
   useEffect(() => {
-    listArticle(boardType)
+    listHotBoard(boardType.id, 1, 50)
       .then(data => {
-        if (data.data) setboardData(data.data as BoardArticle[]);
+        if (data.data) setHotBoard(data.data.list as HotBoard[]);
       })
       .catch(err => console.log(err));
   }, []);
+
+  useEffect(() => {
+    listArticle(boardType.id, 1, 10, 50, 1)
+      .then(data => {
+        if (data.data) setboardData(data.data.list as BoardArticle[]);
+      })
+      .catch(err => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    listVoteBoard(boardType.id, 1, 50)
+      .then(data => {
+        if (data.data) setVoteBoard(data.data.list as VoteBoard[]);
+      })
+      .catch(err => console.log(err));
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.total}>
-        <View style={styles.hHead}>
-          <Text style={styles.hFont}>
-            {" "}
-            HOT 게시글
-            <MaterialCommunityIcons name="fire" size={25} color="black" />
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate("DetailList" as never);
-            }}
-          >
-            <Text style={styles.detail}>더보기</Text>
-          </TouchableOpacity>
+    <Container style={styles.container}>
+      <ScrollView>
+        <View style={styles.total}>
+          <View style={styles.hHead}>
+            <Text style={styles.hFont}>
+              {" "}
+              HOT 게시글
+              <MaterialCommunityIcons name="fire" size={25} color="black" />
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("DetailList", { boardType: boardType });
+              }}
+            >
+              <Text style={styles.detail}>더보기</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView horizontal>
+            {hotBoard.map(board => (
+              <View key={board.boardId} style={styles.content}>
+                <ScrollList post={board} boardType={boardType} />
+              </View>
+            ))}
+          </ScrollView>
         </View>
-        <ScrollView horizontal>
-          {boardData.map(board => (
-            <View key={board.boardId} style={styles.content}>
-              <ScrollList post={board} boardType={boardType} />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-      <View>
-        <TextInput placeholder="aiwebfjiabdnjk"></TextInput>
-      </View>
-      <View style={styles.total}>
-        <View style={styles.hHead}>
-          <Text style={styles.hFont}> 최신 게시글</Text>
-          <TouchableOpacity>
-            <Text style={styles.detail}>더보기</Text>
-          </TouchableOpacity>
+        <View style={styles.total}>
+          <View style={styles.hHead}>
+            <Text style={styles.hFont}> 최신 게시글</Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("DetailList", { boardType: boardType });
+              }}
+            >
+              <Text style={styles.detail}>더보기</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView horizontal>
+            {boardData.map(board => (
+              <View key={board.boardId} style={styles.content}>
+                <ScrollList post={board} boardType={boardType} />
+              </View>
+            ))}
+          </ScrollView>
         </View>
-        <ScrollView horizontal>
-          {boardData.map(board => (
-            <View key={board.boardId} style={styles.content}>
-              <ScrollList post={board} boardType={boardType} />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-    </View>
+        <View style={styles.total}>
+          <View style={styles.hHead}>
+            <Text style={styles.hFont}>
+              {" "}
+              투표 게시글
+              <MaterialCommunityIcons name="cloud" size={25} color="black" />
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("DetailList", { boardType: boardType });
+              }}
+            >
+              <Text style={styles.detail}>더보기</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView horizontal>
+            {voteBoard.map(board => (
+              <View key={board.boardId} style={styles.content}>
+                <ScrollList post={board} boardType={boardType} />
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      </ScrollView>
+    </Container>
   );
 };
 

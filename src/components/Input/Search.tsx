@@ -3,34 +3,39 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TAutocompleteDropdownItem } from "react-native-autocomplete-dropdown";
 
-import { dataResponse } from "../../Api/fetchAPI";
-
+type Props = {
+  field: unknown;
+  form: unknown;
+  list: TAutocompleteDropdownItem[];
+  onChangeText: (text: string) => void;
+};
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Search = (props: any) => {
+const Search: React.FC<Props> = props => {
   const [search, setSearch] = useState("");
-  const [data, setData] = useState<string[]>([]);
-  const [filteredData, setFilteredData] = useState<TAutocompleteDropdownItem[]>([]);
   const handleItemClick = (itemTitle: string) => {
     setSearch(itemTitle);
     setFieldValue(name, itemTitle);
   };
 
   const {
+    // @ts-ignore
     field: { name, onBlur, value },
+    // @ts-ignore
     form: { setFieldValue, setFieldTouched },
     list,
+    onChangeText,
     ...inputProps
   } = props;
 
-  useEffect(() => {
-    props.list().then((res: dataResponse) => {
-      setData(res.data as string[]);
-    });
-  }, [list]);
+  const onChangeTextInterceptor = (text: string) => {
+    setSearch(text);
+    setFieldValue(name, text);
+
+    if (onChangeText) onChangeText(text);
+  };
 
   useEffect(() => {
     setFieldValue(name, search);
-    updateSearch(search);
   }, [search]);
 
   const sliceResults = useCallback((items: TAutocompleteDropdownItem[]) => {
@@ -44,45 +49,27 @@ const Search = (props: any) => {
     return slicedItems;
   }, []);
 
-  const updateSearch = useCallback(
-    (text: string) => {
-      // 검색어를 이용하여 데이터를 필터링
-      const filteredItems = data.filter(item => item.includes(text));
-      const formattedData = filteredItems
-        .map((item, index) => ({
-          id: index.toString(),
-          title: item.toString(),
-        }))
-        .flat();
-      setFilteredData(formattedData);
-    },
-    [data],
+  const renderItemGroup = (itemGroup: TAutocompleteDropdownItem[]) => (
+    <View style={styles.itemContainer}>
+      {itemGroup.map(item => (
+        <TouchableOpacity
+          key={item.id}
+          style={styles.itemContainer}
+          onPress={() => (item && item.title ? handleItemClick(item.title) : null)}
+        >
+          <Text style={styles.itemText}>{item.title}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
   );
 
-  const renderItemGroup = useCallback(
-    (itemGroup: TAutocompleteDropdownItem[]) => (
-      <View style={styles.itemContainer}>
-        {itemGroup.map(item => (
-          <TouchableOpacity
-            key={item.id}
-            style={styles.itemContainer}
-            onPress={() => (item && item.title ? handleItemClick(item.title) : null)}
-          >
-            <Text style={styles.itemText}>{item.title}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-    ),
-    [],
-  );
+  const inputPropsPassed: Props = props;
+  inputPropsPassed.onChangeText = onChangeTextInterceptor;
 
   return (
     <View style={styles.container}>
       <SearchBar
-        onChangeText={text => {
-          setFieldValue(name, text);
-          setSearch(text);
-        }}
+        onChangeText={onChangeTextInterceptor}
         value={value}
         onBlur={() => {
           onBlur(name);
@@ -95,7 +82,7 @@ const Search = (props: any) => {
 
       <FlatList
         keyboardShouldPersistTaps="handled"
-        data={sliceResults(filteredData)}
+        data={sliceResults(list)}
         keyExtractor={(item, index) => index.toString()}
         horizontal
         pagingEnabled // 이 옵션을 추가하여 3개씩 스크롤되도록 설정합니다.
@@ -106,28 +93,6 @@ const Search = (props: any) => {
           </ScrollView>
         )}
       />
-
-      {/* <AutocompleteDropdown
-        clearOnFocus={false}
-        closeOnBlur={true}
-        closeOnSubmit={false}
-        initialValue={selectedItem}
-        onSelectItem={(item: TAutocompleteDropdownItem | null) => {
-          if (item) {
-            setSearch(item.title || "");
-            setSelectedItem(item.title || "");
-            setFieldValue(name, item.title || "");
-          } else {
-            setSearch("");
-            setSelectedItem("");
-            setFieldValue(name, "");
-          }
-        }}
-        dataSet={filteredData.map((item, index) => ({
-          id: index.toString(),
-          title: item.title || "",
-        }))}
-      /> */}
     </View>
   );
 };
@@ -149,6 +114,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     padding: 20,
+
     borderBottomColor: "#ccc",
     borderBottomWidth: 1,
   },

@@ -1,124 +1,340 @@
-import React from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { Alert, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
 
-const data = [
-  {
-    id: 1,
-    name: "jingjing",
-    date: "12312.312.412.3",
-  },
-  {
-    id: 2,
-    name: "ahdjfad",
-    date: "2024.232.",
-  },
-  { id: 3, name: "지망이", date: " 2023.03,12" },
-];
+import {
+  boardComplete,
+  boardDelete,
+  bookMarkArticle,
+  DeletebookMarkArticle,
+  deleteLikeBoard,
+  getArticle,
+  insertLikePost,
+  listReportType,
+  ReportPost,
+} from "../../Api/board";
+import { Container, IconButton, Spacer, TextButton } from "../../components/common";
+import { NavigationProps } from "../../Navigator/Routes";
+import UIStore from "../../storage/UIStore";
+import UserStorage from "../../storage/UserStorage";
+import { BoardArticle, BoardPost, ReportType } from "../../types/Board";
+import { UserData } from "../../types/User";
+import { dateTimeFormat } from "./Time";
 
 const QAdetail = () => {
+  const params = useRoute().params as { id: number; preRender?: BoardArticle };
+  const { id, preRender } = params;
+
+  const [LoadingOverlay, setLoadingOverlay] = useState(false);
+
+  const [post, setPost] = useState({ board: preRender, answerList: preRender } as BoardPost);
+  const user = useSelector(UserStorage.userProfileSelector)! as UserData;
+  const navigation = useNavigation<NavigationProps>();
+  const [likeCnt, setLikeCnt] = useState(0);
+  const [reportModal, setReportModal] = useState(false);
+  const [reportType, setReportType] = React.useState<ReportType[]>([]);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  const handleDelete = async () => {
+    try {
+      const response = await boardDelete(id);
+      navigation.goBack();
+
+      console.log("삭제 성공", response);
+    } catch (error) {
+      alert(error);
+    }
+  };
+  // console.log(boardData)
+  console.log(post);
+  console.log(user);
+  const handleUpdate = () => {
+    navigation.navigate("editPost", { post: post });
+  };
+
+  useEffect(() => {
+    getArticle(id)
+      .then(data => {
+        setPost(data.data);
+      })
+      .catch(err => Alert.alert(err));
+  }, []);
+
+  useEffect(() => {
+    if (post.board === undefined && !LoadingOverlay) {
+      setLoadingOverlay(true);
+      UIStore.showLoadingOverlay();
+    }
+    if (post.board !== undefined && LoadingOverlay) {
+      setLoadingOverlay(false);
+      UIStore.hideLoadingOverlay();
+    }
+
+    if (post.board === undefined) return;
+    setLikeCnt(post.board.likeCnt);
+  }, [post, LoadingOverlay]);
+
+  function alert() {
+    Alert.alert("삭제", "삭제하시겠습니까?", [
+      {
+        text: "아니오",
+        style: "cancel",
+      },
+      {
+        text: "네",
+        onPress: () => {
+          handleDelete();
+        },
+      },
+    ]);
+  }
+
+  const handleComplete = (answerId: number) => {
+    boardComplete(id, answerId)
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        Alert.alert(error);
+      });
+  };
+
+  const handleLike = async () => {
+    try {
+      const response = await insertLikePost(id);
+      post.board.isLike = true;
+      setLikeCnt(likeCnt + 1);
+      console.log(response);
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
+  const likeDelete = async () => {
+    try {
+      const response = await deleteLikeBoard(id);
+      post.board.isLike = false;
+      setLikeCnt(likeCnt - 1);
+      console.log("취소", response);
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
+
+  const handleBookmarkToggle = async (board_id: number) => {
+    try {
+      if (isBookmarked) {
+        await DeletebookMarkArticle(board_id);
+        Alert.alert("북마크 삭제되었습니다.");
+      } else {
+        await bookMarkArticle(id);
+        Alert.alert("북마크 추가되었습니다.");
+      }
+      setIsBookmarked(!isBookmarked); // 토글 상태 업데이트
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
+
+  // if (post.board === undefined) {
+  //   return <></>;
+  // }
+
+  useEffect(() => {
+    listReportType()
+      .then(data => {
+        setReportType(data.data as ReportType[]);
+      })
+      .catch(err => console.log(err));
+  }, []);
+
+  const handleReport = async (board_id: number, reportType_id: number) => {
+    try {
+      const response = await ReportPost(board_id, reportType_id);
+      Alert.alert("신고되었습니다.");
+      console.log(response);
+    } catch (error) {
+      Alert.alert(error);
+    }
+  };
+  if (post.board === undefined) {
+    return <></>;
+  }
+
+  const ModalWrapper = () => {
+    const [selectedReportIndex, setSelectedReportIndex] = React.useState<number>();
+
+    return (
+      <Modal animationType="fade" transparent={true} visible={reportModal}>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalContainer}>
+            {reportType.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  setSelectedReportIndex(index);
+                }}
+                style={[
+                  styles.reportItem,
+                  selectedReportIndex === index && styles.selectedReportItem,
+                  // 선택된 항목의 경우 스타일 적용
+                ]}
+              >
+                <Text style={styles.reportContent}>{item.name}</Text>
+              </TouchableOpacity>
+            ))}
+            <View style={styles.modalBtnDirection}>
+              <TextButton style={styles.modalConfirmBtn} onPress={() => setReportModal(false)}>
+                취소
+              </TextButton>
+              <TextButton
+                style={styles.modalConfirmBtn}
+                onPress={() => {
+                  // 수정된 닉네임 server 전송
+                  if (selectedReportIndex !== null) {
+                    console.log(selectedReportIndex);
+                    handleReport(id, selectedReportIndex);
+                  }
+                }}
+              >
+                신고
+              </TextButton>
+            </View>
+            <Spacer size={5} />
+          </View>
+        </View>
+      </Modal>
+    );
+  };
+
+  // const report =
   return (
-    <View style={styles.container}>
-      <View style={styles.nameBox}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={styles.headername}>Q&A게시판</Text>
-          <TouchableOpacity style={{ marginTop: 5, marginRight: 10 }}>
-            <Icon name="bell-o" size={30} />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <Text>software</Text>
-        </View>
-      </View>
+    <Container style={styles.container}>
+      <ModalWrapper />
       <View style={styles.qainfoBox}>
         <View>
           <View style={styles.qaheader}>
             <View>
               <View>
-                <Text style={styles.nickname}>jingjing</Text>
+                <Text style={styles.nickname}>{post.board.userId}</Text>
               </View>
               <View>
-                <Text style={styles.date}>2023.04.13</Text>
+                <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
               </View>
             </View>
+            {/* {user.id === post.board.userId && ( */}
             <View style={styles.qaButtonBox}>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.btext}>수정</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.btext}>삭제</Text>
-              </TouchableOpacity>
+              <TextButton style={styles.button} fontColor={"#000"} onPress={handleUpdate}>
+                수정
+              </TextButton>
+              <TextButton style={styles.button} fontColor={"#000"} onPress={alert}>
+                삭제
+              </TextButton>
             </View>
+            {/* )} */}
           </View>
           <View style={styles.qacontextBox}>
             <View>
-              <Text style={styles.qatitle}>안녕하세요 인사드립낟,</Text>
+              <Text style={styles.qatitle}>{post.board.title}</Text>
             </View>
             <View>
-              <Text style={styles.qacontext}>라고할뻔~</Text>
+              <Text style={styles.qacontext}>{post.board.body}</Text>
             </View>
           </View>
         </View>
 
         <View style={styles.cbutBox}>
-          <TouchableOpacity style={styles.commonbutton}>
-            <Icon name="thumbs-o-up" color="skyblue" />
-            <Text style={styles.btext}>추천</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.commonbutton}>
-            <Icon name="star-o" color="yellow" />
-            <Text style={styles.btext}>스크랩</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.commonbutton}>
-            <Icon name="exclamation-circle" color="red" />
-            <Text style={styles.btext}>신고</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.commonbutton}>
-            <Icon name="comment-o" color="purple" />
-            <Text style={styles.btext}>답변</Text>
-          </TouchableOpacity>
+          <IconButton
+            name="thumbs-o-up"
+            color="skyblue"
+            onPress={() => {
+              post.board.isLike ? likeDelete() : handleLike();
+            }}
+          >
+            {likeCnt === 0 ? "추천" : likeCnt}
+          </IconButton>
+          <IconButton name="star-o" color="orange" onPress={() => handleBookmarkToggle(id)}>
+            북마크
+          </IconButton>
+          {/* {modal()} */}
+          <IconButton
+            name="exclamation-circle"
+            color="red"
+            onPress={() => {
+              setReportModal(true);
+            }}
+          >
+            신고
+          </IconButton>
+
+          <IconButton
+            name="comment-o"
+            color="purple"
+            onPress={() => navigation.navigate("QA_answer", { id: id })}
+          >
+            답변
+          </IconButton>
         </View>
       </View>
       <ScrollView style={styles.scroll}>
-        {data.map(answer => (
-          <View style={styles.answerBox} key={answer.id}>
-            <View style={styles.line} />
-            <View style={{ margin: "3%" }}>
-              <View style={styles.answerheader}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.answername}>{answer.name}</Text>
-                  <Text style={styles.answerdate}>{answer.date}</Text>
+        {!post.answerList ? (
+          <></>
+        ) : (
+          post.answerList.map(answer => (
+            <View style={styles.answerBox} key={answer.id}>
+              <View style={styles.line} />
+              <View style={{ margin: "3%" }}>
+                <View style={styles.answerheader}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.answername}>{answer.userId}</Text>
+                    <Text style={styles.answerdate}>{dateTimeFormat(answer.createdAt)}</Text>
+                  </View>
+                  <View style={styles.cbutBox}>
+                    <IconButton
+                      name="lightbulb-o"
+                      color="purple"
+                      onPress={() => {
+                        handleComplete(answer.id);
+                      }}
+                    >
+                      채택
+                    </IconButton>
+                    <IconButton
+                      name="thumbs-o-up"
+                      color="skyblue"
+                      onPress={() => {
+                        answer.isLike ? likeDelete() : handleLike();
+                      }}
+                    >
+                      {likeCnt === 0 ? "추천" : likeCnt}
+                    </IconButton>
+                    <IconButton
+                      name="exclamation-circle"
+                      color="red"
+                      onPress={() => {
+                        setReportModal(true);
+                      }}
+                    >
+                      신고
+                    </IconButton>
+                  </View>
                 </View>
-                <View style={styles.cbutBox}>
-                  <TouchableOpacity style={styles.commonbutton}>
-                    <Icon name="lightbulb-o" color="purple" />
-                    <Text style={styles.btext}>해결</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.commonbutton}>
-                    <Icon name="thumbs-o-up" color="skyblue" />
-                    <Text style={styles.btext}>추천</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.commonbutton}>
-                    <Icon name="exclamation-circle" color="red" />
-                    <Text style={styles.btext}>신고</Text>
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("BoardDetail", { id: answer.id })}
+                >
+                  <View style={styles.answercontext}>
+                    <Text style={styles.qatitle}>{answer.title}</Text>
+                    <Text numberOfLines={3} style={styles.qacontext}>
+                      {answer.body}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-              // onPress={() => navigation.navigate("QA_answer")}
-              >
-                <View style={styles.answercontext}>
-                  <Text style={styles.qatitle}>제목</Text>
-                  <Text numberOfLines={3} style={styles.qacontext}>
-                    내용dfadsfadsdfasdfasdfasdfefhidfhiwhjhuuadjfabdsjfuehjvjabdsuvheujadbvjbadsjvbjdsbhbah
-                  </Text>
-                </View>
-              </TouchableOpacity>
             </View>
-          </View>
-        ))}
+          ))
+        )}
       </ScrollView>
-    </View>
+    </Container>
   );
 };
 
@@ -174,25 +390,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 9,
     paddingHorizontal: 15,
-    margin: 5,
     backgroundColor: "#f2f2f2",
   },
 
   cbutBox: {
     flexDirection: "row",
-  },
-  commonbutton: {
-    borderRadius: 4,
-    paddingVertical: 5,
-    paddingHorizontal: 11,
-    marginHorizontal: 5,
-    backgroundColor: "#f2f2f2",
-    flexDirection: "row",
-  },
-
-  btext: {
-    marginLeft: 5,
-    fontSize: 9,
   },
   answerBox: {
     flexDirection: "row",
@@ -225,6 +427,42 @@ const styles = StyleSheet.create({
   // },
   scroll: {
     height: "30%",
+  },
+  modalBackground: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    flex: 0.8,
+    borderRadius: 25,
+    backgroundColor: "#ffffff",
+    padding: 15,
+  },
+  modalInput: {
+    width: "100%",
+    paddingVertical: "5%",
+    backgroundColor: "#D8E1EC",
+  },
+  modalBtnDirection: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  modalConfirmBtn: {
+    width: "45%",
+  },
+  reportContent: {
+    // backgroundColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  reportItem: {
+    padding: 8,
+  },
+  selectedReportItem: {
+    backgroundColor: "#5299EB",
   },
 });
 

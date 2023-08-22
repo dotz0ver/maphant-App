@@ -15,7 +15,7 @@ const Routes: RouteType[] = [
 
 export type NavigationProp = {
   home: undefined;
-  alarm: undefined;
+  alarm: number;
 };
 
 export default Routes;

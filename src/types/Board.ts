@@ -1,42 +1,103 @@
-type BoardPost = {
-  id: number;
-  parent_id: number;
-  category_id: number;
-  user_id: number;
-  type_id: string;
+type BoardArticleBase = {
   title: string;
   body: string;
-  state: string;
-  is_hide: number;
-  is_complete: number;
-  is_anonymous: number;
-  created_at: Date;
-  modified_at: Date;
-  comment_cnt: number;
-  like_cnt: number;
-  report_cnt: number;
-  image_url: string;
-};
-
-type BoardArticle = {
-  boardId: number;
-  title: string;
+  userNickname?: string;
+  likeCnt: number;
+  commentCnt: number;
   createdAt: string;
   modifiedAt: string;
-  userNickname: string;
-  commentCnt: number;
-  likeCnt: number;
   isAnonymous: number;
   isHide: number;
-  isLike: number | null;
+  isLike: boolean;
 };
 
-type BoardType =
-  | "자유 게시판"
-  | "지식 게시판"
-  | "QnA 게시판"
-  | "취업 / 진로 게시판"
-  | "홍보 게시판"
-  | "취미 게시판";
+//게시판 읽기
+type BoardArticle = {
+  categoryId: number;
+  imagesUrl?: string[];
+  tagNames?: string[];
+  isComplete: number;
+  parentId?: number;
+  reportCnt: number;
+  state: string;
+  typeId: string;
+  userId: number;
+  boardId: number;
+  id: number;
+  tags?: hashTagType[];
+} & BoardArticleBase;
 
-export type { BoardArticle, BoardPost, BoardType };
+//글 읽기
+type BoardPost = {
+  board: BoardArticle;
+  answerList?: BoardArticle[]; //질문 게시판 답변
+};
+
+type BoardListItem = {
+  boardId: number;
+  userNickname: string;
+} & BoardArticleBase;
+
+type HotBoard = {
+  boardId: number;
+  userId: number;
+  userNickname: string;
+  typeId: number;
+  type: string;
+} & BoardArticleBase;
+
+type VoteBoard = {
+  boardId: number;
+  userId: number;
+  userNickname: string;
+  typeId: number;
+  type: string;
+} & BoardArticleBase;
+
+type BoardType = {
+  id: number;
+  name: string;
+  postCnt: number;
+};
+
+type SortType = {
+  id: number;
+  name: string;
+};
+
+type ReportType = {
+  id: number;
+  name: string;
+};
+
+type commentType = {
+  id: number;
+  user_id: number;
+  nickname: string;
+  board_id: number;
+  parent_id: number;
+  body: string;
+  is_anonymous: number;
+  created_at: string;
+  like_cnt: number;
+  comment_id: number;
+  time: string;
+};
+
+type hashTagType = {
+  id: number;
+  name: string;
+};
+export type {
+  BoardArticle,
+  BoardArticleBase,
+  BoardListItem,
+  BoardPost,
+  BoardType,
+  commentType,
+  hashTagType,
+  HotBoard,
+  ReportType,
+  SortType,
+  VoteBoard,
+};

@@ -7,7 +7,6 @@ type storabeTypes = string | boolean | number | object | Array<unknown>;
 class Storage {
   async write(key: string, value: storabeTypes): Promise<void> {
     const val = JSON.stringify(value);
-    console.log(value);
 
     if (key.startsWith("SECURE_STORAGE")) {
       return await SecureStorage.write(key, val);

@@ -1,14 +1,14 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet, Text,View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-import { BoardArticle, BoardType } from "../../types/Board";
+import { BoardArticle, BoardType, HotBoard } from "../../types/Board";
 
 export default function ({
   post,
   boardType,
 }: {
-  post: BoardArticle;
+  post: BoardArticle | HotBoard;
   boardType: BoardType;
 }): JSX.Element {
   switch (boardType) {
@@ -17,18 +17,18 @@ export default function ({
   }
 }
 
-function PostSummary(post: BoardArticle): JSX.Element {
+function PostSummary(post: BoardArticle | HotBoard): JSX.Element {
   return (
     <>
       <View style={styles.head}>
         <Text style={styles.title}>{post.title}</Text>
         <Text style={styles.userName}>{post.userNickname}</Text>
       </View>
-      {/* <View>
+      <View>
         <Text style={styles.content} numberOfLines={1}>
           {post.body}
         </Text>
-      </View> */}
+      </View>
       <View style={styles.head}>
         {post.likeCnt > 0 ? (
           <>
@@ -77,10 +77,10 @@ function dateToString(date: string): string {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     paddingHorizontal: 20,
     paddingVertical: 10,
+    margintop: 10,
   },
   head: {
     flexDirection: "row",

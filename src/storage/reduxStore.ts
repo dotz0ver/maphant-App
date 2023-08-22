@@ -7,12 +7,34 @@ type userStateType = {
   privKey: string | null | undefined;
   profile: UserData | null | undefined;
 };
-
+// type ChatState = {
+//   room: { id: number; chatlist: string[] }[];
+// };
+// const defaultChatState: ChatState = {
+//   room: [],
+// };
 const defaultUserState: userStateType = {
   token: undefined,
   privKey: undefined,
   profile: undefined,
 };
+const ChatSlice = createSlice({
+  name: "roomname",
+  // @ts-ignore
+  initialState: {},
+  reducers: {
+    addChat: (state, action) => {
+      const { chatid, content }: { chatid: number; content: string } = action.payload;
+
+      const Chatroom = state[chatid];
+      if (Chatroom == undefined) {
+        state[chatid] = [];
+      }
+      state[chatid].push(content);
+      return state;
+    },
+  },
+});
 const userSlice = createSlice({
   name: "user",
   initialState: defaultUserState,
@@ -47,13 +69,13 @@ const userSlice = createSlice({
     },
   },
 });
-const defaultUserCategoryState: UserCategory | undefined = undefined;
+
 const userCategorySlice = createSlice({
   name: "userCategory",
-  initialState: defaultUserCategoryState,
+  initialState: null as UserCategory | null,
   reducers: {
     setUserCategory: (state, action) => {
-      return action.payload;
+      return action.payload as UserCategory;
     },
   },
 });
@@ -69,10 +91,12 @@ const LoadingUISlice = createSlice({
 const rootReducer = combineReducers({
   user: userSlice.reducer,
   LoadingUI: LoadingUISlice.reducer,
+  userCategory: userCategorySlice.reducer,
+  ChatSlice: ChatSlice.reducer,
 });
 export type RootState = ReturnType<typeof rootReducer>;
 
 export default configureStore({
   reducer: rootReducer,
 });
-export { LoadingUISlice, userCategorySlice, userSlice };
+export { ChatSlice, LoadingUISlice, userCategorySlice, userSlice };

@@ -1,8 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Keyboard,
   StyleSheet,
@@ -13,31 +12,56 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { listBoardType } from "../../Api/board";
 import SearchBar from "../../components/Input/searchbar";
 import { NavigationProps } from "../../Navigator/Routes";
 import { BoardType } from "../../types/Board";
 
 const BoardList = () => {
+  const [boardTypeData, setboardTypeData] = React.useState<BoardType[]>([]);
   const navigation = useNavigation<NavigationProps>();
+
+  const splitIntoRows = (data: BoardType[], itemsPerRow: number) => {
+    const rows = [];
+    for (let i = 0; i < 6; i += itemsPerRow) {
+      rows.push(data.slice(i, i + itemsPerRow));
+    }
+    return rows;
+  };
+
+  const boardTypeDataRows = splitIntoRows(boardTypeData, 3);
+
+  useEffect(() => {
+    listBoardType()
+      .then(data => {
+        setboardTypeData(data.data as BoardType[]);
+      })
+      .catch(err => alert(err));
+  }, []);
 
   const BoardNavigateBtn: React.FC<{ boardType: BoardType }> = ({ boardType }) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("DetailList", { boardType: boardType });
+          navigation.navigate("QnABoard", { boardType: boardType });
         }}
       >
-        <View style={styles.boardList}>
+        <View style={styles.boardList} key={boardType.id}>
           <Feather name="message-square" size={24} color="black" />
-          <Text>{boardType}</Text>
+          <Text>{boardType.name}</Text>
         </View>
       </TouchableOpacity>
     );
   };
 
   const changePage = () => {
-    navigation.navigate("List" as never);
+    navigation.navigate("HotBoard" as never);
   };
+
+  const changeVotePage = () => {
+    navigation.navigate("VoteBoard" as never);
+  };
+
   const touch = () => {
     console.log("??????");
   };
@@ -66,25 +90,13 @@ const BoardList = () => {
             <SearchBar />
 
             <View style={styles.board}>
-              <View style={{ flexDirection: "row" }}>
-                <BoardNavigateBtn boardType="자유 게시판" />
-                <BoardNavigateBtn boardType="지식 게시판" />
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("QnABoard" as never);
-                  }}
-                >
-                  <View style={styles.boardList}>
-                    <Feather name="message-square" size={24} color="black" />
-                    <Text>QnA 게시판</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <BoardNavigateBtn boardType="취업 / 진로 게시판" />
-                <BoardNavigateBtn boardType="취미 게시판" />
-                <BoardNavigateBtn boardType="홍보 게시판" />
-              </View>
+              {boardTypeDataRows.map((rowData, rowIndex) => (
+                <View key={rowIndex} style={{ flexDirection: "row" }}>
+                  {rowData.map(boardType => (
+                    <BoardNavigateBtn key={boardType.id} boardType={boardType} />
+                  ))}
+                </View>
+              ))}
             </View>
             <View style={styles.hotStudy}>
               <View>
@@ -94,11 +106,13 @@ const BoardList = () => {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity onPress={changePage}>
-                <Text>
-                  스터디 <Entypo name="open-book" size={24} color="black" />
-                </Text>
-              </TouchableOpacity>
+              <View>
+                <TouchableOpacity onPress={changeVotePage} style={{ marginBottom: 30 }}>
+                  <Text>
+                    투표 게시글 <MaterialCommunityIcons name="fire" size={24} color="black" />{" "}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -146,13 +160,11 @@ const styles = StyleSheet.create({
     flex: 4,
     alignItems: "center",
     justifyContent: "center",
-    // borderTopColor: "black",
     borderTopWidth: 1,
     borderBottomWidth: 1,
     padding: 35,
   },
   boardList: {
-    // flex: 3,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "skyblue",
@@ -161,8 +173,6 @@ const styles = StyleSheet.create({
   },
   hotStudy: {
     flex: 2,
-    // flexDirection: "row",
-    // alignItems: "center",
     justifyContent: "center",
     backgroundColor: "skyblue",
     margin: 20,
