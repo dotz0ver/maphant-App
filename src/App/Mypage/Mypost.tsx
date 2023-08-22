@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { GetAPI } from "../../Api/fetchAPI";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
+import { TextThemed } from "../../components/common";
 
 export default function (): JSX.Element {
   switch (0) {
@@ -78,7 +79,7 @@ function MyPost(): JSX.Element {
             <Pressable onPress={() => detailContent(post)}>
               <View style={styles.container}>
                 <View style={styles.head}>
-                  <Text>{post.type}</Text>
+                  <TextThemed>{post.type}</TextThemed>
                 </View>
                 <View
                   style={{
@@ -87,18 +88,18 @@ function MyPost(): JSX.Element {
                   }}
                 >
                   <View>
-                    <Text style={styles.title}>{post.title}</Text>
+                    <TextThemed style={styles.title}>{post.title}</TextThemed>
                   </View>
                 </View>
 
                 <View style={styles.head}>
                   <Feather name="thumbs-up" size={13} color="tomato" />
-                  <Text style={styles.good}>&#9; {post.like_cnt}</Text>
+                  <TextThemed style={styles.good}>&#9; {post.like_cnt}</TextThemed>
                   <View style={{ flex: 1 }}></View>
                   <FontAwesome name="comment-o" size={13} color="blue" />
-                  <Text style={styles.comment}>&#9; {post.comment_cnt}</Text>
+                  <TextThemed style={styles.comment}>&#9; {post.comment_cnt}</TextThemed>
                   <Text style={{ justifyContent: "flex-end", fontSize: 10 }}></Text>
-                  <Text style={styles.time}>{dateToString(post.created_at)}</Text>
+                  <TextThemed style={styles.time}>{dateToString(post.created_at)}</TextThemed>
                 </View>
               </View>
             </Pressable>
@@ -149,7 +150,6 @@ function dateToString(date: string): string {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     paddingHorizontal: 20,
     paddingVertical: 10,
     margintop: 10,

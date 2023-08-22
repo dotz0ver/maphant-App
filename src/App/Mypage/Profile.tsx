@@ -22,7 +22,7 @@ const Profile: React.FC = () => {
     // 불러온 id로 상대방 프로필, 소개글, 닉네임을 받아옴
     readProfile(params.id)
       .then(res => {
-        setOtherUserProfileList(res.data);
+        setOtherUserProfileList(res.data as OtherUserData[]);
       })
       .catch(e => console.log(e));
     //채팅방 목록 불러오기
@@ -45,20 +45,18 @@ const Profile: React.FC = () => {
   };
   const changePage = (item: string) => {
     if (item.toString() == "작성한 게시글 목록") {
-      console.log(navigation.getState());
       navigation.navigate("WriteBoard", { id: params.id } as never);
     }
     if (item.toString() == "작성한 댓글 목록") {
       navigation.navigate("WriteContent", { id: params.id } as never);
     }
   };
-  console.log("여기다", otherUserProfileList);
 
   function OtherProfile() {
     return (
       <Container
         style={{
-          flex: 2,
+          flex: 3,
           backgroundColor: "rgba(82, 153, 235, 0.3)",
           borderRadius: 8,
           alignItems: "center",
@@ -79,25 +77,36 @@ const Profile: React.FC = () => {
             borderRadius={100}
             style={{ borderColor: "#5299EB", borderWidth: 3, borderRadius: 100 }}
           />
-        </Container>
-        <Container style={{ alignItems: "center", flex: 1 }}>
-          <Container>
+          <Container style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 25, fontWeight: "bold" }}>
               {otherUserProfileList[0]?.user_nickname}
             </Text>
           </Container>
-          <Container>
-            <Text style={{ color: "gray" }}>User department</Text>
-          </Container>
+        </Container>
+        <Container style={{ alignItems: "center" }}>
           <Container style={{}}>
             {
               // 소개글 유무로 내용을 정함
-              otherUserProfileList.body ? (
-                <Text>{otherUserProfileList.body}</Text>
+              otherUserProfileList[0]?.body ? (
+                <Text>{otherUserProfileList[0]?.body}</Text>
               ) : (
-                <Text>안녕하세요 여기는 소개글 자리입니다! </Text>
+                <Text> 소개글을 남겨보세요!</Text>
               )
             }
+            <View
+              style={{
+                borderBottomColor: "#5299EB",
+                borderBottomWidth: 2,
+                marginVertical: 5,
+              }}
+            />
+          </Container>
+          <Container>
+            {otherUserProfileList.map((major, index) => (
+              <Text key={index} style={{ color: "gray" }}>
+                {major.major_name}
+              </Text>
+            ))}
           </Container>
         </Container>
         <Container style={{ flex: 1 }}>
@@ -117,9 +126,9 @@ const Profile: React.FC = () => {
     return (
       <Container
         style={{
-          backgroundColor: "rgba(82, 153, 235, 0.3)",
+          backgroundColor: "rgba(82, 153, 235, 0.5)",
           borderRadius: 8,
-          marginTop: 10,
+          marginTop: 20,
           flex: 1,
         }}
       >
@@ -129,40 +138,38 @@ const Profile: React.FC = () => {
             <Text style={{ fontWeight: "bold", fontSize: 16, marginLeft: 10 }}>계정 기능</Text>
           </Container>
           <Container style={{}}>
-            {["작성한 게시글 목록", "작성한 댓글 목록", "좋아요한 글 목록"].map(
-              (item, index, array) => (
-                <>
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => {
-                      changePage(item);
-                    }}
-                    style={{
-                      padding: 10,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Container>
-                      <Text style={{ fontWeight: "600" }}>{item}</Text>
-                    </Container>
-                    <Container>
-                      <FontAwesome name="angle-right" color="#5299EB" />
-                    </Container>
-                  </TouchableOpacity>
-                  {index !== array.length - 1 && (
-                    <View style={{ width: "100%", height: 1, backgroundColor: "#5299EB" }} />
-                  )}
-                </>
-              ),
-            )}
+            {["작성한 게시글 목록", "작성한 댓글 목록"].map((item, index, array) => (
+              <>
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => {
+                    changePage(item);
+                  }}
+                  style={{
+                    padding: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Container>
+                    <Text style={{ fontWeight: "600" }}>{item}</Text>
+                  </Container>
+                  <Container>
+                    <FontAwesome name="angle-right" color="#5299EB" />
+                  </Container>
+                </TouchableOpacity>
+                {index !== array.length - 1 && (
+                  <View style={{ width: "100%", height: 1, backgroundColor: "#5299EB" }} />
+                )}
+              </>
+            ))}
           </Container>
         </Container>
       </Container>
     );
   }
   return (
-    <SafeAreaView style={{ display: "flex", flex: 1, padding: 20 }}>
+    <SafeAreaView style={{ display: "flex", flex: 1, padding: 20, shadowColor: "black" }}>
       <OtherProfile />
       <Otherfunction />
     </SafeAreaView>
