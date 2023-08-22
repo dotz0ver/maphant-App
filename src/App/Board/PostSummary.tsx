@@ -3,6 +3,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { BoardArticle, BoardType, HotBoard } from "../../types/Board";
+import { TextThemed } from "../../components/common";
 
 export default function ({
   post,
@@ -21,21 +22,19 @@ function PostSummary(post: BoardArticle | HotBoard): JSX.Element {
   return (
     <>
       <View style={styles.head}>
-        <Text style={styles.title} numberOfLines={1}>
-          {post.title}
-        </Text>
-        <Text style={styles.userName}>{post.userNickname}</Text>
+        <TextThemed style={styles.title}>{post.title}</TextThemed>
+        <TextThemed style={styles.userName}>{post.userNickname}</TextThemed>
       </View>
       <View>
-        <Text style={styles.content} numberOfLines={1}>
+        <TextThemed style={styles.content} numberOfLines={1}>
           {post.body}
-        </Text>
+        </TextThemed>
       </View>
       <View style={styles.head}>
         {post.likeCnt > 0 ? (
           <>
             <Feather name="thumbs-up" size={13} color="tomato" />
-            <Text style={styles.good}>&#9; {post.likeCnt}</Text>
+            <TextThemed style={styles.good}>&#9; {post.likeCnt}</TextThemed>
           </>
         ) : post.commentCnt == 0 ? (
           <View style={{ flex: 1 }}></View>
@@ -43,12 +42,12 @@ function PostSummary(post: BoardArticle | HotBoard): JSX.Element {
         {post.commentCnt > 0 ? (
           <>
             <FontAwesome name="comment-o" size={13} color="blue" />
-            <Text style={styles.comment}>&#9; {post.commentCnt}</Text>
+            <TextThemed style={styles.comment}>&#9; {post.commentCnt}</TextThemed>
           </>
         ) : null}
-        <Text style={{ justifyContent: "flex-end", fontSize: 10 }}>
+        <TextThemed style={{ justifyContent: "flex-end", fontSize: 10 }}>
           {dateToString(post.createdAt)}
-        </Text>
+        </TextThemed>
       </View>
     </>
   );
@@ -79,7 +78,6 @@ function dateToString(date: string): string {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
     paddingHorizontal: 20,
     paddingVertical: 10,
     margintop: 10,

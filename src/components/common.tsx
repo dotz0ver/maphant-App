@@ -305,6 +305,7 @@ const Input: React.FC<InputProps> = props => {
   };
   const style_text: StyleProp<TextStyle> = {
     fontSize: 16,
+    color: theme.colors.text,
   };
 
   return (

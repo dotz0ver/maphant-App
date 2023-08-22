@@ -5,7 +5,7 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 import { useSelector } from "react-redux";
 
 import { DeleteAPI, GetAPI, PostAPI } from "../../Api/fetchAPI";
-import { TextButton } from "../../components/common";
+import { TextButton, TextThemed } from "../../components/common";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
 
@@ -81,7 +81,7 @@ function Mycomment(): JSX.Element {
               <View style={styles.container}>
                 <View style={styles.head}>
                   <View style={{ marginRight: 20 }}>
-                    <Text>{comment.board_type}</Text>
+                    <TextThemed>{comment.board_type}</TextThemed>
                   </View>
                 </View>
 
@@ -92,7 +92,7 @@ function Mycomment(): JSX.Element {
                   }}
                 >
                   <View>
-                    <Text style={styles.title}>{comment.board_title}</Text>
+                    <TextThemed style={styles.title}>{comment.board_title}</TextThemed>
                   </View>
                 </View>
                 <View
@@ -101,18 +101,18 @@ function Mycomment(): JSX.Element {
                   }}
                 >
                   <View>
-                    <Text style={styles.comment}>내 댓글 : {comment.body}</Text>
+                    <TextThemed style={styles.comment}>내 댓글 : {comment.body}</TextThemed>
                   </View>
                 </View>
 
                 <View style={styles.head}>
                   <Feather name="thumbs-up" size={13} color="tomato" />
-                  <Text style={styles.good}>&#9; {comment.like_cnt}</Text>
+                  <TextThemed style={styles.good}>&#9; {comment.like_cnt}</TextThemed>
                   <View style={{ flex: 1 }}></View>
                   {/* <FontAwesome name="comment-o" size={13} color="blue" />
                   <Text style={styles.comment}>&#9; {comments.comment_cnt}</Text> */}
-                  <Text style={{ justifyContent: "flex-end", fontSize: 10 }}></Text>
-                  <Text style={styles.time}>{dateToString(comment.created_at)}</Text>
+                  <TextThemed style={{ justifyContent: "flex-end", fontSize: 10 }}></TextThemed>
+                  <TextThemed style={styles.time}>{dateToString(comment.created_at)}</TextThemed>
                 </View>
               </View>
             </Pressable>
@@ -121,15 +121,15 @@ function Mycomment(): JSX.Element {
         ))}
         {(isLoading || isComplete) && (
           <View style={styles.loadingContainer}>
-            <Text style={styles.loadingText}>
+            <TextThemed style={styles.loadingText}>
               {isLoading ? (
                 <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                  <ActivityIndicator size="large" color="#0000ff" />
+                  <ActivityIndicator size="large" color="rgba(82, 153, 235,0.7)" />
                 </View>
               ) : (
                 "이전 댓글이 없습니다."
               )}
-            </Text>
+            </TextThemed>
           </View>
         )}
       </ScrollView>
@@ -163,7 +163,6 @@ function dateToString(date: string): string {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     paddingHorizontal: 20,
     paddingVertical: 10,
     margintop: 10,

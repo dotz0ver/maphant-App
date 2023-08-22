@@ -15,7 +15,6 @@ import {
   View,
 } from "react-native";
 import { useSelector } from "react-redux";
-
 import {
   boardClosePoll,
   boardDelete,
@@ -37,7 +36,14 @@ import {
   ReportComment,
   ReportPost,
 } from "../../Api/board";
-import { Container, IconButton, Input, Spacer, TextButton } from "../../components/common";
+import {
+  Container,
+  IconButton,
+  Input,
+  Spacer,
+  TextButton,
+  TextThemed,
+} from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
@@ -369,7 +375,7 @@ const BoardDetail = () => {
                   // 선택된 항목의 경우 스타일 적용
                 ]}
               >
-                <Text style={styles.reportContent}>{item.name}</Text>
+                <TextThemed style={styles.reportContent}>{item.name}</TextThemed>
               </TouchableOpacity>
             ))}
             <View style={styles.modalBtnDirection}>
@@ -491,10 +497,10 @@ const BoardDetail = () => {
               </View>
               <View style={styles.contextBox}>
                 <View>
-                  <Text style={styles.title}>{post.board.title}</Text>
+                  <TextThemed style={styles.title}>{post.board.title}</TextThemed>
                 </View>
                 <View>
-                  <Text style={styles.context}>{post.board.body}</Text>
+                  <TextThemed style={styles.context}>{post.board.body}</TextThemed>
                   {post.board.imagesUrl != null && (
                     <ScrollView horizontal={true} style={styles.imageContainer}>
                       {post.board.imagesUrl.map((imageUrl, index) => (
@@ -662,7 +668,7 @@ const BoardDetail = () => {
                           }}
                           disabled={comment.is_anonymous == 1}
                         >
-                          <Text style={styles.commentName}>{comment.nickname}</Text>
+                          <TextThemed style={styles.commentName}>{comment.nickname}</TextThemed>
                         </TouchableOpacity>
                         <Text style={styles.commentDate}>{dateFormat(comment.created_at)}</Text>
                       </View>
@@ -683,7 +689,7 @@ const BoardDetail = () => {
                     </View>
                     <View style={{ paddingHorizontal: 10 }}>
                       <View style={styles.commentContext}>
-                        <Text style={styles.context}>{comment.body}</Text>
+                        <TextThemed style={styles.context}>{comment.body}</TextThemed>
                       </View>
                       <View style={styles.cbutBox}>
                         <IconButton
@@ -729,7 +735,9 @@ const BoardDetail = () => {
                             <View style={{ margin: "2%" }}>
                               <View style={styles.commentHeader}>
                                 <View style={{ flexDirection: "column" }}>
-                                  <Text style={styles.commentName}>{reply.nickname}</Text>
+                                  <TextThemed style={styles.commentName}>
+                                    {reply.nickname}
+                                  </TextThemed>
                                   <Text style={styles.commentDate}>
                                     {dateFormat(reply.created_at)}
                                   </Text>
@@ -764,7 +772,7 @@ const BoardDetail = () => {
                                 </View>
                               </View>
                               <View style={styles.commentContext}>
-                                <Text style={styles.context}>{reply.body}</Text>
+                                <TextThemed style={styles.context}>{reply.body}</TextThemed>
                               </View>
                             </View>
                           </View>
@@ -779,31 +787,25 @@ const BoardDetail = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-        style={{
-          // borderTopColor: "#aaa",
-          // borderBottomColor: "#aaa",
-          // borderTopWidth: 1,
-          // borderBottomWidth: 1,
-          backgroundColor: "white",
-        }}
+        style={{ padding: 5, borderRadius: 5 }}
       >
         <View
           style={{
-            padding: 5,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            marginBottom: 5,
           }}
         >
           <Checkbox
-            style={{ marginHorizontal: 3 }}
+            style={{ marginRight: 5 }}
             value={checkList.includes("anonymous")}
             onValueChange={isChecked => {
               check("anonymous", isChecked);
               setIsAnonymous(isChecked ? 1 : 0);
             }}
           ></Checkbox>
-          <Text style={{ marginHorizontal: 3 }}>익명</Text>
+          <TextThemed>익명</TextThemed>
           <Input
             style={{
               flex: 1,
@@ -818,7 +820,8 @@ const BoardDetail = () => {
             onChangeText={checked ? setReplyBody : setBody}
           ></Input>
           <TextButton
-            fontSize={13}
+                      fontSize={13}
+
             onPress={() => {
               checked ? handleReplyInput(parent_id, replyBody) : handlecommentInsert();
             }}
@@ -834,7 +837,6 @@ const BoardDetail = () => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    backgroundColor: "white",
     flex: 1,
   },
   nameBox: {
@@ -922,10 +924,9 @@ const styles = StyleSheet.create({
   // },
   scroll: {
     height: "30%",
-    backgroundColor: "white",
   },
   replyBox: {
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "rgba(82, 153, 235, 0.3)",
     borderRadius: 8,
     padding: 10,
     marginBottom: 10,

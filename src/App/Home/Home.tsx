@@ -3,12 +3,13 @@ import { BottomSheetFlatList, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
-  ActivityIndicator,
+  Dimensions,
   Image,
   ImageSourcePropType,
   NativeScrollEvent,
   NativeSyntheticEvent,
   Pressable,
+  RefreshControl,
   ScrollView,
   StyleProp,
   StyleSheet,
@@ -37,34 +38,38 @@ interface Tags {
 // type homeScreenProps = NativeStackScreenProps
 
 const Home: React.FC = () => {
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
-
   const [text, setText] = useState<string>("");
   const [info, setInfo] = useState<[ImageSourcePropType, () => void][]>([
-    [
-      require("../../../assets/image1.jpg"),
-      () => {
-        alert("1");
-      },
-    ],
-    [
-      require("../../../assets/image2.jpg"),
-      () => {
-        alert("2");
-      },
-    ],
-    [
-      require("../../../assets/image3.jpg"),
-      () => {
-        alert("3");
-      },
-    ],
-  ]); // 들어갈 컨텐츠
+    [require("../../../assets/image1.jpg"), () => {}],
+    [require("../../../assets/image2.jpg"), () => {}],
+    [require("../../../assets/image3.jpg"), () => {}],
+  ]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [key, setKey] = useState(0);
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+  };
+
+  useEffect(() => {
+    if (refreshing) {
+      const timeout = setTimeout(() => {
+        setRefreshing(false);
+        setKey(prevKey => prevKey + 1);
+      }, 1000);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [refreshing]);
 
   return (
     //view화면
-    <Container isForceTopSafeArea={true} paddingHorizontal={0}>
-      <ScrollView>
+    <Container key={key} isForceTopSafeArea={true} paddingHorizontal={0}>
+      <ScrollView
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+      >
         <MainHeader />
         <SearchBar text={text} onTextChanged={setText} />
         <Carousel imageList={info} />
@@ -88,11 +93,13 @@ const MainHeader: React.FC = () => {
       alignItems: "center",
       paddingLeft: "3%",
       paddingRight: "3%",
+      //backgroundColor: "skyblue",
     },
     iconContainer: {
       flex: 1,
       flexDirection: "row",
       justifyContent: "flex-end",
+      //backgroundColor: "red",
     },
   });
 
@@ -147,11 +154,12 @@ const HeaderCategory: React.FC = () => {
   const currentCategory = useSelector(UserStorage.userCategorySelector);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [userCategoryList, setUserCategoryList] = useState<UserCategory[]>([]);
+  const [categoryChanged, setCategoryChanged] = useState<boolean>(false);
   const profile = useSelector(UserStorage.userProfileSelector);
 
   const styles = StyleSheet.create({
     titleText: {
-      fontSize: 35,
+      fontSize: 25,
       marginLeft: "4%",
       fontWeight: "bold",
     },
@@ -165,19 +173,31 @@ const HeaderCategory: React.FC = () => {
   const onCategoryPress = useCallback((item: UserCategory) => {
     UserStorage.setUserCategoryCurrent(item);
     bottomSheetRef.current?.dismiss();
+    setCategoryChanged(!categoryChanged);
   }, []);
 
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
+
   const renderItem = useCallback(({ item }: { item: UserCategory }) => {
-    const style_text: StyleProp<TextStyle> = {
+    const style_text: StyleProp<TextThemedStyle> = {
       fontSize: 16,
       fontWeight: Object.is(item, currentCategory) ? "bold" : "normal",
     };
 
     return (
-      <TouchableOpacity onPress={() => onCategoryPress(item)}>
-        <Text style={style_text}>
+      <TouchableOpacity
+        onPress={() => {
+          onCategoryPress(item);
+        }}
+      >
+        <TextThemed style={style_text}>
           {item.majorName} ({item.categoryName})
-        </Text>
+        </TextThemed>
       </TouchableOpacity>
     );
   }, []);
@@ -195,14 +215,20 @@ const HeaderCategory: React.FC = () => {
       }}
     >
       <TextThemed style={styles.titleText}>
-        {currentCategory?.majorName ?? "학과정보 없음"}
+        {truncateText(currentCategory?.majorName ?? "학과정보 없음", 12)}
       </TextThemed>
       <BottomSheetModal
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         style={{ paddingHorizontal: 16 }}
       >
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>계열·학과를 선택해 주세요</Text>
+        <TextThemed style={{ fontSize: 20, fontWeight: "bold" }}>
+          계열·학과를 선택해 주세요
+        </TextThemed>
+        <TextThemed style={{ fontSize: 15, fontWeight: "bold" }}>현재 선택된 계열·학과</TextThemed>
+        <TextThemed style={{ fontSize: 15, fontWeight: "bold" }}>
+          {"->"} {currentCategory?.majorName} · ({currentCategory?.categoryName})
+        </TextThemed>
         <Spacer size={20} />
         <BottomSheetFlatList
           data={userCategoryList}
@@ -224,9 +250,10 @@ const SearchBar: React.FC<{ text: string; onTextChanged: (text: string) => void 
       justifyContent: "center",
     },
     searchBox: {
-      flex: 1,
+      width: "90%",
+      height: 40,
       flexDirection: "row",
-      marginTop: "2.5%",
+      marginTop: "1.5%",
       marginBottom: "2.5%",
       marginLeft: "5%",
       marginRight: "5%",
@@ -416,7 +443,7 @@ const TodaysHot: React.FC = () => {
     <View>
       <View style={styles.todaysHotTitleBox}>
         <TextThemed style={styles.todaysHotTitleText}> 🔥오늘의</TextThemed>
-        <Text
+        <TextThemed
           style={{
             fontSize: 25,
             fontWeight: "bold",
@@ -425,7 +452,7 @@ const TodaysHot: React.FC = () => {
         >
           {" "}
           HOT
-        </Text>
+        </TextThemed>
         <TextThemed style={styles.todaysHotTitleText}> 키워드🔥</TextThemed>
       </View>
 
@@ -444,22 +471,31 @@ const TodaysHot: React.FC = () => {
 
 const HotPost: React.FC = () => {
   const [hotPost, setHotPost] = useState<BoardArticle[]>([]);
+  const category = useSelector(UserStorage.userCategorySelector);
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    GetAPI("/board/hot?&page=1&recordSize=2").then(res => {
-      console.log(res);
-      if (res.success === false) {
-        console.log(res.errors);
-      } else {
-        setHotPost(res.data.list);
-      }
-    });
-  }, []);
+    GetAPI("/board/hot?&page=1&recordSize=2")
+      .then(res => {
+        if (res.success === true) {
+          setHotPost(res.data.list);
+        }
+      })
+      .catch(err => {
+        alert("서버 오류 \n" + err);
+      });
+  }, [category]);
+
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "...";
+    }
+    return text;
+  };
 
   const detailContent = (boardId: number) => {
-    navigation.navigate("BoardDetail", { id: boardId });
+    navigation.navigate("게시판", { screen: "BoardDetail", params: { id: boardId } });
   };
 
   const styles = StyleSheet.create({
@@ -490,13 +526,15 @@ const HotPost: React.FC = () => {
       height: 143,
       marginLeft: 20,
       marginRight: 20,
-      // backgroundColor: "skyblue",
+      backgroundColor: "yellow",
     },
     nameAndtypeBox: {
       flexDirection: "row",
       alignItems: "center",
+      width: "100%",
       paddingLeft: 10,
       paddingRight: 10,
+      backgroundColor: "skyblue",
     },
     profileImage: {
       width: 30,
@@ -506,7 +544,9 @@ const HotPost: React.FC = () => {
       borderWidth: 1,
     },
     textContainer: {
+      width: "100%",
       flexDirection: "row",
+      justifyContent: "space-between",
     },
 
     userNickname: {
@@ -517,11 +557,11 @@ const HotPost: React.FC = () => {
     boardType: {
       fontSize: 15,
       color: "gray",
-      marginLeft: "60%",
+      paddingRight: 40,
     },
     titleAndbodyBox: {
       height: 60,
-      // backgroundColor: "skyblue",
+      //backgroundColor: "skyblue",
     },
     postTitle: {
       fontSize: 15,
@@ -532,9 +572,19 @@ const HotPost: React.FC = () => {
       marginLeft: 5,
       // backgroundColor: "pink",
     },
+    tagsBox: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingLeft: 5,
+    },
+    tags: {
+      fontSize: 15,
+      color: "red",
+      // backgroundColor: "skyblue",
+    },
     timeAndlikeAndcomment: {
       flexDirection: "row",
-      // backgroundColor: "pink",
+      backgroundColor: "pink",
       alignItems: "center",
       height: 25,
     },
@@ -551,19 +601,40 @@ const HotPost: React.FC = () => {
       marginLeft: 4,
     },
     timeTextWrapper: {
+      width: "30%",
       flexDirection: "row",
+      justifyContent: "flex-end",
       alignItems: "center",
-      marginLeft: "60%",
+      backgroundColor: "skyblue",
+    },
+    noHotPostBox: {
+      height: 290,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    noHotPostText: {
+      fontSize: 20,
+      fontWeight: "bold",
     },
   });
 
   if (hotPost.length === 0) {
-    return <View />;
+    return (
+      <View style={styles.hotPostBox}>
+        <View style={styles.boxTitleBox}>
+          <TextThemed style={styles.boxTitle}>Hot 게시글</TextThemed>
+        </View>
+        <View style={styles.line}></View>
+        <View style={styles.noHotPostBox}>
+          <TextThemed style={styles.noHotPostText}>게시글이 존재하지 않습니다</TextThemed>
+        </View>
+      </View>
+    );
   }
   return (
     <View style={styles.hotPostBox}>
       <View style={styles.boxTitleBox}>
-        <Text style={styles.boxTitle}>Hot 게시글</Text>
+        <TextThemed style={styles.boxTitle}>Hot 게시글</TextThemed>
       </View>
 
       <View style={styles.line}></View>
@@ -577,30 +648,48 @@ const HotPost: React.FC = () => {
             style={styles.profileImage}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.userNickname}>{hotPost[0].userNickname}</Text>
-            <Text style={styles.boardType}>{hotPost[0].type}</Text>
+            <TextThemed style={styles.userNickname}>{hotPost[0].userNickname}</TextThemed>
+
+            <TextThemed style={styles.boardType}>{hotPost[0].type}</TextThemed>
           </View>
         </View>
 
         <Spacer size={5} />
         <View style={styles.titleAndbodyBox}>
-          <Text style={styles.postTitle}>{hotPost[0].title}</Text>
+          <TextThemed style={styles.postTitle}>{truncateText(hotPost[0].title, 20)}</TextThemed>
           <Spacer size={2} />
-          <Text style={styles.postBody}>{hotPost[0].body}</Text>
+          <TextThemed style={styles.postBody}>{truncateText(hotPost[0].body, 25)}</TextThemed>
+          <Spacer size={4} />
+          <View style={styles.tagsBox}>
+            {hotPost[0].tags && hotPost[0].tags.length > 0 ? (
+              hotPost[0].tags.slice(0, 3).map((tag, index) => (
+                <TextThemed style={styles.tags} key={index}>
+                  #{tag}{" "}
+                </TextThemed>
+              ))
+            ) : (
+              <View />
+            )}
+            {hotPost[0].tags && hotPost[0].tags.length > 3 && (
+              <TextThemed style={styles.tags}>...</TextThemed>
+            )}
+          </View>
         </View>
 
         <Spacer size={5} />
         <View style={styles.timeAndlikeAndcomment}>
-          <View style={styles.likeTextWrapper}>
-            <Feather name="thumbs-up" size={13} color="tomato" />
-            <Text style={styles.iconText}>{hotPost[0].likeCnt}</Text>
-          </View>
-          <View style={styles.commentTextWrapper}>
-            <FontAwesome name="comment-o" size={13} color="blue" />
-            <Text style={styles.iconText}>{hotPost[0].commentCnt}</Text>
+          <View style={{ width: "70%", flexDirection: "row" }}>
+            <View style={styles.likeTextWrapper}>
+              <Feather name="thumbs-up" size={13} color="tomato" />
+              <TextThemed style={styles.iconText}>{hotPost[0].likeCnt}</TextThemed>
+            </View>
+            <View style={styles.commentTextWrapper}>
+              <FontAwesome name="comment-o" size={13} color="blue" />
+              <TextThemed style={styles.iconText}>{hotPost[0].commentCnt}</TextThemed>
+            </View>
           </View>
           <View style={styles.timeTextWrapper}>
-            <Text>{dateToString(hotPost[0].createdAt)}</Text>
+            <TextThemed>{dateToString(hotPost[0].createdAt)}</TextThemed>
           </View>
         </View>
       </Pressable>
@@ -615,30 +704,45 @@ const HotPost: React.FC = () => {
             style={styles.profileImage}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.userNickname}>{hotPost[1].userNickname}</Text>
-            <Text style={styles.boardType}>{hotPost[1].type}</Text>
+            <TextThemed style={styles.userNickname}>{hotPost[1].userNickname}</TextThemed>
+            <TextThemed style={styles.boardType}>{hotPost[1].type}</TextThemed>
           </View>
         </View>
 
         <Spacer size={5} />
         <View style={styles.titleAndbodyBox}>
-          <Text style={styles.postTitle}>{hotPost[1].title}</Text>
+          <TextThemed style={styles.postTitle}>{truncateText(hotPost[1].title, 20)}</TextThemed>
           <Spacer size={2} />
-          <Text style={styles.postBody}>{hotPost[1].body}</Text>
+          <TextThemed style={styles.postBody}>{truncateText(hotPost[1].body, 25)}</TextThemed>
+          <Spacer size={4} />
+          <View style={styles.tagsBox}>
+            {hotPost[0].tags && hotPost[0].tags.length > 0 ? (
+              hotPost[0].tags.slice(0, 3).map((tag, index) => (
+                <TextThemed style={styles.tags} key={index}>
+                  #{tag}{" "}
+                </TextThemed>
+              ))
+            ) : (
+              <View />
+            )}
+            {hotPost[0].tags && hotPost[0].tags.length > 3 && (
+              <TextThemed style={styles.tags}>...</TextThemed>
+            )}
+          </View>
         </View>
 
         <Spacer size={5} />
         <View style={styles.timeAndlikeAndcomment}>
           <View style={styles.likeTextWrapper}>
             <Feather name="thumbs-up" size={13} color="tomato" />
-            <Text style={styles.iconText}>{hotPost[1].likeCnt}</Text>
+            <TextThemed style={styles.iconText}>{hotPost[1].likeCnt}</TextThemed>
           </View>
           <View style={styles.commentTextWrapper}>
             <FontAwesome name="comment-o" size={13} color="blue" />
-            <Text style={styles.iconText}>{hotPost[1].commentCnt}</Text>
+            <TextThemed style={styles.iconText}>{hotPost[1].commentCnt}</TextThemed>
           </View>
           <View style={styles.timeTextWrapper}>
-            <Text>{dateToString(hotPost[1].createdAt)}</Text>
+            <TextThemed>{dateToString(hotPost[1].createdAt)}</TextThemed>
           </View>
         </View>
       </Pressable>
