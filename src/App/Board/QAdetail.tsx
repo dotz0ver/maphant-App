@@ -217,22 +217,22 @@ const QAdetail = () => {
           <View style={styles.qaheader}>
             <View>
               <View>
-                <Text style={styles.nickname}>{post.board.userId}</Text>
+                <Text style={styles.nickname}>{post.board.userNickname}</Text>
               </View>
               <View>
                 <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
               </View>
             </View>
-            {/* {user.id === post.board.userId && ( */}
-            <View style={styles.qaButtonBox}>
-              <TextButton style={styles.button} fontColor={"#000"} onPress={handleUpdate}>
-                수정
-              </TextButton>
-              <TextButton style={styles.button} fontColor={"#000"} onPress={alert}>
-                삭제
-              </TextButton>
-            </View>
-            {/* )} */}
+            {post.board.isMyBoard && (
+              <View style={styles.qaButtonBox}>
+                <TextButton style={styles.button} fontColor={"#000"} onPress={handleUpdate}>
+                  수정
+                </TextButton>
+                <TextButton style={styles.button} fontColor={"#000"} onPress={alert}>
+                  삭제
+                </TextButton>
+              </View>
+            )}
           </View>
           <View style={styles.qacontextBox}>
             <View>
@@ -287,7 +287,7 @@ const QAdetail = () => {
               <View style={{ margin: "3%" }}>
                 <View style={styles.answerheader}>
                   <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.answername}>{answer.userId}</Text>
+                    <Text style={styles.answername}>{answer.userNickname}</Text>
                     <Text style={styles.answerdate}>{dateTimeFormat(answer.createdAt)}</Text>
                   </View>
                   <View style={styles.cbutBox}>

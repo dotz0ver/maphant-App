@@ -17,7 +17,7 @@ const QnABoard: React.FC = () => {
   const [hotBoard, setHotBoard] = useState<HotBoard[]>([]);
   const [voteBoard, setVoteBoard] = useState<VoteBoard[]>([]);
   useEffect(() => {
-    listHotBoard(boardType.id, 1, 50)
+    listHotBoard(boardType.id, 1, 5)
       .then(data => {
         if (data.data) setHotBoard(data.data.list as HotBoard[]);
       })
@@ -25,7 +25,7 @@ const QnABoard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    listArticle(boardType.id, 1, 10, 50, 1)
+    listArticle(boardType.id, 1, 10, 5, 1)
       .then(data => {
         if (data.data) setboardData(data.data.list as BoardArticle[]);
       })
@@ -33,7 +33,7 @@ const QnABoard: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    listVoteBoard(boardType.id, 1, 50)
+    listVoteBoard(boardType.id, 1, 5)
       .then(data => {
         if (data.data) setVoteBoard(data.data.list as VoteBoard[]);
       })
@@ -52,7 +52,7 @@ const QnABoard: React.FC = () => {
             </TextThemed>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("DetailList", { boardType: boardType });
+                navigation.navigate("HotDetailList", { boardType: boardType });
               }}
             >
               <Text style={styles.detail}>더보기</Text>
@@ -94,7 +94,7 @@ const QnABoard: React.FC = () => {
             </TextThemed>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("DetailList", { boardType: boardType });
+                navigation.navigate("VoteDetailList", { boardType: boardType });
               }}
             >
               <Text style={styles.detail}>더보기</Text>

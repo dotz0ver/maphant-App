@@ -42,7 +42,6 @@ const QA_answer: React.FC = () => {
         //hashtags.join(" "),
       );
       console.log(response);
-      // console.log(categoryId, userId, boardType.id, title, body);
       navigation.goBack();
     } catch (error) {
       console.error("게시물 작성 오류", error);

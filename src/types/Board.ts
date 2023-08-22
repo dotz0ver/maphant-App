@@ -21,7 +21,6 @@ type BoardArticle = {
   reportCnt: number;
   state: string;
   typeId: string;
-  userId: number;
   boardId: number;
   id: number;
   tags?: hashTagType[];
@@ -29,7 +28,8 @@ type BoardArticle = {
 
 //글 읽기
 type BoardPost = {
-  board: BoardArticle;
+  board: { isMyBoard: boolean; bookmark: boolean } & BoardArticle;
+  poll: PollInfo;
   answerList?: BoardArticle[]; //질문 게시판 답변
 };
 
@@ -54,6 +54,20 @@ type VoteBoard = {
   type: string;
 } & BoardArticleBase;
 
+type PollInfo = {
+  title: string;
+  expireDate: string;
+  state: number;
+  selectedOptionId: number;
+  pollOptions: PollOptions[];
+};
+
+type PollOptions = {
+  optionId: number;
+  optionName: string;
+  optionCount: number;
+};
+
 type BoardType = {
   id: number;
   name: string;
@@ -72,8 +86,8 @@ type ReportType = {
 
 type commentType = {
   id: number;
-  user_id: number;
   nickname: string;
+  user_id: number;  
   board_id: number;
   parent_id: number;
   body: string;
@@ -82,6 +96,7 @@ type commentType = {
   like_cnt: number;
   comment_id: number;
   time: string;
+  isMyComment: boolean;
 };
 
 type hashTagType = {
@@ -97,6 +112,8 @@ export type {
   commentType,
   hashTagType,
   HotBoard,
+  PollInfo,
+  PollOptions,
   ReportType,
   SortType,
   VoteBoard,

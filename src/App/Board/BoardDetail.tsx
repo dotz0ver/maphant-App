@@ -15,9 +15,10 @@ import {
   View,
 } from "react-native";
 import { useSelector } from "react-redux";
+
 import {
+  boardClosePoll,
   boardDelete,
-  boardEdit,
   bookMarkArticle,
   commentArticle,
   commentDelete,
@@ -26,9 +27,13 @@ import {
   commentReply,
   DeletebookMarkArticle,
   deleteLikeBoard,
+  deletePoll,
+  doPoll,
   getArticle,
+  getPollId,
   insertLikePost,
   listReportType,
+  pollStatus,
   ReportComment,
   ReportPost,
 } from "../../Api/board";
@@ -41,6 +46,7 @@ import {
   TextThemed,
 } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
+import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticleBase, BoardPost, commentType, ReportType } from "../../types/Board";
 import { UserData } from "../../types/User";
@@ -49,11 +55,13 @@ import { dateFormat, dateTimeFormat } from "./Time";
 const BoardDetail = () => {
   const params = useRoute().params as { id: number; preRender?: BoardArticleBase };
   const { id, preRender } = params;
+  const navigation = useNavigation<NavigationProps>();
+
   console.log("아이디", id);
   const [comments, setComments] = useState<commentType[]>([]);
   const [replies, setReplies] = useState<commentType[]>([]);
-  const [post, setPost] = useState({ board: {} } as BoardPost);
-  // const [post, setPost] = useState({ board: preRender } as BoardPost);
+  // const [post, setPost] = useState({ board: {} } as BoardPost);
+  const [post, setPost] = useState({ board: preRender } as BoardPost);
   const [body, setBody] = useState("");
   const [replyBody, setReplyBody] = useState<string>("");
   const [isAnonymous, setIsAnonymous] = useState(0);
@@ -66,28 +74,57 @@ const BoardDetail = () => {
   const [reportType, setReportType] = React.useState<ReportType[]>([]);
   const [commentId, setCommentId] = useState<number>(0);
   const user = useSelector(UserStorage.userProfileSelector)! as UserData;
-  const navigation = useNavigation<NavigationProps>();
   const [commentLength, setCommentLength] = useState<number>(0);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [LoadingOverlay, setLoadingOverlay] = useState(false);
+  const [pollOptionId, setPollOptionId] = useState<number>(0);
+  const [poll_id, setPoll_id] = useState<number>(0);
+  const [pollResults, setPollResults] = useState({});
+  const [maxPollOptionId, setMaxPollOptionId] = useState(null);
+  const [results, setResults] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    if (post.board === undefined && !LoadingOverlay) {
+      setLoadingOverlay(true);
+      UIStore.showLoadingOverlay();
+    }
+    if (post.board !== undefined && LoadingOverlay) {
+      setLoadingOverlay(false);
+      UIStore.hideLoadingOverlay();
+    }
+
+    if (post.board === undefined) return;
+    setLikeCnt(post.board.likeCnt);
+  }, [post, LoadingOverlay]);
 
   const handleDelete = async () => {
     try {
       const response = await boardDelete(id);
+      handlePollDelete();
       navigation.goBack();
 
-      console.log("삭제 성공", response);
+      console.log(response);
     } catch (error) {
       alert(error);
     }
   };
   // console.log(boardData);
-  const handleUpdate = async () => {
+  const handleUpdate = () => {
+    navigation.navigate("editPost", { post: post });
+  };
+
+  const handlePollDelete = () => {
+    deletePoll(id).then(data => {
+      console.log("투표", data);
+    });
+  };
+
+  const handlePollClose = async () => {
     try {
-      const response = await boardEdit(id, post.board.title, post.board.body, post.board.isHide);
-      console.log("수정 가능", response);
-      navigation.navigate("editPost", { post: post, boardType: boardData });
+      const response = await boardClosePoll(id);
+      console.log(response);
     } catch (error) {
-      console.error("수정 오류", error);
+      console.log("투표 마감 오류", error);
     }
   };
 
@@ -104,14 +141,13 @@ const BoardDetail = () => {
     }
   };
 
-  const handleCommentDelete = async (id: number) => {
-    try {
-      const response = await commentDelete(id);
-      console.log(response);
-      setCommentLength(commentLength - 1);
-    } catch (error) {
-      console.log("댓글 삭제 오류", error);
-    }
+  const handleCommentDelete = (id: number) => {
+    commentDelete(id)
+      .then(data => {
+        setCommentLength(commentLength - 1);
+        console.log(data);
+      })
+      .catch(error => Alert.alert(error));
   };
 
   const handleReplyInput = async (parent_id: number, body: string) => {
@@ -138,6 +174,7 @@ const BoardDetail = () => {
     getArticle(id)
       .then(data => {
         setPost(data.data as BoardPost);
+        // console.error(data.data);
       })
       .catch();
   }, []);
@@ -161,6 +198,64 @@ const BoardDetail = () => {
       })
       .catch(err => console.log(err));
   }, []);
+
+  useEffect(() => {
+    getArticle(id)
+      .then(data => {
+        setPost(data.data as BoardPost);
+        // console.error(data.data);
+      })
+      .catch();
+  }, []);
+
+  useEffect(() => {
+    getPollId(id)
+      .then(response => {
+        setPoll_id(response.data.poll_id);
+        // setPoll(poll_id);
+        pollStatus(poll_id);
+      })
+      .catch();
+  }, []);
+  // let results: Record<string, number> = {};
+
+  useEffect(() => {
+    if (post?.poll?.pollOptions) {
+      // results = {};
+      let totalPolls = 0;
+
+      post.poll.pollOptions.forEach(options => {
+        results[options.optionId] = options.optionCount;
+        totalPolls += options.optionCount;
+      });
+
+      let maxPollOptionId = null;
+      let maxVotesPercentage = 0;
+
+      for (const optionId in results) {
+        if (Object.prototype.hasOwnProperty.call(results, optionId)) {
+          const percentage = (results[optionId] / totalPolls) * 100;
+          results[optionId] = percentage;
+          if (percentage > maxVotesPercentage) {
+            maxVotesPercentage = percentage;
+            maxPollOptionId = optionId;
+          }
+        }
+      }
+
+      setPollResults(results);
+      setMaxPollOptionId(maxPollOptionId);
+    }
+  }, [post?.poll?.pollOptions]);
+
+  const handlePoll = async () => {
+    try {
+      const response = await doPoll(poll_id, pollOptionId);
+      console.log(response);
+    } catch (error) {
+      console.log("투표 오류", error);
+    }
+  };
 
   const handleCommentLike = (comment_id: number, likeCnt: number) => {
     commentLike(user.id, comment_id)
@@ -310,9 +405,9 @@ const BoardDetail = () => {
   };
   console.log(post.board);
 
-  const profileNavi = () => {
-    navigation.navigate("Profile", { id: post.board.userId } as never);
-  };
+  // const profileNavi = () => {
+  //   navigation.navigate("Profile", { id: post.board.userId } as never);
+  // };
 
   const ModalWrapperComment = ({ commentId }: { commentId: number }) => {
     const [selectedCommentReportIndex, setSelectedCommentReportIndex] = useState<number>();
@@ -374,32 +469,32 @@ const BoardDetail = () => {
               <View style={styles.header}>
                 <View>
                   <View>
-                    <TextThemed style={styles.nickname}>{post.board.userId}</TextThemed>
+                    <Text style={styles.nickname}>{post.board.userNickname}</Text>
                   </View>
                   <View>
                     <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
                   </View>
                 </View>
-                {/* {user.id === post.board.userId && ( */}
-                <View style={styles.buttonBox}>
-                  <TextButton
-                    fontColor={"#000"}
-                    style={styles.button}
-                    fontSize={13}
-                    onPress={handleUpdate}
-                  >
-                    수정
-                  </TextButton>
-                  <TextButton
-                    fontColor={"#000"}
-                    style={styles.button}
-                    fontSize={13}
-                    onPress={alert}
-                  >
-                    삭제
-                  </TextButton>
-                </View>
-                {/* )} */}
+                {post.board.isMyBoard && (
+                  <View style={styles.buttonBox}>
+                    <TextButton
+                      fontColor={"#000"}
+                      style={styles.button}
+                      fontSize={13}
+                      onPress={handleUpdate}
+                    >
+                      수정
+                    </TextButton>
+                    <TextButton
+                      fontColor={"#000"}
+                      style={styles.button}
+                      fontSize={13}
+                      onPress={alert}
+                    >
+                      삭제
+                    </TextButton>
+                  </View>
+                )}
               </View>
               <View style={styles.contextBox}>
                 <View>
@@ -418,6 +513,99 @@ const BoardDetail = () => {
                       ))}
                     </ScrollView>
                   )}
+                </View>
+                {post.poll !== null && (
+                  <View style={{ flex: 1, padding: 20 }}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                      {post.board.title !== post.poll.title ? (
+                        <Text style={{ ...styles.title, justifyContent: "flex-start" }}>
+                          {post.poll.title}
+                        </Text>
+                      ) : (
+                        <View style={{ justifyContent: "flex-start" }}></View>
+                      )}
+                      <Text style={{ fontSize: 10, color: "gray", justifyContent: "flex-end" }}>
+                        마감일 : {dateFormat(post.poll.expireDate)}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        borderColor: "gray",
+                        padding: 5,
+                        marginVertical: 3,
+                        marginBottom: 10,
+                      }}
+                    >
+                      {post.poll.pollOptions.map(options => (
+                        <TouchableOpacity
+                          style={{
+                            borderWidth: 1,
+                            borderColor: pollOptionId === options.optionId ? "#87b8f1" : "gray",
+                            padding: 10,
+                            marginVertical: 3,
+                            backgroundColor:
+                              pollOptionId === options.optionId ? "#f0f6fd" : "white",
+                            position: "relative",
+                            zIndex: 1000,
+                            width: "100%",
+                          }}
+                          key={options.optionId}
+                          onPress={() => setPollOptionId(options.optionId)}
+                          disabled={post.poll.state == 0 ? false : true}
+                        >
+                          <Text>{options.optionName}</Text>
+                          <Text style={{ fontSize: 10, color: "gray" }}>
+                            {options.optionCount}명 참여
+                          </Text>
+                          <View key={options.optionId} style={{ position: "relative" }}>
+                            <View
+                              style={{
+                                width: `${results[options.optionId]}%`,
+                                height: 20,
+                                backgroundColor: "#f0f6fd",
+                                position: "relative",
+                                top: 0,
+                                left: 0,
+                              }}
+                            ></View>
+                            <Text style={{ position: "absolute", right: 0 }}>
+                              {results[options.optionId] ? results[options.optionId].toFixed(2) : 0}
+                              %
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      ))}
+                      {post.poll.state == 1 ? (
+                        <Text style={{ fontSize: 10, color: "gray" }}>마감되었습니다.</Text>
+                      ) : null}
+                    </View>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                      {post.board.isMyBoard ? (
+                        <TextButton
+                          fontColor={"#000"}
+                          style={{ ...styles.button, justifyContent: "flex-start" }}
+                          fontSize={13}
+                          onPress={handlePollClose}
+                        >
+                          마감하기
+                        </TextButton>
+                      ) : (
+                        <View style={{ justifyContent: "flex-start" }}></View>
+                      )}
+                      {post.poll.state == 0 && (
+                        <TextButton
+                          fontColor={"#000"}
+                          style={{ ...styles.button, justifyContent: "flex-end" }}
+                          fontSize={13}
+                          onPress={handlePoll}
+                        >
+                          투표하기
+                        </TextButton>
+                      )}
+                    </View>
+                  </View>
+                )}
+                <View>
                   {post.board.tags != null && (
                     <ScrollView horizontal={true} style={styles.imageContainer}>
                       {post.board.tags.map((hash, index) => (
@@ -476,26 +664,28 @@ const BoardDetail = () => {
                       >
                         <TouchableOpacity
                           onPress={() => {
-                            profileNavi();
+                            navigation.navigate("Profile", { id: comment.user_id } as never);
                           }}
+                          disabled={comment.is_anonymous == 1}
                         >
                           <TextThemed style={styles.commentName}>{comment.nickname}</TextThemed>
                         </TouchableOpacity>
                         <Text style={styles.commentDate}>{dateFormat(comment.created_at)}</Text>
                       </View>
-
-                      <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
-                        <TextButton
-                          style={styles.button}
-                          fontSize={13}
-                          fontColor={"#000"}
-                          onPress={() => {
-                            alertComment(comment.id);
-                          }}
-                        >
-                          삭제
-                        </TextButton>
-                      </View>
+                      {comment.isMyComment && (
+                        <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
+                          <TextButton
+                            style={styles.button}
+                            fontSize={13}
+                            fontColor={"#000"}
+                            onPress={() => {
+                              alertComment(comment.id);
+                            }}
+                          >
+                            삭제
+                          </TextButton>
+                        </View>
+                      )}
                     </View>
                     <View style={{ paddingHorizontal: 10 }}>
                       <View style={styles.commentContext}>
@@ -556,9 +746,11 @@ const BoardDetail = () => {
                                   <IconButton
                                     name="thumbs-o-up"
                                     color="skyblue"
-                                    onPress={() => console.log("추천")}
+                                    onPress={() => {
+                                      handleCommentLike(reply.id, reply.like_cnt);
+                                    }}
                                   >
-                                    추천
+                                    {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
                                   </IconButton>
                                   <IconButton
                                     name="exclamation-circle"
@@ -617,15 +809,18 @@ const BoardDetail = () => {
           <Input
             style={{
               flex: 1,
+              backgroundColor: "#D8E1EC",
               paddingVertical: 15,
               paddingHorizontal: 12,
               marginRight: 5,
+              borderRadius: 50,
             }}
             placeholder={checked ? "대댓글을 작성해 주세요 ..." : "댓글을 작성해 주세요 ..."}
             value={checked ? replyBody : body}
             onChangeText={checked ? setReplyBody : setBody}
           ></Input>
           <TextButton
+            fontSize={13}
             onPress={() => {
               checked ? handleReplyInput(parent_id, replyBody) : handlecommentInsert();
             }}

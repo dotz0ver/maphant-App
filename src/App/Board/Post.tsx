@@ -132,11 +132,10 @@ const Post: React.FC = () => {
         0,
         isanonymous,
         postImageUrl.length == 0 ? undefined : postImageUrl,
-        { title: voteTitle, options: voteOptions },
+        { title: voteTitle, options: voteOptions }, // poll
         DBnewHashtags,
       );
       console.log("게시물 작성 성공", response);
-      // console.log(categoryId, userId, boardType.id, title, body);
       navigation.navigate("DetailList", { boardType: boardType });
     } catch (error) {
       console.error("게시물 작성 오류", error);
@@ -172,7 +171,7 @@ const Post: React.FC = () => {
     setVoteOptions(updatedOptions);
   };
 
-  const handleRemoveVoteOption = indexToRemove => {
+  const handleRemoveVoteOption = (indexToRemove: number) => {
     setVoteOptions(voteOptions.filter((_, index) => index !== indexToRemove));
   };
 
