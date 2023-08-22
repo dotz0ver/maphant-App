@@ -4,7 +4,7 @@ type ISignupForm = {
   confirmPassword: string;
   nickname: string;
   name: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   studentNumber: string;
   university: string;
 };
