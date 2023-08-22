@@ -1,3 +1,4 @@
+//입력시 글자 흰색으로 바뀌게 해야함
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CheckBox from "expo-checkbox";
 import React, { useState } from "react";

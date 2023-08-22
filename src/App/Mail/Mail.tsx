@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { deleteChat, receiveChatrooms } from "../../Api/member/FindUser";
-import { Container, TextButton } from "../../components/common";
+import { Container, TextButton, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { MessageList } from "../../types/DM";
 
@@ -63,43 +63,54 @@ const Mail: React.FC = () => {
   return (
     <Container style={{ flex: 1 }}>
       <View style={styles.header}>
-        <Text style={styles.mailText}>쪽지함</Text>
+        <TextThemed style={styles.mailText}>쪽지함</TextThemed>
       </View>
       <ScrollView>
         <View style={styles.sender}>
           <View>
+            <View
+              style={{ borderBottomWidth: 1, borderColor: "rgba(232,234,236,0.5)", height: 0 }}
+            ></View>
             {chatList.map(mail => (
               // eslint-disable-next-line react/jsx-key
-              <TouchableOpacity
-                key={mail.id}
-                onPress={() => {
-                  // console.log(mail.id);
-                  // 채티방 페이지로 상대방 아이디랑, 닉네임 같이 넘김
-                  navigation.navigate("Chatroom", {
-                    id: mail.other_id,
-                    nickname: mail.other_nickname,
-                    roomId: parseInt(mail.id),
-                  });
-                }}
-              >
-                <View style={[styles.mail, mail.unread_count ? styles.mail_true : styles.mail]}>
-                  <View style={styles.space}>
-                    <Text style={styles.nick}>{mail.other_nickname}</Text>
+              <>
+                <TouchableOpacity
+                  key={mail.id}
+                  onPress={() => {
+                    // console.log(mail.id);
+                    // 채티방 페이지로 상대방 아이디랑, 닉네임 같이 넘김
+                    navigation.navigate("Chatroom", {
+                      id: mail.other_id,
+                      nickname: mail.other_nickname,
+                      roomId: parseInt(mail.id),
+                    });
+                  }}
+                >
+                  <View style={[styles.mail, mail.unread_count ? styles.mail_true : styles.mail]}>
+                    <View style={styles.space}>
+                      <TextThemed style={styles.nick}>{mail.other_nickname}</TextThemed>
 
-                    <Text style={{ alignContent: "space-between" }}>
-                      {/* 시간이 최근에 채팅한 시간이 아니라 최초에 채팅한 시간을 기준으로 하고 있음, 이것도 백엔드에서 해야하는 것 같음 */}
-                      {formatTimeDifference(new Date(mail.time))}
-                    </Text>
-                    {/* 삭제 기능 제대로 됨 ,나중에 버튼 새로 깔끔하게 만들기 */}
+                      <TextThemed style={{ alignContent: "space-between" }}>
+                        {/* 시간이 최근에 채팅한 시간이 아니라 최초에 채팅한 시간을 기준으로 하고 있음, 이것도 백엔드에서 해야하는 것 같음 */}
+                        {formatTimeDifference(new Date(mail.time))}
+                      </TextThemed>
+                      {/* 삭제 기능 제대로 됨 ,나중에 버튼 새로 깔끔하게 만들기 */}
+                    </View>
+                    <Container style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                      <TextThemed style={styles.content}>{mail.last_content}</TextThemed>
+                      <TextButton
+                        style={{ justifyContent: "flex-end" }}
+                        onPress={() => del(mail.id)}
+                      >
+                        삭제
+                      </TextButton>
+                    </Container>
                   </View>
-                  <Container style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text style={styles.content}>{mail.last_content}</Text>
-                    <TextButton style={{ justifyContent: "flex-end" }} onPress={() => del(mail.id)}>
-                      삭제
-                    </TextButton>
-                  </Container>
-                </View>
-              </TouchableOpacity>
+                </TouchableOpacity>
+                <View
+                  style={{ borderBottomWidth: 1, borderColor: "rgba(232,234,236,0.5)", height: 0 }}
+                ></View>
+              </>
             ))}
           </View>
         </View>
@@ -140,15 +151,13 @@ const styles = StyleSheet.create({
   },
 
   sender: {
-    backgroundColor: "white",
-
     border: "2px",
   },
   mail: {
     padding: "3%",
   },
   mail_true: {
-    backgroundColor: "#E6E6E6",
+    backgroundColor: "rgba(82, 153, 235, 0.3)",
   },
   nick: {
     fontSize: 22,

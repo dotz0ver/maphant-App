@@ -70,9 +70,9 @@ const BoardList = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1 }}>
       <TouchableWithoutFeedback onPress={handle}>
-        <View style={{ flex: 1, backgroundColor: "white" }}>
+        <View style={{ flex: 1 }}>
           <View style={styles.container}>
             <View style={{ ...styles.topic }}>
               <View style={styles.topicInner}>
@@ -123,7 +123,6 @@ const BoardList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   btn: {
     backgroundColor: "black",

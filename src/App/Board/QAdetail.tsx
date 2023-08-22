@@ -1,3 +1,4 @@
+//글자 흰색으로 바뀌게
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Alert, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -341,7 +342,6 @@ const QAdetail = () => {
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    backgroundColor: "white",
     flex: 1,
   },
   nameBox: {
@@ -391,6 +391,7 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     paddingHorizontal: 15,
     backgroundColor: "#f2f2f2",
+    marginRight: 10,
   },
 
   cbutBox: {

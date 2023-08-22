@@ -23,7 +23,6 @@ const Profile: React.FC = () => {
     readProfile(params.id)
       .then(res => {
         setOtherUserProfileList(res.data as OtherUserData[]);
-        console.log(res.data);
       })
       .catch(e => console.log(e));
     //채팅방 목록 불러오기
@@ -46,14 +45,12 @@ const Profile: React.FC = () => {
   };
   const changePage = (item: string) => {
     if (item.toString() == "작성한 게시글 목록") {
-      console.log(navigation.getState());
       navigation.navigate("WriteBoard", { id: params.id } as never);
     }
     if (item.toString() == "작성한 댓글 목록") {
       navigation.navigate("WriteContent", { id: params.id } as never);
     }
   };
-  console.log("여기다", otherUserProfileList);
 
   function OtherProfile() {
     return (
