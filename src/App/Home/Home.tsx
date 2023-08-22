@@ -3,6 +3,7 @@ import { BottomSheetFlatList, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
+  Dimensions,
   Image,
   ImageSourcePropType,
   NativeScrollEvent,
@@ -183,7 +184,7 @@ const HeaderCategory: React.FC = () => {
   };
 
   const renderItem = useCallback(({ item }: { item: UserCategory }) => {
-    const style_text: StyleProp<TextStyle> = {
+    const style_text: StyleProp<TextThemedStyle> = {
       fontSize: 16,
       fontWeight: Object.is(item, currentCategory) ? "bold" : "normal",
     };
@@ -194,9 +195,9 @@ const HeaderCategory: React.FC = () => {
           onCategoryPress(item);
         }}
       >
-        <Text style={style_text}>
+        <TextThemed style={style_text}>
           {item.majorName} ({item.categoryName})
-        </Text>
+        </TextThemed>
       </TouchableOpacity>
     );
   }, []);
@@ -221,11 +222,13 @@ const HeaderCategory: React.FC = () => {
         snapPoints={snapPoints}
         style={{ paddingHorizontal: 16 }}
       >
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>계열·학과를 선택해 주세요</Text>
-        <Text style={{ fontSize: 15, fontWeight: "bold" }}>현재 선택된 계열·학과</Text>
-        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+        <TextThemed style={{ fontSize: 20, fontWeight: "bold" }}>
+          계열·학과를 선택해 주세요
+        </TextThemed>
+        <TextThemed style={{ fontSize: 15, fontWeight: "bold" }}>현재 선택된 계열·학과</TextThemed>
+        <TextThemed style={{ fontSize: 15, fontWeight: "bold" }}>
           {"->"} {currentCategory?.majorName} · ({currentCategory?.categoryName})
-        </Text>
+        </TextThemed>
         <Spacer size={20} />
         <BottomSheetFlatList
           data={userCategoryList}
@@ -247,9 +250,10 @@ const SearchBar: React.FC<{ text: string; onTextChanged: (text: string) => void 
       justifyContent: "center",
     },
     searchBox: {
-      flex: 1,
+      width: "90%",
+      height: 40,
       flexDirection: "row",
-      marginTop: "2.5%",
+      marginTop: "1.5%",
       marginBottom: "2.5%",
       marginLeft: "5%",
       marginRight: "5%",
@@ -406,7 +410,7 @@ const TodaysHot: React.FC = () => {
           borderRadius: 30,
         }}
       >
-        <Text>{tag.title}</Text>
+        <TextThemed>{tag.title}</TextThemed>
       </View>
     );
   };
@@ -439,7 +443,7 @@ const TodaysHot: React.FC = () => {
     <View>
       <View style={styles.todaysHotTitleBox}>
         <TextThemed style={styles.todaysHotTitleText}> 🔥오늘의</TextThemed>
-        <Text
+        <TextThemed
           style={{
             fontSize: 25,
             fontWeight: "bold",
@@ -448,7 +452,7 @@ const TodaysHot: React.FC = () => {
         >
           {" "}
           HOT
-        </Text>
+        </TextThemed>
         <TextThemed style={styles.todaysHotTitleText}> 키워드🔥</TextThemed>
       </View>
 
@@ -522,13 +526,15 @@ const HotPost: React.FC = () => {
       height: 143,
       marginLeft: 20,
       marginRight: 20,
-      // backgroundColor: "skyblue",
+      backgroundColor: "yellow",
     },
     nameAndtypeBox: {
       flexDirection: "row",
       alignItems: "center",
+      width: "100%",
       paddingLeft: 10,
       paddingRight: 10,
+      backgroundColor: "skyblue",
     },
     profileImage: {
       width: 30,
@@ -538,7 +544,9 @@ const HotPost: React.FC = () => {
       borderWidth: 1,
     },
     textContainer: {
+      width: "100%",
       flexDirection: "row",
+      justifyContent: "space-between",
     },
 
     userNickname: {
@@ -549,7 +557,7 @@ const HotPost: React.FC = () => {
     boardType: {
       fontSize: 15,
       color: "gray",
-      marginLeft: "60%",
+      paddingRight: 40,
     },
     titleAndbodyBox: {
       height: 60,
@@ -576,7 +584,7 @@ const HotPost: React.FC = () => {
     },
     timeAndlikeAndcomment: {
       flexDirection: "row",
-      // backgroundColor: "pink",
+      backgroundColor: "pink",
       alignItems: "center",
       height: 25,
     },
@@ -593,9 +601,11 @@ const HotPost: React.FC = () => {
       marginLeft: 4,
     },
     timeTextWrapper: {
+      width: "30%",
       flexDirection: "row",
+      justifyContent: "flex-end",
       alignItems: "center",
-      marginLeft: "60%",
+      backgroundColor: "skyblue",
     },
     noHotPostBox: {
       height: 290,
@@ -612,11 +622,11 @@ const HotPost: React.FC = () => {
     return (
       <View style={styles.hotPostBox}>
         <View style={styles.boxTitleBox}>
-          <Text style={styles.boxTitle}>Hot 게시글</Text>
+          <TextThemed style={styles.boxTitle}>Hot 게시글</TextThemed>
         </View>
         <View style={styles.line}></View>
         <View style={styles.noHotPostBox}>
-          <Text style={styles.noHotPostText}>게시글이 존재하지 않습니다</Text>
+          <TextThemed style={styles.noHotPostText}>게시글이 존재하지 않습니다</TextThemed>
         </View>
       </View>
     );
@@ -624,7 +634,7 @@ const HotPost: React.FC = () => {
   return (
     <View style={styles.hotPostBox}>
       <View style={styles.boxTitleBox}>
-        <Text style={styles.boxTitle}>Hot 게시글</Text>
+        <TextThemed style={styles.boxTitle}>Hot 게시글</TextThemed>
       </View>
 
       <View style={styles.line}></View>
@@ -638,43 +648,48 @@ const HotPost: React.FC = () => {
             style={styles.profileImage}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.userNickname}>{hotPost[0].userNickname}</Text>
-            <Text style={styles.boardType}>{hotPost[0].type}</Text>
+            <TextThemed style={styles.userNickname}>{hotPost[0].userNickname}</TextThemed>
+
+            <TextThemed style={styles.boardType}>{hotPost[0].type}</TextThemed>
           </View>
         </View>
 
         <Spacer size={5} />
         <View style={styles.titleAndbodyBox}>
-          <Text style={styles.postTitle}>{truncateText(hotPost[0].title, 20)}</Text>
+          <TextThemed style={styles.postTitle}>{truncateText(hotPost[0].title, 20)}</TextThemed>
           <Spacer size={2} />
-          <Text style={styles.postBody}>{truncateText(hotPost[0].body, 25)}</Text>
+          <TextThemed style={styles.postBody}>{truncateText(hotPost[0].body, 25)}</TextThemed>
           <Spacer size={4} />
           <View style={styles.tagsBox}>
             {hotPost[0].tags && hotPost[0].tags.length > 0 ? (
               hotPost[0].tags.slice(0, 3).map((tag, index) => (
-                <Text style={styles.tags} key={index}>
+                <TextThemed style={styles.tags} key={index}>
                   #{tag}{" "}
-                </Text>
+                </TextThemed>
               ))
             ) : (
               <View />
             )}
-            {hotPost[0].tags && hotPost[0].tags.length > 3 && <Text style={styles.tags}>...</Text>}
+            {hotPost[0].tags && hotPost[0].tags.length > 3 && (
+              <TextThemed style={styles.tags}>...</TextThemed>
+            )}
           </View>
         </View>
 
         <Spacer size={5} />
         <View style={styles.timeAndlikeAndcomment}>
-          <View style={styles.likeTextWrapper}>
-            <Feather name="thumbs-up" size={13} color="tomato" />
-            <Text style={styles.iconText}>{hotPost[0].likeCnt}</Text>
-          </View>
-          <View style={styles.commentTextWrapper}>
-            <FontAwesome name="comment-o" size={13} color="blue" />
-            <Text style={styles.iconText}>{hotPost[0].commentCnt}</Text>
+          <View style={{ width: "70%", flexDirection: "row" }}>
+            <View style={styles.likeTextWrapper}>
+              <Feather name="thumbs-up" size={13} color="tomato" />
+              <TextThemed style={styles.iconText}>{hotPost[0].likeCnt}</TextThemed>
+            </View>
+            <View style={styles.commentTextWrapper}>
+              <FontAwesome name="comment-o" size={13} color="blue" />
+              <TextThemed style={styles.iconText}>{hotPost[0].commentCnt}</TextThemed>
+            </View>
           </View>
           <View style={styles.timeTextWrapper}>
-            <Text>{dateToString(hotPost[0].createdAt)}</Text>
+            <TextThemed>{dateToString(hotPost[0].createdAt)}</TextThemed>
           </View>
         </View>
       </Pressable>
@@ -689,28 +704,30 @@ const HotPost: React.FC = () => {
             style={styles.profileImage}
           />
           <View style={styles.textContainer}>
-            <Text style={styles.userNickname}>{hotPost[1].userNickname}</Text>
-            <Text style={styles.boardType}>{hotPost[1].type}</Text>
+            <TextThemed style={styles.userNickname}>{hotPost[1].userNickname}</TextThemed>
+            <TextThemed style={styles.boardType}>{hotPost[1].type}</TextThemed>
           </View>
         </View>
 
         <Spacer size={5} />
         <View style={styles.titleAndbodyBox}>
-          <Text style={styles.postTitle}>{truncateText(hotPost[1].title, 20)}</Text>
+          <TextThemed style={styles.postTitle}>{truncateText(hotPost[1].title, 20)}</TextThemed>
           <Spacer size={2} />
-          <Text style={styles.postBody}>{truncateText(hotPost[1].body, 25)}</Text>
+          <TextThemed style={styles.postBody}>{truncateText(hotPost[1].body, 25)}</TextThemed>
           <Spacer size={4} />
           <View style={styles.tagsBox}>
             {hotPost[0].tags && hotPost[0].tags.length > 0 ? (
               hotPost[0].tags.slice(0, 3).map((tag, index) => (
-                <Text style={styles.tags} key={index}>
+                <TextThemed style={styles.tags} key={index}>
                   #{tag}{" "}
-                </Text>
+                </TextThemed>
               ))
             ) : (
               <View />
             )}
-            {hotPost[0].tags && hotPost[0].tags.length > 3 && <Text style={styles.tags}>...</Text>}
+            {hotPost[0].tags && hotPost[0].tags.length > 3 && (
+              <TextThemed style={styles.tags}>...</TextThemed>
+            )}
           </View>
         </View>
 
@@ -718,14 +735,14 @@ const HotPost: React.FC = () => {
         <View style={styles.timeAndlikeAndcomment}>
           <View style={styles.likeTextWrapper}>
             <Feather name="thumbs-up" size={13} color="tomato" />
-            <Text style={styles.iconText}>{hotPost[1].likeCnt}</Text>
+            <TextThemed style={styles.iconText}>{hotPost[1].likeCnt}</TextThemed>
           </View>
           <View style={styles.commentTextWrapper}>
             <FontAwesome name="comment-o" size={13} color="blue" />
-            <Text style={styles.iconText}>{hotPost[1].commentCnt}</Text>
+            <TextThemed style={styles.iconText}>{hotPost[1].commentCnt}</TextThemed>
           </View>
           <View style={styles.timeTextWrapper}>
-            <Text>{dateToString(hotPost[1].createdAt)}</Text>
+            <TextThemed>{dateToString(hotPost[1].createdAt)}</TextThemed>
           </View>
         </View>
       </Pressable>
