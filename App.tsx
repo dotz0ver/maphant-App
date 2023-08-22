@@ -99,13 +99,7 @@ const App = () => {
       </View>
     );
 
-  return (
-    <>
-      {" "}
-      <Spinner visible={showLoadingOverlay} textContent={"Loading..."} />
-      {isLogged || isUserDataLoading ? <MainScreen /> : <Login />}
-    </>
-  );
+  return <>{isLogged || isUserDataLoading ? <MainScreen /> : <Login />}</>;
 };
 
 const AppWrapper = () => {
