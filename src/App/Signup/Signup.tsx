@@ -67,30 +67,6 @@ const validationSchema = Yup.object().shape({
   university: Yup.string().required("필수 정보입니다."),
 });
 
-let debounce_lastTime = Date.now();
-let debounce_timer: string | number | NodeJS.Timeout | undefined;
-
-function debounce(func: () => void, delay = 500) {
-  const now = Date.now();
-  debounce_timer && clearTimeout(debounce_timer);
-
-  if (now - debounce_lastTime < delay) {
-    debounce_timer = setTimeout(() => {
-      debounce(func, delay);
-    }, delay);
-
-    return;
-  }
-
-  debounce_lastTime = now;
-  func();
-}
-
-function saveInput() {
-  console.log("Saving data to the server");
-}
-
-const processChange = () => debounce(() => saveInput());
 const Signup = () => {
   // const [loading, setLoading] = useState<Boolean>(false);
   const SignupForm: ISignupForm = {
@@ -110,7 +86,6 @@ const Signup = () => {
 
     // Toast.show("회원가입 정보를 확인해 주세요.");
   }, []);
-  const placeholderTextColor = "#636363";
 
   const getFieldPlaceholder = (fieldName: string) => {
     switch (fieldName) {
@@ -174,10 +149,7 @@ const Signup = () => {
                     placeholder={getFieldPlaceholder(item)}
                     name={item}
                     component={item === "university" ? SearchByFilter : CustomInput}
-                    onKeyPress={processChange}
                     list={item === "university" ? universityList : undefined}
-                    secureTextEntry={item === "password" || item === "confirmPassword"}
-                    placeholderTextColor={placeholderTextColor}
                   />
                   <Spacer size={10} />
                 </>

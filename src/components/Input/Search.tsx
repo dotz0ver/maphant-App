@@ -69,17 +69,7 @@ const Search: React.FC<Props> = props => {
         inputContainerStyle={styles.searchBarInputContainer}
         {...inputProps}
       />
-
-      <FlatList
-        style={search === "" ? undefined : styles.allContainer}
-        nestedScrollEnabled={true}
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
-        data={list}
-        keyExtractor={(item, index) => index.toString()}
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => <View>{renderItemGroup([item])}</View>}
-      />
+      {renderItemGroup(list)}
     </View>
   );
 };
