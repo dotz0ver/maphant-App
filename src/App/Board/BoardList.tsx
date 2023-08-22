@@ -8,12 +8,12 @@ import {
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  useWindowDimensions,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { listBoardType } from "../../Api/board";
-import SearchBar from "../../components/Input/searchbar";
+import { Spacer } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { BoardType } from "../../types/Board";
 
@@ -29,7 +29,8 @@ const BoardList = () => {
     return rows;
   };
 
-  const boardTypeDataRows = splitIntoRows(boardTypeData, 3);
+  const boardTypeDataRows = splitIntoRows(boardTypeData, 2);
+  const { height, width } = useWindowDimensions();
 
   useEffect(() => {
     listBoardType()
@@ -47,8 +48,8 @@ const BoardList = () => {
         }}
       >
         <View style={styles.boardList} key={boardType.id}>
-          <Feather name="message-square" size={24} color="black" />
-          <Text>{boardType.name}</Text>
+          <Feather name="message-square" size={24} color="#fff" style={{ paddingVertical: 5 }} />
+          <Text style={{ fontSize: 13, paddingBottom: 5 }}>{boardType.name}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -70,63 +71,68 @@ const BoardList = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <TouchableWithoutFeedback onPress={handle}>
-        <View style={{ flex: 1 }}>
-          <View style={styles.container}>
-            <View style={{ ...styles.topic }}>
-              <View style={styles.topicInner}>
-                <View>
-                  <Text> 오늘의 열띈 주제는? </Text>
-                </View>
-                <View>
-                  <TouchableOpacity style={styles.btn} onPress={touch}>
-                    <Text style={styles.btnFont}>투표하기</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+    <TouchableWithoutFeedback onPress={handle}>
+      <View style={styles.container}>
+        <Spacer size={20} />
+        <View style={{ ...styles.topic }}>
+          <View style={styles.topicInner}>
+            <View style={{ justifyContent: "center" }}>
+              <Text style={{ fontSize: 17 }}> 오늘의 핫한 주제는? </Text>
             </View>
-            <View style={{ borderBottomWidth: 1 }}></View>
-            <SearchBar />
-
-            <View style={styles.board}>
-              {boardTypeDataRows.map((rowData, rowIndex) => (
-                <View key={rowIndex} style={{ flexDirection: "row" }}>
-                  {rowData.map(boardType => (
-                    <BoardNavigateBtn key={boardType.id} boardType={boardType} />
-                  ))}
-                </View>
-              ))}
-            </View>
-            <View style={styles.hotStudy}>
-              <View>
-                <TouchableOpacity onPress={changePage} style={{ marginBottom: 30 }}>
-                  <Text>
-                    HOT 게시글 <MaterialCommunityIcons name="fire" size={24} color="black" />{" "}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <TouchableOpacity onPress={changeVotePage} style={{ marginBottom: 30 }}>
-                  <Text>
-                    투표 게시글 <MaterialCommunityIcons name="fire" size={24} color="black" />{" "}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+            <TouchableOpacity style={styles.btn} onPress={touch}>
+              <Text style={styles.btnFont}>투표하기</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </TouchableWithoutFeedback>
-    </SafeAreaView>
+        {/* <SearchBar /> */}
+
+        <View style={styles.board}>
+          {boardTypeDataRows.map((rowData, rowIndex) => (
+            <View
+              key={rowIndex}
+              style={{
+                width: width / 3.5,
+                height: 300,
+              }}
+            >
+              {rowData.map(boardType => (
+                <BoardNavigateBtn key={boardType.id} boardType={boardType} />
+              ))}
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.hotStudy}>
+          <View style={{ justifyContent: "center", borderRightWidth: 1, borderRightColor: "#aaa" }}>
+            <TouchableOpacity onPress={changePage} style={{ marginHorizontal: 20 }}>
+              <Text style={{ fontSize: 18 }}>
+                HOT 게시글 <MaterialCommunityIcons name="fire" size={24} color="black" />
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ justifyContent: "center" }}>
+            <TouchableOpacity onPress={changeVotePage} style={{ marginHorizontal: 20 }}>
+              <Text style={{ fontSize: 18 }}>
+                투표 게시글 <MaterialCommunityIcons name="fire" size={24} color="black" />
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <Spacer size={30} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   btn: {
-    backgroundColor: "black",
-    padding: 10,
+    backgroundColor: "#666666",
+    width: 80,
+    height: 40,
+    padding: 15,
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "center",
@@ -145,37 +151,52 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   topic: {
-    flex: 3,
-    backgroundColor: "skyblue",
+    flex: 1,
+    backgroundColor: "#CBD7E6",
     margin: 20,
+    borderRadius: 15,
   },
   topicInner: {
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 15,
-    paddingBottom: 100,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    borderBottomColor: "#aaa",
+    borderBottomWidth: 1,
   },
   board: {
-    flex: 4,
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1,
+    flexDirection: "row",
+    // alignItems: "stretch",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    borderTopColor: "#aaa",
     borderTopWidth: 1,
+    borderBottomColor: "#aaa",
     borderBottomWidth: 1,
-    padding: 35,
+    backgroundColor: "#fff",
+    paddingHorizontal: 5,
+    paddingTop: 10,
+    marginHorizontal: 15,
   },
   boardList: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "skyblue",
-    margin: 15,
-    padding: 20,
+    backgroundColor: "#CBD7E6",
+    marginVertical: 5,
+    padding: 10,
+    borderRadius: 10,
   },
   hotStudy: {
-    flex: 2,
+    flex: 0.2,
+    flexDirection: "row",
     justifyContent: "center",
-    backgroundColor: "skyblue",
-    margin: 20,
+    backgroundColor: "#CBD7E6",
+    marginVertical: 10,
+    marginHorizontal: 15,
     padding: 15,
+    borderRadius: 15,
   },
 });
 export default BoardList;
