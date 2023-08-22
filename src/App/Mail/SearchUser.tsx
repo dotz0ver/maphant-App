@@ -60,11 +60,7 @@ const SearchUser: React.FC = () => {
     nickname: "",
   };
   return (
-    <Container
-      isFullScreen={true}
-      isForceKeyboardAvoiding={true}
-      style={{ padding: 20, backgroundColor: "white", flex: 1 }}
-    >
+    <Container isFullScreen={true} isForceKeyboardAvoiding={true} style={{ padding: 20, flex: 1 }}>
       <Formik
         validateOnChange
         initialValues={userNickname}
