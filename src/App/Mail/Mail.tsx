@@ -57,7 +57,7 @@ const Mail: React.FC = () => {
   return (
     <Container style={{ flex: 1 }}>
       <View style={styles.header}>
-        <Text style={styles.mailText}>쪽지함</Text>
+        <TextThemed style={styles.mailText}>쪽지함</TextThemed>
       </View>
       <ScrollView>
         <View style={styles.sender}>
@@ -151,14 +151,13 @@ const styles = StyleSheet.create({
   },
 
   sender: {
-    backgroundColor: "white",
     border: "2px",
   },
   mail: {
     padding: "3%",
   },
   mail_true: {
-    backgroundColor: "#E6E6E6",
+    backgroundColor: "rgba(82, 153, 235, 0.3)",
   },
   nick: {
     fontSize: 22,

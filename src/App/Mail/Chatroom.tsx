@@ -11,9 +11,6 @@ import { NavigationProps } from "../../Navigator/Routes";
 import { ReceiveList } from "../../types/DM";
 const Chatroom: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
-
-  const windowWidth = useWindowDimensions().width; // window 가로 길이s
-  // SearchUser.tsx에서 입력한 유저의  id, nickname을 가져오기 위해 사용한 것
   const route = useRoute();
   const params = route.params as MailFormParams;
 
