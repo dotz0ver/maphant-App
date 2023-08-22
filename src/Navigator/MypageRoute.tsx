@@ -33,7 +33,7 @@ const Routes: RouteType[] = [
     component: Mypost,
   },
   {
-    name: "detail",
+    name: "BoardDetail",
     component: BoardDetail,
   },
   {

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, useWindowDimensions, View } from "react-native";
 
 import { authenticationCode, sendEmail } from "../../Api/member/signUp";
-import { Container, Input, Spacer } from "../common";
+import { Container, Input, Spacer, TextButton } from "../common";
 
 const ConfirmEmail = ({
   onEmailChange,
@@ -72,9 +72,12 @@ const ConfirmEmail = ({
       clearInterval(countDown);
     };
   }, [minutes, seconds]);
+  const width: number = useWindowDimensions().width;
+  // const { height, width } = useWindowDimensions();
+  // console.log(height, width);
 
   return (
-    <Container style={{ backgroundColor: "white", borderBottomWidth: 1, borderColor: "#F0F0F0" }}>
+    <Container>
       {certificationEmail && (
         <View style={styles.timerContainer}>
           <Text style={styles.timerText}>
@@ -82,9 +85,15 @@ const ConfirmEmail = ({
           </Text>
         </View>
       )}
-      <View>
+      <View style={{ alignItems: "center" }}>
         <Input
-          style={{ backgroundColor: "#F0F0F0" }}
+          style={{
+            backgroundColor: "#F0F0F0",
+            width: width * 0.79,
+            height: 50,
+            borderRadius: width * 0.5,
+            flexDirection: "row",
+          }}
           value={email}
           onChangeText={value => {
             onEmailChange(value);
@@ -92,21 +101,24 @@ const ConfirmEmail = ({
           placeholder="이메일"
           inputMode="email"
         />
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={emailVerification}
-          style={[
-            styles.button,
-            {
-              borderColor: email === "" ? "#999" : "#0055FF",
-              backgroundColor: email === "" ? "#999" : "#F0F0F0",
-              width: 80, // 버튼 길이 조정
-            },
-          ]}
-        >
-          <Text style={styles.buttonText}>인증 요청</Text>
-        </TouchableOpacity>
       </View>
+      <Spacer size={10} />
+      <TextButton
+        activeOpacity={0.7}
+        onPress={emailVerification}
+        fontSize={16}
+        style={[
+          styles.button,
+          {
+            flex: 0.2,
+            backgroundColor: email === "" ? "#999" : "$0055FF",
+            borderColor: email === "" ? "#999" : "#0055FF",
+            width: 80,
+          },
+        ]}
+      >
+        인증 요청
+      </TextButton>
       {minutes === 0 && seconds === 0
         ? null
         : certificationEmail && (
@@ -114,7 +126,13 @@ const ConfirmEmail = ({
               <Spacer size={20} />
               <Input
                 ref={verificationCodeInputRef}
-                style={{ backgroundColor: "#F0F0F0" }}
+                style={{
+                  backgroundColor: "#F0F0F0",
+                  width: width * 0.79,
+                  height: 50,
+                  borderRadius: width * 0.5,
+                  flexDirection: "row",
+                }}
                 value={authcode}
                 onChangeText={value => {
                   onAuthcodeChange(value);
@@ -123,20 +141,23 @@ const ConfirmEmail = ({
                 inputMode="numeric"
               />
               <Spacer size={10} />
-              <TouchableOpacity
+
+              <TextButton
                 activeOpacity={0.7}
                 onPress={verifyCode}
+                fontSize={16}
                 style={[
                   styles.button,
                   {
-                    borderColor: authcode === "" ? "#999" : "#0055FF",
-                    backgroundColor: authcode === "" ? "#999" : "#F0F0F0",
-                    width: 80, // 버튼 길이 조정
+                    flex: 0.2,
+                    backgroundColor: email === "" ? "#999" : "$0055FF",
+                    borderColor: email === "" ? "#999" : "#0055FF",
+                    width: 80,
                   },
                 ]}
               >
-                <Text style={styles.buttonText}>확인</Text>
-              </TouchableOpacity>
+                확인
+              </TextButton>
             </>
           )}
     </Container>

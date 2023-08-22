@@ -3,6 +3,7 @@ import { BottomSheetFlatList, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   ImageSourcePropType,
   NativeScrollEvent,
@@ -66,12 +67,12 @@ const Home: React.FC = () => {
       <ScrollView>
         <MainHeader />
         <SearchBar text={text} onTextChanged={setText} />
-
         <Carousel imageList={info} />
         <Spacer size={20} />
         <TodaysHot />
         <Spacer size={40} />
         <HotPost />
+
         <Spacer size={20} />
       </ScrollView>
     </Container>
@@ -146,6 +147,8 @@ const HeaderCategory: React.FC = () => {
   const currentCategory = useSelector(UserStorage.userCategorySelector);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const [userCategoryList, setUserCategoryList] = useState<UserCategory[]>([]);
+  const profile = useSelector(UserStorage.userProfileSelector);
+
   const styles = StyleSheet.create({
     titleText: {
       fontSize: 35,
@@ -156,7 +159,7 @@ const HeaderCategory: React.FC = () => {
 
   useEffect(() => {
     UserStorage.listUserCategory().then(list => setUserCategoryList(list));
-  }, []);
+  }, [profile]);
 
   const snapPoints = useMemo(() => ["25%", "60%"], []);
   const onCategoryPress = useCallback((item: UserCategory) => {
@@ -449,14 +452,13 @@ const HotPost: React.FC = () => {
       console.log(res);
       if (res.success === false) {
         console.log(res.errors);
-        return;
       } else {
         setHotPost(res.data.list);
       }
     });
   }, []);
 
-  const detailContent = (boardId: BoardArticle) => {
+  const detailContent = (boardId: number) => {
     navigation.navigate("BoardDetail", { id: boardId });
   };
 
@@ -556,7 +558,7 @@ const HotPost: React.FC = () => {
   });
 
   if (hotPost.length === 0) {
-    return <View></View>;
+    return <View />;
   }
   return (
     <View style={styles.hotPostBox}>

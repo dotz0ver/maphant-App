@@ -63,7 +63,9 @@ const Find: React.FC = () => {
               secureTextEntry
             />
             <Spacer size={20} />
-            <TextButton onPress={handleSubmit}>비밀번호 변경하기</TextButton>
+            <TextButton fontSize={16} onPress={handleSubmit}>
+              비밀번호 변경하기
+            </TextButton>
           </ScrollView>
         </Container>
       )}

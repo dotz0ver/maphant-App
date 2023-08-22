@@ -99,4 +99,4 @@ export type RootState = ReturnType<typeof rootReducer>;
 export default configureStore({
   reducer: rootReducer,
 });
-export { LoadingUISlice, userCategorySlice, userSlice, ChatSlice };
+export { ChatSlice, LoadingUISlice, userCategorySlice, userSlice };

@@ -2,17 +2,24 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Field, Formik, FormikErrors } from "formik";
 import React, { useCallback, useEffect, useState } from "react";
-import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Toast from "react-native-root-toast";
 import { useSelector } from "react-redux";
 
-import { PostAPI } from "../../Api/fetchAPI";
-import { categorymajor, fieldList, majorList } from "../../Api/member/signUp";
+import { DeleteAPI, PostAPI } from "../../Api/fetchAPI";
+import { fieldList, majorList } from "../../Api/member/signUp";
 import UserAPI from "../../Api/memberAPI";
 import { Container, Input, Spacer, TextButton } from "../../components/common";
 import SearchByFilter from "../../components/Input/SearchByFilter";
 import { NavigationProps } from "../../Navigator/Routes";
-import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
 
 interface ISearchForm {
@@ -33,11 +40,6 @@ const ProfileModify: React.FC = () => {
     name?: string;
     phoneNumber: string;
     studentNumber?: number;
-  };
-
-  type UserCategory = {
-    field?: string;
-    major?: string;
   };
 
   const usetModifying: UserType = {
@@ -67,7 +69,8 @@ const ProfileModify: React.FC = () => {
   const [modifyingNicknameModal, setModyfyingNicknameModal] = useState(false);
   const [modifyingPhoneNumModal, setModyfyingPhoneNumModal] = useState(false);
   const [modifyingFieldModal, setModyfyingFieldModal] = useState(false);
-
+  const [pressedStates, setPressedStates] = useState(Array(profile?.category?.length).fill(false));
+  const [deleteState, setDeleteState] = useState(false);
   const navigation = useNavigation<NavigationProps>();
 
   const onSubmit = useCallback((errors: FormikErrors<ISearchForm>, next: () => void) => {
@@ -98,6 +101,14 @@ const ProfileModify: React.FC = () => {
       }
     });
   }, []);
+
+  const handlePress = (index: number) => {
+    const newPressedStates = [...pressedStates];
+    newPressedStates[index] = !newPressedStates[index];
+    setPressedStates(newPressedStates);
+
+    console.log(pressedStates);
+  };
 
   return (
     <Container style={{ backgroundColor: "white" }} paddingHorizontal={10}>
@@ -424,13 +435,24 @@ const ProfileModify: React.FC = () => {
                 <View style={styles.modifyingContainer}>
                   {profile?.category?.map((category, index) => {
                     return (
-                      <View key={index}>
+                      <Pressable
+                        key={index}
+                        style={[
+                          styles.pressable,
+                          pressedStates[index] ? styles.pressablePressed : null,
+                        ]}
+                        onPress={() => {
+                          handlePress(index);
+                          console.log(profile.category.at(index));
+                        }}
+                      >
                         <Text style={styles.fieldtext}>{category.categoryName}</Text>
                         <Text style={styles.fieldtext}>- {category.majorName}</Text>
-                      </View>
+                        <Spacer size={10} />
+                      </Pressable>
                     );
                   })}
-                  {/* <Text style={styles.fieldtext}>{useCategoryModifying.field}</Text>
+                  {/* <Text style={/styles.fieldtext}>{useCategoryModifying.field}</Text>
                   <Text style={styles.fieldtext}>- {useCategoryModifying.major}</Text>
                   <Text style={styles.fieldtext}>{useCategoryModifying.field}</Text>
                   <Text style={styles.fieldtext}>- {useCategoryModifying.major}</Text>
@@ -439,13 +461,51 @@ const ProfileModify: React.FC = () => {
                 </View>
               </View>
               <View style={styles.modifyingFieldBtn}>
+                {pressedStates.includes(true) && (
+                  <TextButton
+                    fontSize={16}
+                    onPress={() => {
+                      const trueIndex = pressedStates.reduce((indices, state, index) => {
+                        if (state === true) {
+                          return [...indices, index];
+                        }
+                        return indices;
+                      }, []);
+
+                      for (let i = 0; i < trueIndex.length; i++) {
+                        DeleteAPI("/user/changeinfo/categorymajor", {
+                          category: profile?.category[trueIndex[i]].categoryName,
+                          major: profile?.category[trueIndex[i]].majorName,
+                        })
+                          .then(res => {
+                            if (res.success && deleteState === false) {
+                              alert("선택된 항목들이 삭제되었습니다");
+                              setDeleteState(true);
+                            }
+                          })
+                          .catch(error => {
+                            alert(`삭제에 실패하였습니다 : ${error}`);
+                          })
+                          .finally(() => {
+                            UserAPI.getProfile().then(response => {
+                              UserStorage.setUserProfile(response.data);
+                            });
+                          });
+                      }
+                      setDeleteState(false);
+                    }}
+                  >
+                    삭제
+                  </TextButton>
+                )}
+                <Spacer size={10} />
                 <TextButton
                   fontSize={16}
                   onPress={() => {
                     setModyfyingFieldModal(true);
                   }}
                 >
-                  수정
+                  추가
                 </TextButton>
               </View>
             </View>
@@ -456,17 +516,24 @@ const ProfileModify: React.FC = () => {
                     initialValues={SearchForm}
                     // validationSchema={validationSchema}
                     onSubmit={async values => {
-                      UIStore.showLoadingOverlay();
-                      await categorymajor(usetModifying.email, values.field, values.major)
+                      await PostAPI("/user/changeinfo/categorymajor", {
+                        category: values.field,
+                        major: values.major,
+                      })
                         .then(response => {
                           if (response.success) {
-                            console.log("학과, 계열 추가완료");
+                            alert("학과, 계열 추가완료");
                           }
                         })
                         .catch(error => {
                           alert(`학과 등록에 실패하였습니다.: ${error}`);
                         })
-                        .finally(() => UIStore.hideLoadingOverlay());
+                        .finally(() => {
+                          UserAPI.getProfile().then(response => {
+                            UserStorage.setUserProfile(response.data);
+                          });
+                          setModyfyingFieldModal(false);
+                        });
                     }}
                   >
                     {({ handleSubmit, errors }) => (
@@ -529,13 +596,12 @@ const ProfileModify: React.FC = () => {
                 </View>
               </View>
             </Modal>
-
             <TextButton
               style={{
                 marginVertical: 20,
               }}
               onPress={() => {
-                navigation.navigate("Mypage");
+                navigation.navigate("Mypage" as never);
               }}
             >
               저장
@@ -627,6 +693,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 20,
     // paddingHorizontal: 40,
+  },
+  pressable: {
+    padding: 10,
+    borderRadius: 5,
+  },
+  pressablePressed: {
+    backgroundColor: "skyblue",
   },
 });
 

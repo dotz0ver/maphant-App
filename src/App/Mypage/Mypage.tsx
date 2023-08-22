@@ -361,6 +361,8 @@ export default function MyPage() {
 
   const userProfle = useSelector(UserStorage.userProfileSelector);
 
+  const navigation = useNavigation<NavigationProps>();
+
   const checkPasswordHandler = () => {
     PostAPI("/user/changeinfo/identification", {
       password: checkPassword,
@@ -415,7 +417,7 @@ export default function MyPage() {
         {
           title: "내가 쓴 댓글",
           onclick: () => {
-            navigation.navigate("Mycomment" as never);
+            // navigation.navigate("Mycomment" as never);
           },
           href: "4",
         },
@@ -449,7 +451,6 @@ export default function MyPage() {
       ],
     },
   ];
-  const navigation = useNavigation<NavigationProps>();
 
   return (
     <View style={{ backgroundColor: "white" }}>

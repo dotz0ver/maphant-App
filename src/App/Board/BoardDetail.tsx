@@ -587,38 +587,46 @@ const BoardDetail = () => {
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
-        style={{ padding: 5, borderRadius: 5 }}
+        style={{
+          // borderTopColor: "#aaa",
+          // borderBottomColor: "#aaa",
+          // borderTopWidth: 1,
+          // borderBottomWidth: 1,
+          backgroundColor: "white",
+        }}
       >
         <View
           style={{
+            padding: 5,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: 5,
           }}
         >
           <Checkbox
-            style={{ marginRight: 5 }}
+            style={{ marginHorizontal: 3 }}
             value={checkList.includes("anonymous")}
             onValueChange={isChecked => {
               check("anonymous", isChecked);
               setIsAnonymous(isChecked ? 1 : 0);
             }}
           ></Checkbox>
-          <Text>익명</Text>
+          <Text style={{ marginHorizontal: 3 }}>익명</Text>
           <Input
             style={{
               flex: 1,
-              backgroundColor: "white",
+              backgroundColor: "#D8E1EC",
               paddingVertical: 15,
               paddingHorizontal: 12,
               marginRight: 5,
+              borderRadius: 50,
             }}
             placeholder={checked ? "대댓글을 작성해 주세요 ..." : "댓글을 작성해 주세요 ..."}
             value={checked ? replyBody : body}
             onChangeText={checked ? setReplyBody : setBody}
           ></Input>
           <TextButton
+            fontSize={13}
             onPress={() => {
               checked ? handleReplyInput(parent_id, replyBody) : handlecommentInsert();
             }}
@@ -722,6 +730,7 @@ const styles = StyleSheet.create({
   // },
   scroll: {
     height: "30%",
+    backgroundColor: "white",
   },
   replyBox: {
     backgroundColor: "#f2f2f2",
