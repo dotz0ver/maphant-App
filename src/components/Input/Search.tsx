@@ -1,7 +1,8 @@
 import { SearchBar } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TAutocompleteDropdownItem } from "react-native-autocomplete-dropdown";
+import { FlatList } from "react-native-gesture-handler";
 
 type Props = {
   field: unknown;
@@ -38,21 +39,6 @@ const Search: React.FC<Props> = props => {
     setFieldValue(name, search);
   }, [search]);
 
-  const renderItemGroup = (itemGroup: TAutocompleteDropdownItem[]) => (
-    <FlatList
-      data={itemGroup}
-      keyExtractor={item => item.id.toString()}
-      renderItem={({ item }) => (
-        <TouchableOpacity
-          style={styles.itemContainer}
-          onPress={() => (item && item.title ? handleItemClick(item.title) : null)}
-        >
-          <Text style={styles.itemText}>{item.title}</Text>
-        </TouchableOpacity>
-      )}
-    />
-  );
-
   const inputPropsPassed: Props = props;
   inputPropsPassed.onChangeText = onChangeTextInterceptor;
 
@@ -69,7 +55,24 @@ const Search: React.FC<Props> = props => {
         inputContainerStyle={styles.searchBarInputContainer}
         {...inputProps}
       />
-      {renderItemGroup(list)}
+
+      <FlatList
+        style={styles.allContainer}
+        nestedScrollEnabled={true}
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+        data={list}
+        keyExtractor={(item, index) => index.toString()}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.itemContainer}
+            onPress={() => (item && item.title ? handleItemClick(item.title) : null)}
+          >
+            <Text style={styles.itemText}>{item.title}</Text>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 };
