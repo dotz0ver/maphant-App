@@ -28,7 +28,8 @@ type BoardArticle = {
 
 //글 읽기
 type BoardPost = {
-  board: { isMyBoard: boolean; pollInfo: PollInfo } & BoardArticle;
+  board: { isMyBoard: boolean, bookmark: boolean, } & BoardArticle;
+  poll: PollInfo;
   answerList?: BoardArticle[]; //질문 게시판 답변
 };
 

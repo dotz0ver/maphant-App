@@ -72,8 +72,9 @@ const BoardDetail = () => {
   const [LoadingOverlay, setLoadingOverlay] = useState(false);
   const [pollOptionId, setPollOptionId] = useState<number>(0);
   const [poll_id, setPoll_id] = useState<number>(0);
-  const [poll, setPoll] = useState<PollInfo>();
-  const [myOption, setMyOption] = useState<number>(0);
+  const [pollResults, setPollResults] = useState({});
+  const [maxPollOptionId, setMaxPollOptionId] = useState(null);
+  const [results, setResults] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (post.board === undefined && !LoadingOverlay) {
@@ -209,6 +210,36 @@ const BoardDetail = () => {
       })
       .catch();
   }, []);
+  // let results: Record<string, number> = {};
+
+  useEffect(() => {
+    if (post?.poll?.pollOptions) {
+      // results = {};
+      let totalPolls = 0;
+
+      post.poll.pollOptions.forEach(options => {
+        results[options.optionId] = options.optionCount;
+        totalPolls += options.optionCount;
+      });
+
+      let maxPollOptionId = null;
+      let maxVotesPercentage = 0;
+
+      for (const optionId in results) {
+        if (Object.prototype.hasOwnProperty.call(results, optionId)) {
+          const percentage = (results[optionId] / totalPolls) * 100;
+          results[optionId] = percentage;
+          if (percentage > maxVotesPercentage) {
+            maxVotesPercentage = percentage;
+            maxPollOptionId = optionId;
+          }
+        }
+      }
+
+      setPollResults(results);
+      setMaxPollOptionId(maxPollOptionId);
+    }
+  }, [post?.poll?.pollOptions]);
 
   const handlePoll = async () => {
     try {
@@ -476,18 +507,18 @@ const BoardDetail = () => {
                     </ScrollView>
                   )}
                 </View>
-                {post.board.pollInfo !== null && (
+                {post.poll !== null && (
                   <View style={{ flex: 1, padding: 20 }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                      {post.board.title !== post.board.pollInfo.title ? (
+                      {post.board.title !== post.poll.title ? (
                         <Text style={{ ...styles.title, justifyContent: "flex-start" }}>
-                          {post.board.pollInfo.title}
+                          {post.poll.title}
                         </Text>
                       ) : (
                         <View style={{ justifyContent: "flex-start" }}></View>
                       )}
                       <Text style={{ fontSize: 10, color: "gray", justifyContent: "flex-end" }}>
-                        마감일 : {dateFormat(post.board.pollInfo.expireDate)}
+                        마감일 : {dateFormat(post.poll.expireDate)}
                       </Text>
                     </View>
                     <View
@@ -498,7 +529,7 @@ const BoardDetail = () => {
                         marginBottom: 10,
                       }}
                     >
-                      {post.board.pollInfo.pollOptions.map(options => (
+                      {post.poll.pollOptions.map(options => (
                         <TouchableOpacity
                           style={{
                             borderWidth: 1,
@@ -507,18 +538,37 @@ const BoardDetail = () => {
                             marginVertical: 3,
                             backgroundColor:
                               pollOptionId === options.optionId ? "#f0f6fd" : "white",
+                            position: "relative",
+                            zIndex: 1000,
+                            width: "100%",
                           }}
                           key={options.optionId}
                           onPress={() => setPollOptionId(options.optionId)}
-                          disabled={post.board.pollInfo.state == 0 ? false : true}
+                          disabled={post.poll.state == 0 ? false : true}
                         >
                           <Text>{options.optionName}</Text>
                           <Text style={{ fontSize: 10, color: "gray" }}>
                             {options.optionCount}명 참여
                           </Text>
+                          <View key={options.optionId} style={{ position: "relative" }}>
+                            <View
+                              style={{
+                                width: `${results[options.optionId]}%`,
+                                height: 20,
+                                backgroundColor: "#f0f6fd",
+                                position: "relative",
+                                top: 0,
+                                left: 0,
+                              }}
+                            ></View>
+                            <Text style={{ position: "absolute", right: 0 }}>
+                              {results[options.optionId] ? results[options.optionId].toFixed(2) : 0}
+                              %
+                            </Text>
+                          </View>
                         </TouchableOpacity>
                       ))}
-                      {post.board.pollInfo.state == 1 ? (
+                      {post.poll.state == 1 ? (
                         <Text style={{ fontSize: 10, color: "gray" }}>마감되었습니다.</Text>
                       ) : null}
                     </View>
@@ -535,7 +585,7 @@ const BoardDetail = () => {
                       ) : (
                         <View style={{ justifyContent: "flex-start" }}></View>
                       )}
-                      {post.board.pollInfo.state == 0 && (
+                      {post.poll.state == 0 && (
                         <TextButton
                           fontColor={"#000"}
                           style={{ ...styles.button, justifyContent: "flex-end" }}
