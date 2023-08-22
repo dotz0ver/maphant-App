@@ -1,11 +1,10 @@
-//글색 하얀색으로 바꿔줘야함
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { listArticle, listHotBoard, listVoteBoard } from "../../Api/board";
-import { Container } from "../../components/common";
+import { Container, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { BoardArticle, BoardType, HotBoard, VoteBoard } from "../../types/Board";
 import ScrollList from "./ScrollList";
@@ -46,11 +45,11 @@ const QnABoard: React.FC = () => {
       <ScrollView>
         <View style={styles.total}>
           <View style={styles.hHead}>
-            <Text style={styles.hFont}>
+            <TextThemed style={styles.hFont}>
               {" "}
               HOT 게시글
-              <MaterialCommunityIcons name="fire" size={25} color="black" />
-            </Text>
+              <MaterialCommunityIcons name="fire" size={25} color="red" />
+            </TextThemed>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("DetailList", { boardType: boardType });
@@ -69,7 +68,7 @@ const QnABoard: React.FC = () => {
         </View>
         <View style={styles.total}>
           <View style={styles.hHead}>
-            <Text style={styles.hFont}> 최신 게시글</Text>
+            <TextThemed style={styles.hFont}> 최신 게시글</TextThemed>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("DetailList", { boardType: boardType });
@@ -88,11 +87,11 @@ const QnABoard: React.FC = () => {
         </View>
         <View style={styles.total}>
           <View style={styles.hHead}>
-            <Text style={styles.hFont}>
+            <TextThemed style={styles.hFont}>
               {" "}
               투표 게시글
-              <MaterialCommunityIcons name="cloud" size={25} color="black" />
-            </Text>
+              <MaterialCommunityIcons name="cloud" size={25} color="skyblue" />
+            </TextThemed>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("DetailList", { boardType: boardType });

@@ -1,4 +1,3 @@
-//글자색상 흰색으로 바꿔야함
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Checkbox from "expo-checkbox";
 import React, { useEffect, useState } from "react";
@@ -282,7 +281,7 @@ const BoardDetail = () => {
                   // 선택된 항목의 경우 스타일 적용
                 ]}
               >
-                <Text style={styles.reportContent}>{item.name}</Text>
+                <TextThemed style={styles.reportContent}>{item.name}</TextThemed>
               </TouchableOpacity>
             ))}
             <View style={styles.modalBtnDirection}>
@@ -731,7 +730,7 @@ const styles = StyleSheet.create({
     height: "30%",
   },
   replyBox: {
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "rgba(82, 153, 235, 0.3)",
     borderRadius: 8,
     padding: 10,
     marginBottom: 10,

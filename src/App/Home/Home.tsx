@@ -410,7 +410,7 @@ const TodaysHot: React.FC = () => {
           borderRadius: 30,
         }}
       >
-        <TextThemed>{tag.title}</TextThemed>
+        <Text>{tag.title}</Text>
       </View>
     );
   };

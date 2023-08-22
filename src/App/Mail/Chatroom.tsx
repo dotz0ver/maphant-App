@@ -1,11 +1,11 @@
-import { StackActions, useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useLayoutEffect, useState } from "react";
+//이미지 색만 바뀨기
+import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
+import { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, Text } from "react-native";
-import { useWindowDimensions } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 
 import { chartLists, sendContent } from "../../Api/member/FindUser";
-import { Container, ImageBox, Input, TextButton } from "../../components/common";
+import { Container, ImageBox, Input, TextButton, TextThemed } from "../../components/common";
 import { MailFormParams } from "../../Navigator/MailRoute";
 import { NavigationProps } from "../../Navigator/Routes";
 import { ReceiveList } from "../../types/DM";
@@ -63,20 +63,20 @@ const Chatroom: React.FC = () => {
     return (
       <Container style={{ paddingVertical: 0 }}>
         <Container style={{ padding: 10 }}>
-          <Text>{params.nickname}</Text>
+          <TextThemed>{params.nickname}</TextThemed>
           <Container style={{ flexDirection: "row", alignItems: "flex-end" }}>
             <Container
               style={{
-                backgroundColor: "rgba(82, 153, 235, 0.3)",
+                backgroundColor: "rgba(82, 153, 235, 0.45)",
                 paddingVertical: 13,
                 paddingHorizontal: 20,
                 borderRadius: 10,
                 flexShrink: 1,
               }}
             >
-              <Text>{item.content}</Text>
+              <TextThemed>{item.content}</TextThemed>
             </Container>
-            <Text style={{ marginLeft: 5 }}>{getCurrentTime(new Date(item.time))}</Text>
+            <TextThemed style={{ marginLeft: 5 }}>{getCurrentTime(new Date(item.time))}</TextThemed>
           </Container>
         </Container>
       </Container>
@@ -86,9 +86,10 @@ const Chatroom: React.FC = () => {
     return (
       <Container style={{ paddingVertical: 0 }}>
         <Container style={{ padding: 10, alignItems: "flex-end" }}>
-          <Text>ME</Text>
           <Container style={{ flexDirection: "row", alignItems: "flex-end" }}>
-            <Text style={{ marginRight: 5 }}>{getCurrentTime(new Date(item.time))}</Text>
+            <TextThemed style={{ marginRight: 5 }}>
+              {getCurrentTime(new Date(item.time))}
+            </TextThemed>
             <Container
               style={{
                 backgroundColor: "#5299EB",
@@ -123,7 +124,6 @@ const Chatroom: React.FC = () => {
           style={{
             flex: 0.7,
             alignItems: "center",
-            justifyContent: "space-between",
             flexDirection: "row",
             flexShrink: 1,
           }}
@@ -136,9 +136,9 @@ const Chatroom: React.FC = () => {
               navigation.navigate("Profile", { id: params.id } as never);
             }}
           >
-            <Text style={{ fontSize: 23, fontWeight: "bold", marginLeft: 20 }}>
+            <TextThemed style={{ fontSize: 23, fontWeight: "bold", marginLeft: 20 }}>
               {params.nickname}
-            </Text>
+            </TextThemed>
           </TouchableOpacity>
         </Container>
         <Container style={{ flex: 10 }}>
