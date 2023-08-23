@@ -302,7 +302,7 @@ const QAdetail = () => {
       </View>
       <ScrollView style={styles.scroll}>
         {!answer ? (
-          <></>
+          <View></View>
         ) : (
           answer.map(answer => (
             <View style={styles.answerBox} key={answer.id}>
