@@ -1,6 +1,6 @@
 import BoardDetail from "../App/Board/BoardDetail";
 import BoardList, { BoardType } from "../App/Board/BoardList";
-import Edit from "../App/Board/editPost";
+import Edit from "../App/Board/EditPost";
 import HotDetailList from "../App/Board/HotList";
 import DetailList from "../App/Board/List";
 import Post from "../App/Board/Post";

@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { NavigationProps } from "../../Navigator/Routes";
 import { BoardArticle, BoardType, HotBoard } from "../../types/Board";
-import { dateFormat } from "./Time";
+import { dateFormat } from "../../utils/Time";
 
 export default function ({
   post,
