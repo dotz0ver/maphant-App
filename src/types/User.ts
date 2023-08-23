@@ -16,11 +16,14 @@ type UserData = {
 
 // 상대방 소개글, 프로필 이미지, 닉네임
 type OtherUserData = {
+  nickname: string;
   body: string;
-  category_name: string;
-  major_name: string;
-  profile_img: string;
-  user_nickname: string;
+  profileImg: string;
+  category: string;
+  categoryId: number;
+  categoryName: string;
+  majorId: number;
+  majorName: string;
 };
 
 type OtherUserId = {
@@ -61,8 +64,6 @@ type OWriteContentList = {
   parent_id: string;
   user_id: number;
   nickname: string;
-  boardtype_id: number;
-  board_type: string;
   board_id: number;
   board_title: string;
   body: string;
