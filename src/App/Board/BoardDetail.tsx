@@ -741,7 +741,12 @@ const BoardDetail = () => {
                             <View style={{ margin: "2%" }}>
                               <View style={styles.commentHeader}>
                                 <View style={{ flexDirection: "column" }}>
-                                  <TextThemed style={styles.commentName}>
+                                  <TextThemed
+                                    style={styles.commentName}
+                                    onPress={() =>
+                                      navigation.navigate("Profile", { id: comment.user_id })
+                                    }
+                                  >
                                     {reply.nickname}
                                   </TextThemed>
                                   <Text style={styles.commentDate}>
