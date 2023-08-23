@@ -64,6 +64,8 @@ type OWriteContentList = {
   parent_id: string;
   user_id: number;
   nickname: string;
+  boardtype_id: number;
+  board_type: string;
   board_id: number;
   board_title: string;
   body: string;
