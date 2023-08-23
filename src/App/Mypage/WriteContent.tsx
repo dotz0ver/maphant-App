@@ -1,14 +1,14 @@
+import { Feather } from "@expo/vector-icons";
+import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useDebugValue, useEffect, useState } from "react";
-import { Text, View, FlatList, Pressable } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { FlatList, Pressable, Text, View } from "react-native";
 
 import { writeContentList } from "../../Api/member/Others";
 import { Container } from "../../components/common";
+import { NavigationProps } from "../../Navigator/Routes";
 import { OtherUserId, OWriteContentList } from "../../types/User";
 import getCurrentTime from "../Time";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
-import { NavigationProps } from "../../Navigator/Routes";
 
 const WriteContent: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
@@ -27,13 +27,12 @@ const WriteContent: React.FC = () => {
     <View style={{ display: "flex", flex: 1 }}>
       <FlatList
         data={contentList}
-        renderItem={({ item, index }) => (
+        renderItem={({ item }) => (
           <>
             <Pressable
               style={{ flex: 1, padding: 5, backgroundColor: "#fff" }}
               key={item.id}
               onPress={() => {
-                console.log(item.board_id);
                 navigation.navigate("BoradDetail", { id: item.board_id });
               }}
             >

@@ -12,11 +12,14 @@ type UserData = {
   nickname: string;
   role: string;
   category: UserCategory[];
+  state: number;
 };
 
 // 상대방 소개글, 프로필 이미지, 닉네임
 type OtherUserData = {
   body: string;
+  category_name: string;
+  major_name: string;
   profile_img: string;
   user_nickname: string;
 };
