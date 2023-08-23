@@ -1,6 +1,6 @@
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
-import { LegacyRef, useEffect, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 import {
   ColorValue,
   Dimensions,
@@ -11,6 +11,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   KeyboardTypeOptions,
+  LayoutRectangle,
   ScrollView,
   StyleProp,
   Text,
@@ -296,6 +297,9 @@ const Input: React.FC<InputProps> = props => {
     onSubmitEditing,
   } = props;
 
+  const [isLayoutCalibrated, setIsLayoutCalibrated] = useState(false);
+  const containerLayout = useRef<LayoutRectangle | null>(null);
+
   const style_container: StyleProp<ViewStyle> = {
     paddingHorizontal,
     paddingVertical,
@@ -305,11 +309,27 @@ const Input: React.FC<InputProps> = props => {
   };
   const style_text: StyleProp<TextStyle> = {
     fontSize: 16,
-    // color: theme.colors.text,
+    width: "100%",
   };
 
+  if (isLayoutCalibrated) {
+    style_text.height = containerLayout.current?.height;
+  }
+
   return (
-    <View style={style_container}>
+    <View
+      style={style_container}
+      onLayout={event => {
+        event.stopPropagation();
+        const data = event.nativeEvent.layout;
+
+        if (isLayoutCalibrated) return;
+
+        containerLayout.current = data;
+
+        setIsLayoutCalibrated(true);
+      }}
+    >
       <TextInput
         ref={inputRef}
         style={style_text}

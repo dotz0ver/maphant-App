@@ -53,7 +53,7 @@ const VotePost: React.FC = () => {
 
   const styles = StyleSheet.create({
     votePostBox: {
-      backgroundColor: "red",
+      // backgroundColor: "red",
       flex: 2,
       // height: "33%",
       borderWidth: 1,

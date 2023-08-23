@@ -3,7 +3,15 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import CheckBox from "expo-checkbox";
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
-import { Image, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -157,64 +165,75 @@ const Edit: React.FC = () => {
   };
 
   return (
-    <Container style={{ marginHorizontal: 15, marginVertical: 10 }}>
-      <Container style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        <Container
-          style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10 }}
-        >
-          <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
-            <CheckBox
-              style={{ marginRight: 5 }}
-              value={isHide == 1 ? true : false}
-              onValueChange={isChecked => {
-                check("private", isChecked);
-                setIsHide(isChecked ? 1 : 0);
-              }}
-            ></CheckBox>
-            <Text>비공개</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+      style={{ padding: 5, borderRadius: 5 }}
+    >
+      <Container
+        style={{ marginHorizontal: 15, marginVertical: 10 }}
+        // isForceKeyboardAvoiding={true}
+      >
+        <Container style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Container
+            style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10 }}
+          >
+            <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
+              <CheckBox
+                style={{ marginRight: 5 }}
+                value={isHide == 1 ? true : false}
+                onValueChange={isChecked => {
+                  check("private", isChecked);
+                  setIsHide(isChecked ? 1 : 0);
+                }}
+              ></CheckBox>
+              <Text>비공개</Text>
+            </Container>
+            <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
+              <CheckBox
+                style={{ marginRight: 5 }}
+                value={isAnonymous == 1 ? true : false}
+                onValueChange={isChecked => {
+                  check("anonymous", isChecked);
+                }}
+              ></CheckBox>
+              <Text>익명</Text>
+            </Container>
           </Container>
-          <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
-            <CheckBox
-              style={{ marginRight: 5 }}
-              value={isAnonymous == 1 ? true : false}
-              onValueChange={isChecked => {
-                check("anonymous", isChecked);
-              }}
-            ></CheckBox>
-            <Text>익명</Text>
-          </Container>
-        </Container>
-        <Container style={{ flexDirection: "row" }}>
-          {/* <TouchableOpacity onPress={voteHandling}>
+          <Container style={{ flexDirection: "row" }}>
+            {/* <TouchableOpacity onPress={voteHandling}>
             <AntDesign name="cloud" size={24} color="black" />
           </TouchableOpacity> */}
+          </Container>
+          <Container style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              onPress={uploadImage}
+              style={{ alignItems: "center", marginRight: 5 }}
+            >
+              <AntDesign name="camerao" size={24} color="#666666" />
+              <Text style={{ color: "#666666", fontSize: 13 }}>사진 업로드</Text>
+            </TouchableOpacity>
+          </Container>
+          <Container style={{ flexDirection: "row" }}>
+            <TextButton onPress={handleUpdate}>완료</TextButton>
+          </Container>
         </Container>
-        <Container style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={uploadImage} style={{ alignItems: "center", marginRight: 5 }}>
-            <AntDesign name="camerao" size={24} color="#666666" />
-            <Text style={{ color: "#666666", fontSize: 13 }}>사진 업로드</Text>
-          </TouchableOpacity>
-        </Container>
-        <Container style={{ flexDirection: "row" }}>
-          <TextButton onPress={handleUpdate}>완료</TextButton>
-        </Container>
-      </Container>
-      <Container>
-        <Input
-          placeholder="제목"
-          onChangeText={text => setTitle(text)}
-          value={title}
-          multiline={true}
-        ></Input>
-        <Spacer size={20} />
-        <TextInput
-          placeholder="#해시태그 형식을 지켜주세요."
-          onChangeText={text => setHashtagInput(text)}
-          value={hashtagInput}
-          multiline={true}
-          onEndEditing={addHashtag}
-        ></TextInput>
-        {/* {voteInputs && (
+        <Container>
+          <Input
+            placeholder="제목"
+            onChangeText={text => setTitle(text)}
+            value={title}
+            // multiline={true}
+          ></Input>
+          <Spacer size={20} />
+          <TextInput
+            placeholder="#해시태그 형식을 지켜주세요."
+            onChangeText={text => setHashtagInput(text)}
+            value={hashtagInput}
+            // multiline={true}
+            onEndEditing={addHashtag}
+          ></TextInput>
+          {/* {voteInputs && (
           <>
             <Spacer size={20} />
             <Container style={{ flexDirection: "row" }}>
@@ -248,43 +267,44 @@ const Edit: React.FC = () => {
             </Container>
           </>
         )} */}
-        <Spacer size={10} />
-        <View style={{ flexDirection: "row" }}>
-          {hashtags.map((tag, index) => (
-            <Text key={index} onPress={() => deleteHashtag(index)}>
-              <Text style={{ backgroundColor: "#C9E4F9" }}>{tag}</Text>
-              {"   "}
-            </Text>
-          ))}
-        </View>
-        <Spacer size={20} />
-        <Input
-          style={{ minHeight: "40%" }}
-          placeholder="본문"
-          onChangeText={text => setBody(text)}
-          value={body}
-          multiline={true}
-        ></Input>
-        <ScrollView horizontal={true} style={{ flexDirection: "row" }}>
-          <Spacer size={20} />
-          {Array.isArray(postImageUrl) &&
-            postImageUrl.map((uri, index) => (
-              <>
-                <Image
-                  source={{ uri: uri }}
-                  style={{ width: 200, height: 200, marginRight: 5 }} // 이미지 간 간격을 조절해줍니다.
-                />
-                <FontAwesome
-                  name="remove"
-                  size={24}
-                  color="black"
-                  onPress={() => handleRemoveImage(index)}
-                />
-              </>
+          <Spacer size={10} />
+          <View style={{ flexDirection: "row" }}>
+            {hashtags.map((tag, index) => (
+              <Text key={index} onPress={() => deleteHashtag(index)}>
+                <Text style={{ backgroundColor: "#C9E4F9" }}>{tag}</Text>
+                {"   "}
+              </Text>
             ))}
-        </ScrollView>
+          </View>
+          <Spacer size={20} />
+          <Input
+            style={{ minHeight: "40%" }}
+            placeholder="본문"
+            onChangeText={text => setBody(text)}
+            value={body}
+            multiline={true}
+          ></Input>
+          <ScrollView horizontal={true} style={{ flexDirection: "row" }}>
+            <Spacer size={20} />
+            {Array.isArray(postImageUrl) &&
+              postImageUrl.map((uri, index) => (
+                <>
+                  <Image
+                    source={{ uri: uri }}
+                    style={{ width: 200, height: 200, marginRight: 5 }} // 이미지 간 간격을 조절해줍니다.
+                  />
+                  <FontAwesome
+                    name="remove"
+                    size={24}
+                    color="black"
+                    onPress={() => handleRemoveImage(index)}
+                  />
+                </>
+              ))}
+          </ScrollView>
+        </Container>
       </Container>
-    </Container>
+    </KeyboardAvoidingView>
   );
 };
 
