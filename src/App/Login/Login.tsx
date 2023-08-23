@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
+import { red100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import Toast from "react-native-root-toast";
 
 import { sendFcm } from "../../Api/member/Fcm";
@@ -19,34 +20,48 @@ const Login: React.FC = () => {
 
   const loginHandler = () => {
     if (!email.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
-      // Toast.show("이메일 형식을 확인해주세요", { duration: Toast.durations.SHORT });
+      Toast.show("이메일 형식을 확인해주세요", { duration: Toast.durations.SHORT });
       return;
     } else if (password.length < 4) {
-      // Toast.show("비밀번호는 4자리 이상 입니다", { duration: Toast.durations.SHORT });
+      Toast.show("비밀번호는 4자리 이상 입니다", { duration: Toast.durations.SHORT });
       return;
     }
     UIStore.showLoadingOverlay();
     UserAPI.login(email, password)
       .then(res => {
+        // UserStorage.removeUserData();
         UserStorage.setUserToken(res["pubKey"], res["privKey"]).then(() => {
           return UserAPI.getProfile().then(res => {
-            Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
-            UserStorage.setUserProfile(res.data);
+            if (res.data.state === 0) {
+              console.info("hello");
+              UserStorage.removeUserData();
+              Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
+              UserStorage.setUserProfile(res.data);
+              navigation.navigate("Uncertified", { email: email, password: password });
+            } else if (res.data.state === 1) {
+              console.info("hello2");
+              Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
+              UserStorage.setUserProfile(res.data);
+            }
           });
         });
       })
       .catch(message => {
         if (message == "Not found") {
-          // Toast.show("존재하지 않는 이메일 입니다", { duration: Toast.durations.SHORT });
+          Toast.show("존재하지 않는 이메일 입니다", { duration: Toast.durations.SHORT });
           return;
         }
         if (message == "Invalid password") {
-          // Toast.show("비밀번호가 틀렸습니다", { duration: Toast.durations.SHORT });
+          Toast.show("비밀번호가 틀렸습니다", { duration: Toast.durations.SHORT });
+          return;
+        } else if (message == "탈퇴된 사용자입니다.") {
+          Toast.show("탈퇴된 사용자입니다.", { duration: Toast.durations.SHORT });
           return;
         }
       })
       .finally(() => {
         UIStore.hideLoadingOverlay();
+        UserStorage.loadUserDataOnStartUp();
       });
   };
   return (
@@ -99,7 +114,7 @@ const Login: React.FC = () => {
               navigation.navigate("TermsSet" as never);
             }}
           >
-            Don't have any account? Sign up
+            Don&#039;t have any account? Sign up
           </TextButton>
         </View>
         <View>

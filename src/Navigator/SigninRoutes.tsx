@@ -1,5 +1,6 @@
 import Find from "../App/Login/Find";
 import Login from "../App/Login/Login";
+import Uncertified from "../App/Login/Uncertified";
 import Confirm from "../App/Signup/Confirm";
 import SearchUniversity from "../App/Signup/SearchUniversity";
 import Signup from "../App/Signup/Signup";
@@ -34,6 +35,10 @@ const SignupRoutes: RouteType[] = [
   {
     name: "Confirm",
     component: Confirm,
+  },
+  {
+    name: "Uncertified",
+    component: Uncertified,
   },
 ];
 
