@@ -369,7 +369,7 @@ const IconButton: React.FC<IconButtonProps> = props => {
     children,
     backgroundColor = "#f2f2f2",
     paddingHorizontal = 11,
-    paddingVertical = 5,
+    paddingVertical = 3,
     marginHorizontal = 4,
     borderRadius = 5,
     flexDirection = "row",

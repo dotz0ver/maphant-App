@@ -652,10 +652,10 @@ const BoardDetail = () => {
             .map(comment => (
               // comment.parent_id == null ? (
               <>
-                <Container style={styles.commentBox} key={comment.id}>
+                <Container key={comment.id}>
                   <ModalWrapperComment commentId={commentId} />
                   <View style={styles.line} />
-                  <View style={{ flex: 1 }}>
+                  <View style={{ flex: 1, marginTop: 10 }}>
                     {/* <View style={styles.commentHeader}> */}
                     <View>
                       <View
@@ -666,7 +666,6 @@ const BoardDetail = () => {
                         }}
                       >
                         <TouchableOpacity
-                          style={{ backgroundColor: "pink" }}
                           onPress={() => {
                             navigation.navigate("Profile", { id: comment.user_id } as never);
                           }}
@@ -675,30 +674,33 @@ const BoardDetail = () => {
                           <TextThemed style={styles.commentName}>{comment.nickname}</TextThemed>
                         </TouchableOpacity>
                         <Text style={styles.commentDate}>{dateFormat(comment.created_at)}</Text>
-                      </View>
-                      {comment.isMyComment && (
-                        <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
-                          <TextButton
-                            style={styles.button}
-                            fontSize={13}
-                            fontColor={"#000"}
-                            onPress={() => {
-                              alertComment(comment.id);
-                            }}
+                        {comment.isMyComment && (
+                          <View
+                            style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}
                           >
-                            삭제
-                          </TextButton>
-                        </View>
-                      )}
+                            <TextButton
+                              style={styles.button}
+                              fontSize={13}
+                              fontColor={"#000"}
+                              onPress={() => {
+                                alertComment(comment.id);
+                              }}
+                            >
+                              삭제
+                            </TextButton>
+                          </View>
+                        )}
+                      </View>
                     </View>
                     <View style={{ paddingHorizontal: 10 }}>
-                      <View style={styles.commentContext}>
-                        <TextThemed style={styles.context}>{comment.body}</TextThemed>
+                      <View style={{ margin: 10 }}>
+                        <TextThemed>{comment.body}</TextThemed>
                       </View>
                       <View style={styles.cbutBox}>
                         <IconButton
                           name="comment"
                           color="skyblue"
+                          size={12}
                           onPress={() => {
                             setParentId(comment.id);
                             setChecked(!checked);
@@ -736,9 +738,14 @@ const BoardDetail = () => {
                           {/* <View style={styles.commentBox}> */}
                           <View style={styles.replyBox} key={reply.id}>
                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                              <View style={{ flexDirection: "column", marginLeft: 5 }}>
-                                <TextThemed style={{ fontSize: 13 }}>{reply.nickname}</TextThemed>
-                                <TextThemed style={{ fontSize: 9 }}>
+                              <View
+                                style={{
+                                  marginLeft: 5,
+                                  flexDirection: "row",
+                                }}
+                              >
+                                <TextThemed style={styles.commentName}>{reply.nickname}</TextThemed>
+                                <TextThemed style={styles.commentDate}>
                                   {dateFormat(reply.created_at)}
                                 </TextThemed>
                               </View>
@@ -772,7 +779,7 @@ const BoardDetail = () => {
                               </View>
                             </View>
                             <View style={{ marginLeft: 5 }}>
-                              <TextThemed style={{ fontSize: 14, marginTop: 8 }}>
+                              <TextThemed style={{ fontSize: 14, marginTop: 3 }}>
                                 {reply.body}
                               </TextThemed>
                             </View>
@@ -855,6 +862,7 @@ const styles = StyleSheet.create({
   },
   nickname: {
     fontSize: 15,
+    fontWeight: "bold",
   },
   date: {
     fontSize: 10,
@@ -879,11 +887,7 @@ const styles = StyleSheet.create({
   cbutBox: {
     flexDirection: "row",
   },
-  // commentBox: {
-  //   flexDirection: "row",
-  //   flexWrap: "wrap",
-  //   flex: 1,
-  // },
+
   line: {
     width: "100%",
     height: 1,
@@ -894,13 +898,14 @@ const styles = StyleSheet.create({
   //   justifyContent: "center",
   // },
   commentName: {
-    fontSize: 15,
+    fontSize: 12,
     marginRight: 5,
+    fontWeight: "bold",
   },
   commentDate: {
     marginTop: 5,
-    fontSize: 11,
-    color: "lightgray",
+    fontSize: 9,
+    color: "gray",
     // marginLeft: 10,
   },
 
