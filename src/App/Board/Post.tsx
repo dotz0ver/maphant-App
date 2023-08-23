@@ -5,16 +5,7 @@ import CheckBox from "expo-checkbox";
 import * as ImagePicker from "expo-image-picker";
 import { sha512 } from "js-sha512";
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { boardPost } from "../../Api/board";
 import { statusResponse } from "../../Api/fetchAPI";
@@ -132,12 +123,6 @@ const Post: React.FC = () => {
     console.log("hashtags", hashtags);
     const DBnewHashtags = hashtags.map(word => word.replace(/^#/, ""));
     console.log("DBnewHashtags", DBnewHashtags);
-
-    if (voteOptions.some(option => option.trim() === "")) {
-      alert("옵션 내용을 입력해 주세요.");
-      return;
-    }
-
     try {
       const response = await boardPost(
         null,
@@ -255,140 +240,149 @@ const Post: React.FC = () => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-        <Container isFullScreen={true}>
-          <Container style={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <Container
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                paddingHorizontal: 10,
+    <Container style={{ flex: 1, paddingHorizontal: 20, paddingVertical: 10 }}>
+      <Container
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Container
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingHorizontal: 10,
+          }}
+        >
+          <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
+            <CheckBox
+              style={{ marginRight: 5 }}
+              value={checkList.includes("private")}
+              onValueChange={isChecked => {
+                check("private", isChecked);
+                setIsHide(isChecked ? 1 : 0);
               }}
-            >
-              <Container style={{ flexDirection: "row", marginRight: 10 }}>
-                <CheckBox
-                  style={{ marginRight: 5 }}
-                  value={checkList.includes("private")}
-                  onValueChange={isChecked => {
-                    check("private", isChecked);
-                    setIsHide(isChecked ? 1 : 0);
-                  }}
-                ></CheckBox>
-                <Text>비공개</Text>
-              </Container>
-              <Container style={{ flexDirection: "row", marginRight: 10 }}>
-                <CheckBox
-                  style={{ marginRight: 5 }}
-                  value={checkList.includes("anonymous")}
-                  onValueChange={isChecked => {
-                    check("anonymous", isChecked);
-                    setIsanonymous(isChecked ? 1 : 0);
-                  }}
-                ></CheckBox>
-                <Text>익명</Text>
-              </Container>
-            </Container>
-            <Container style={{ flexDirection: "row" }}>
-              <TouchableOpacity onPress={voteHandling}>
-                <AntDesign name="cloud" size={24} color="black" />
-              </TouchableOpacity>
-            </Container>
-            <Container style={{ flexDirection: "row" }}>
-              <TouchableOpacity onPress={uploadImage}>
-                <AntDesign name="camerao" size={24} color="black" />
-              </TouchableOpacity>
-            </Container>
-            <Container style={{ flexDirection: "row" }}>
-              <TextButton onPress={complete}>완료</TextButton>
-            </Container>
+            ></CheckBox>
+            <Text>비공개</Text>
           </Container>
-
-          <Container>
-            <Input
-              placeholder="제목"
-              onChangeText={text => setTitle(text)}
-              value={title}
-              multiline={true}
-            ></Input>
-            <Spacer size={20} />
-            <TextInput
-              placeholder="#해시태그 형식을 지켜주세요."
-              onChangeText={text => setHashtagInput(text)}
-              value={hashtagInput}
-              multiline={true}
-              onEndEditing={addHashtag}
-            ></TextInput>
-            {voteInputs && (
-              <>
-                <Spacer size={20} />
-                <Container style={{ flexDirection: "row" }}>
-                  <Input
-                    style={{ width: "80%", marginRight: 10, height: 35 }}
-                    placeholder="투표 제목"
-                    onChangeText={text => setVoteTitle(text)}
-                    value={voteTitle}
-                  />
-                  <TextButton onPress={addVoteOptions}>추가</TextButton>
-                </Container>
-                <Spacer size={10} />
-                <Container>
-                  {voteOptions.map((option, index) => (
-                    <>
-                      <Container style={{ flexDirection: "row", alignItems: "center" }} key={index}>
-                        <Input
-                          style={{ flex: 1 }}
-                          key={index}
-                          placeholder={`투표 선택지 ${index + 1}`}
-                          onChangeText={text => handleVoteOptionChange(index, text)}
-                          value={option}
-                        />
-                        <TouchableOpacity onPress={() => handleRemoveVoteOption(index)}>
-                          <Text style={{ color: "black" }}>X</Text>
-                        </TouchableOpacity>
-                      </Container>
-                      <Spacer size={10} />
-                    </>
-                  ))}
-                </Container>
-              </>
-            )}
-            <Spacer size={10} />
-            <View style={{ flexDirection: "row" }}>
-              {hashtags.map((tag, index) => (
-                <Text key={index}>
-                  <Text style={{ backgroundColor: "#C9E4F9" }}>{tag}</Text>
-                  {"   "}
-                </Text>
-              ))}
-            </View>
-
-            <Spacer size={20} />
-            <Input
-              style={{ height: "40%" }}
-              placeholder="본문"
-              onChangeText={text => setBody(text)}
-              value={body}
-              multiline={true}
-            ></Input>
-            <ScrollView horizontal={true} style={{ flexDirection: "row" }}>
-              <Spacer size={20} />
-              {Array.isArray(imageUrl) &&
-                imageUrl.map((uri, index) => (
-                  <Image
-                    key={index}
-                    source={{ uri: uri }}
-                    style={{ width: 200, height: 200, marginRight: 5 }} // 이미지 간 간격을 조절해줍니다.
-                  />
-                ))}
-            </ScrollView>
+          <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
+            <CheckBox
+              style={{ marginRight: 5 }}
+              value={checkList.includes("anonymous")}
+              onValueChange={isChecked => {
+                check("anonymous", isChecked);
+                setIsanonymous(isChecked ? 1 : 0);
+              }}
+            ></CheckBox>
+            <Text>익명</Text>
           </Container>
         </Container>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <Container style={{ flexDirection: "row" }}>
+          <TouchableOpacity onPress={voteHandling} style={{ alignItems: "center", marginRight: 5 }}>
+            <MaterialCommunityIcons
+              name="vote"
+              size={24}
+              color={voteInputs == false ? "#666666" : "#5299EB"}
+            />
+            <Text style={{ color: "#666666", fontSize: 13 }}>투표 만들기</Text>
+          </TouchableOpacity>
+        </Container>
+        <Container style={{ flexDirection: "row" }}>
+          <TouchableOpacity onPress={uploadImage} style={{ alignItems: "center", marginRight: 5 }}>
+            <AntDesign name="camerao" size={24} color="#666666" />
+            <Text style={{ color: "#666666", fontSize: 13 }}>사진 업로드</Text>
+          </TouchableOpacity>
+        </Container>
+        <Container style={{ flexDirection: "row" }}>
+          <TextButton onPress={complete} fontSize={13}>
+            완료
+          </TextButton>
+        </Container>
+      </Container>
+
+      <Container>
+        <Input
+          placeholder="제목"
+          onChangeText={text => setTitle(text)}
+          value={title}
+          multiline={true}
+        ></Input>
+        <Spacer size={20} />
+        <TextInput
+          placeholder="#해시태그 형식을 지켜주세요."
+          onChangeText={text => setHashtagInput(text)}
+          value={hashtagInput}
+          multiline={true}
+          onEndEditing={addHashtag}
+        ></TextInput>
+        {voteInputs && (
+          <>
+            <Spacer size={20} />
+            <Container style={{ flexDirection: "row" }}>
+              <Input
+                style={{ width: "80%", marginRight: 10, height: 35 }}
+                placeholder="투표 제목"
+                onChangeText={text => setVoteTitle(text)}
+                value={voteTitle}
+              />
+              <TextButton onPress={addVoteOptions} fontSize={13}>
+                추가
+              </TextButton>
+            </Container>
+            <Spacer size={10} />
+            <Container>
+              {voteOptions.map((option, index) => (
+                <>
+                  <Container style={{ flexDirection: "row", alignItems: "center" }} key={index}>
+                    <Input
+                      style={{ flex: 1 }}
+                      key={index}
+                      placeholder={`투표 선택지 ${index + 1}`}
+                      onChangeText={text => handleVoteOptionChange(index, text)}
+                      value={option}
+                    />
+                    <TouchableOpacity onPress={() => handleRemoveVoteOption(index)}>
+                      <Text style={{ color: "black" }}>X</Text>
+                    </TouchableOpacity>
+                  </Container>
+                  <Spacer size={10} />
+                </>
+              ))}
+            </Container>
+          </>
+        )}
+        <Spacer size={10} />
+        <View style={{ flexDirection: "row" }}>
+          {hashtags.map((tag, index) => (
+            <Text key={index}>
+              <Text style={{ backgroundColor: "#C9E4F9" }}>{tag}</Text>
+              {"   "}
+            </Text>
+          ))}
+        </View>
+
+        <Spacer size={20} />
+        <Input
+          style={{ height: "40%" }}
+          placeholder="본문"
+          onChangeText={text => setBody(text)}
+          value={body}
+          multiline={true}
+        ></Input>
+        <ScrollView horizontal={true} style={{ flexDirection: "row" }}>
+          <Spacer size={20} />
+          {Array.isArray(imageUrl) &&
+            imageUrl.map((uri, index) => (
+              <Image
+                key={index}
+                source={{ uri: uri }}
+                style={{ width: 200, height: 200, marginRight: 5 }} // 이미지 간 간격을 조절해줍니다.
+              />
+            ))}
+        </ScrollView>
+      </Container>
+    </Container>
   );
 };
 
