@@ -305,8 +305,8 @@ const QAdetail = () => {
         {!answer ? (
           <View></View>
         ) : (
-          answer.map(answer => (
-            <View style={styles.answerBox} key={answer.id}>
+          answer.map((answer, index) => (
+            <View style={styles.answerBox} key={index}>
               <View style={styles.line} />
               <View style={{ margin: "3%" }}>
                 <View style={styles.answerheader}>
