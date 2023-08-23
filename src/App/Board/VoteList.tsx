@@ -75,7 +75,7 @@ const VoteDetailList: React.FC = () => {
   };
 
   const detailContent = (board: VoteBoard) => {
-    navigation.navigate("QnAdetail", { id: board.boardId });
+    navigation.navigate("BoardDetail", { id: board.boardId });
   };
 
   const displayData = searchQuery.trim() === "" ? boardData : searchResults;
