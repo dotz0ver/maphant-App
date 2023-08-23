@@ -50,7 +50,7 @@ import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticleBase, BoardPost, commentType, ReportType } from "../../types/Board";
 import { UserData } from "../../types/User";
-import { dateFormat, dateTimeFormat } from "./Time";
+import { dateFormat, dateTimeFormat } from "../../utils/Time";
 
 const BoardDetail = () => {
   const params = useRoute().params as { id: number; preRender?: BoardArticleBase };
