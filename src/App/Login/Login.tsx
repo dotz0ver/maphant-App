@@ -29,14 +29,13 @@ const Login: React.FC = () => {
     UIStore.showLoadingOverlay();
     UserAPI.login(email, password)
       .then(res => {
-        // UserStorage.removeUserData();
+        UserStorage.removeUserData();
         UserStorage.setUserToken(res["pubKey"], res["privKey"]).then(() => {
           return UserAPI.getProfile().then(res => {
             if (res.data.state === 0) {
               console.info("hello");
-              UserStorage.removeUserData();
-              Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
               UserStorage.setUserProfile(res.data);
+              UserStorage.getUserToken().then(res => console.info(res));
               navigation.navigate("Uncertified", { email: email, password: password });
             } else if (res.data.state === 1) {
               console.info("hello2");
