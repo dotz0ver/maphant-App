@@ -186,7 +186,7 @@ const MyView = () => {
   const category = useSelector(UserStorage.userCategorySelector);
 
   const [visibleIntroModal, setVisibleIntoModal] = useState(false);
-  const [introduceTxt, setIntroduceTxt] = useState("");
+  const [introduceTxt, setIntroduceTxt] = useState<profile>("");
   let confirmedIntroTxt: string = "";
 
   // const [userID, setUserID] = useState(0);
@@ -197,7 +197,9 @@ const MyView = () => {
     // setUserID(useSelector(UserStorage.userProfileSelector)!.id);
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        setIntroduceTxt(res.data[0].body);
+        if (res && res.data && res.data[0] && res.data[0].body !== undefined) {
+          setIntroduceTxt(res.data[0].body);
+        }
       }
     });
   }, [userID]);
@@ -205,7 +207,9 @@ const MyView = () => {
   useEffect(() => {
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        setIntroduceTxt(res.data[0].body);
+        if (res && res.data && res.data[0] && res.data[0].body !== undefined) {
+          setIntroduceTxt(res.data[0].body);
+        }
       }
     });
   }, [introduceTxt]);
