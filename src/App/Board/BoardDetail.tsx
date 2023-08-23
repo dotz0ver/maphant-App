@@ -3,7 +3,6 @@ import Checkbox from "expo-checkbox";
 import React, { useEffect, useState } from "react";
 import {
   Alert,
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   Modal,
@@ -14,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import ImageModal from "react-native-image-modal";
 import { useSelector } from "react-redux";
 
 import {
@@ -205,7 +205,7 @@ const BoardDetail = () => {
         setPost(data.data as BoardPost);
         // console.error(data.data);
       })
-      .catch();
+      .catch(err => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -505,10 +505,15 @@ const BoardDetail = () => {
                   {post.board.imagesUrl != null && (
                     <ScrollView horizontal={true} style={styles.imageContainer}>
                       {post.board.imagesUrl.map((imageUrl, index) => (
-                        <Image
+                        <ImageModal
                           key={index}
+                          swipeToDismiss={false}
+                          resizeMode="contain"
+                          style={{
+                            height: 200,
+                            width: 200,
+                          }}
                           source={{ uri: imageUrl }}
-                          style={{ width: 200, height: 200, marginRight: 5 }}
                         />
                       ))}
                     </ScrollView>

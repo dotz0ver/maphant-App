@@ -2,6 +2,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Alert, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import ImageModal from "react-native-image-modal";
 import { useSelector } from "react-redux";
 
 import {
@@ -240,6 +241,22 @@ const QAdetail = () => {
             </View>
             <View>
               <Text style={styles.qacontext}>{post.board.body}</Text>
+              {post.board.imagesUrl != null && (
+                <ScrollView horizontal={true} style={styles.imageContainer}>
+                  {post.board.imagesUrl.map((imageUrl, index) => (
+                    <ImageModal
+                      key={index}
+                      swipeToDismiss={false}
+                      resizeMode="contain"
+                      style={{
+                        height: 200,
+                        width: 200,
+                      }}
+                      source={{ uri: imageUrl }}
+                    />
+                  ))}
+                </ScrollView>
+              )}
             </View>
           </View>
         </View>
@@ -464,6 +481,10 @@ const styles = StyleSheet.create({
   },
   selectedReportItem: {
     backgroundColor: "#5299EB",
+  },
+  imageContainer: {
+    flexDirection: "row",
+    marginTop: "10%",
   },
 });
 
