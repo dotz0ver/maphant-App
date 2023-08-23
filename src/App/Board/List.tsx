@@ -96,7 +96,6 @@ const DetailList: React.FC = () => {
   }, [sort]);
 
   const createBoard = () => {
-    console.log("글쓰기 화면으로 바뀌어야함");
     navigation.navigate("Post", { boardType: boardType });
   };
 
@@ -113,9 +112,9 @@ const DetailList: React.FC = () => {
   return (
     <Container style={styles.container}>
       <SearchBar onSearchChange={handleSearch} />
-      <TouchableOpacity style={styles.sortContainer}>
+      <View style={styles.sortContainer}>
         {sortType.map((sort, index) => (
-          <View key={index}>
+          <TouchableOpacity key={index}>
             <TextButton
               key={sort.id}
               onPress={() => {
@@ -124,11 +123,11 @@ const DetailList: React.FC = () => {
               }} // 선택된 정렬 유형 id를 핸들러에 전달합니다.
               style={styles.sortKey}
             >
-              {sort.name}
+              {sort.id === 1 ? "최신 순" : sort.id === 2 ? "좋아요 순" : ""}
             </TextButton>
-          </View>
+          </TouchableOpacity>
         ))}
-      </TouchableOpacity>
+      </View>
 
       <FlatList
         data={displayData}
@@ -177,10 +176,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   sortKey: {
-    backgroundColor: "#5299EB",
-    marginRight: "5%",
-    width: 120, // 원하는 너비로 조절
-    height: 50,
+    // backgroundColor: "#5299EB",
+    // marginRight: "5%",
+    // width: 120, // 원하는 너비로 조절
+    // height: 50,
+    borderRadius: 4,
+    paddingVertical: 5,
+    paddingHorizontal: 11,
+    marginHorizontal: 4,
+    backgroundColor: "#CBD7E6",
   },
 });
 
