@@ -157,12 +157,12 @@ const Edit: React.FC = () => {
   };
 
   return (
-    <Container>
+    <Container style={{ marginHorizontal: 15, marginVertical: 10 }}>
       <Container style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Container
           style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10 }}
         >
-          <Container style={{ flexDirection: "row", marginRight: 10 }}>
+          <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
             <CheckBox
               style={{ marginRight: 5 }}
               value={isHide == 1 ? true : false}
@@ -173,7 +173,7 @@ const Edit: React.FC = () => {
             ></CheckBox>
             <Text>비공개</Text>
           </Container>
-          <Container style={{ flexDirection: "row" }}>
+          <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
             <CheckBox
               style={{ marginRight: 5 }}
               value={isAnonymous == 1 ? true : false}
@@ -190,8 +190,9 @@ const Edit: React.FC = () => {
           </TouchableOpacity> */}
         </Container>
         <Container style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={uploadImage}>
-            <AntDesign name="camerao" size={24} color="black" />
+          <TouchableOpacity onPress={uploadImage} style={{ alignItems: "center", marginRight: 5 }}>
+            <AntDesign name="camerao" size={24} color="#666666" />
+            <Text style={{ color: "#666666", fontSize: 13 }}>사진 업로드</Text>
           </TouchableOpacity>
         </Container>
         <Container style={{ flexDirection: "row" }}>
