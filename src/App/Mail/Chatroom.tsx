@@ -1,6 +1,6 @@
 //이미지 색만 바뀨기
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Text } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 
@@ -16,26 +16,61 @@ const Chatroom: React.FC = () => {
 
   const [receiveContent, setReceiveContent] = useState<ReceiveList[]>([]);
   const [content, setContent] = useState<string>("");
-  const [page, setPage] = useState<number>(0);
+  const isChatLoading = useRef<boolean>(false);
+  const prevPage = useRef<number | null>(0);
   const [flag, setFlag] = useState<boolean>(false);
+
   const handleEndReached = () => {
     setFlag(true);
-    fetchChatLists(params.roomId);
+    fetchPrevChatLists(params.roomId);
   };
-  const fetchChatLists = (roomId: number) => {
-    chartLists(roomId, page)
+  const fetchPrevChatLists = (roomId: number) => {
+    if (prevPage.current === null) return;
+
+    if (isChatLoading.current) return;
+    isChatLoading.current = true;
+
+    chartLists(roomId, prevPage.current)
       .then(res => {
         if (res.success) {
           const receive = res.data?.list;
+          const p = res.data?.nextCursor;
           setReceiveContent(receiveContent => [...receiveContent, ...receive]);
-          setPage(res.data?.nextCursor);
+          prevPage.current = p;
           setFlag(false);
         }
       })
       .catch(e => {
-        if (page !== null) console.error("fetchChatLists에러", e);
-      });
+        console.error("fetchChatLists에러", e);
+      })
+      .finally(() => (isChatLoading.current = false));
   };
+
+  const fetchNewChatLists = async (roomId: number) => {
+    if (receiveContent.length == 0) return;
+
+    const currentNewestId = receiveContent[0].id;
+    let tmpNewChatList: ReceiveList[] = [];
+
+    let newPage: number | null = 0;
+
+    while (newPage == 0 || newPage > currentNewestId) {
+      await chartLists(roomId, newPage).then(res => {
+        const receive = res.data?.list;
+        newPage = res.data?.nextCursor;
+
+        tmpNewChatList = [...tmpNewChatList, ...receive];
+      });
+
+      if (newPage) break;
+    }
+
+    setReceiveContent([
+      ...tmpNewChatList.filter(item => item.id > receiveContent[0].id),
+      ...receiveContent,
+    ]);
+  };
+
   const send = async () => {
     await sendContent(params.id, content)
       .then(res => {
@@ -43,23 +78,24 @@ const Chatroom: React.FC = () => {
           if (params.roomId === 0) {
             params.roomId = res.data?.room_id;
           }
-          fetchChatLists(params.roomId);
         }
+
+        fetchNewChatLists(params.roomId);
       })
       .catch(e => console.error("send에러", e));
     setContent("");
   };
 
   useEffect(() => {
-    if (params.roomId) fetchChatLists(params.roomId);
+    if (params.roomId) fetchPrevChatLists(params.roomId);
   }, [params.roomId]);
-
   useEffect(() => {
-    // 업데이트 후 화면을 다시 렌더링합니다.
-    console.error("시발 안된다고 ㅅㅂ");
-  }, [receiveContent]);
+    const interval = setInterval(() => fetchNewChatLists(params.roomId), 1000);
 
-  console.log(receiveContent);
+    return () => {
+      clearInterval(interval);
+    };
+  });
 
   function getCurrentTime(targetDate: Date) {
     const hours = targetDate.getHours();
@@ -158,7 +194,7 @@ const Chatroom: React.FC = () => {
             </TextThemed>
           </TouchableOpacity>
         </Container>
-        {flag && receiveContent.length > 20 && page != null ? (
+        {flag && receiveContent.length > 20 ? (
           <ActivityIndicator size="small" color="black" />
         ) : null}
         <Container style={{ flex: 10 }}>

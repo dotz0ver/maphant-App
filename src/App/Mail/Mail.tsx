@@ -52,8 +52,12 @@ const Mail: React.FC = () => {
   }, [chatList]);
 
   useEffect(() => {
-    fetchChatRooms();
-  }, [fetchChatRooms]);
+    const interval = setInterval(() => fetchChatRooms(), 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
   return (
     <Container style={{ flex: 1 }}>
       <View style={styles.header}>
@@ -68,9 +72,8 @@ const Mail: React.FC = () => {
             <View style={{ marginBottom: 10 }}>
               {chatList.map(mail => (
                 // eslint-disable-next-line react/jsx-key
-                <>
+                <View key={mail.id}>
                   <TouchableOpacity
-                    key={mail.id}
                     onPress={() => {
                       navigation.navigate("Chatroom", {
                         id: mail.other_id,
@@ -103,7 +106,7 @@ const Mail: React.FC = () => {
                       height: 0,
                     }}
                   ></View>
-                </>
+                </View>
               ))}
             </View>
           </View>
