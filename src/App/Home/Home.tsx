@@ -525,7 +525,7 @@ const HotPost: React.FC = () => {
       height: 143,
       marginLeft: 20,
       marginRight: 20,
-      // backgroundColor: "yellow",
+      backgroundColor: "yellow",
     },
     nameAndtypeBox: {
       flexDirection: "row",
@@ -533,7 +533,7 @@ const HotPost: React.FC = () => {
       width: "100%",
       paddingLeft: 10,
       paddingRight: 10,
-      // backgroundColor: "skyblue",
+      backgroundColor: "skyblue",
     },
     profileImage: {
       width: 30,
@@ -583,7 +583,7 @@ const HotPost: React.FC = () => {
     },
     timeAndlikeAndcomment: {
       flexDirection: "row",
-      // backgroundColor: "pink",
+      backgroundColor: "pink",
       alignItems: "center",
       height: 25,
     },
@@ -601,11 +601,10 @@ const HotPost: React.FC = () => {
     },
     timeTextWrapper: {
       width: "30%",
-      paddingRight: 10,
       flexDirection: "row",
       justifyContent: "flex-end",
       alignItems: "center",
-      // backgroundColor: "skyblue",
+      backgroundColor: "skyblue",
     },
     noHotPostBox: {
       height: 290,
@@ -648,7 +647,7 @@ const HotPost: React.FC = () => {
             style={styles.profileImage}
           />
           <View style={styles.textContainer}>
-            <TextThemed style={styles.userNickname}>{hotPost[0].userNickname}</TextThemed>
+            {/* <TextThemed style={styles.userNickname}>{hotPost[0].userNickname}</TextThemed> */}
 
             <TextThemed style={styles.boardType}>{hotPost[0].type}</TextThemed>
           </View>
@@ -689,7 +688,7 @@ const HotPost: React.FC = () => {
             </View>
           </View>
           <View style={styles.timeTextWrapper}>
-            <TextThemed>{dateToString(hotPost[0].createdAt)}</TextThemed>
+            <TextThemed>{formatTimeDifference(new Date(hotPost[0].createdAt))}</TextThemed>
           </View>
         </View>
       </Pressable>
@@ -704,7 +703,7 @@ const HotPost: React.FC = () => {
             style={styles.profileImage}
           />
           <View style={styles.textContainer}>
-            <TextThemed style={styles.userNickname}>{hotPost[1].userNickname}</TextThemed>
+            {/* <TextThemed style={styles.userNickname}>{hotPost[1].userNickname}</TextThemed> */}
             <TextThemed style={styles.boardType}>{hotPost[1].type}</TextThemed>
           </View>
         </View>
@@ -733,15 +732,13 @@ const HotPost: React.FC = () => {
 
         <Spacer size={5} />
         <View style={styles.timeAndlikeAndcomment}>
-          <View style={{ width: "70%", flexDirection: "row" }}>
-            <View style={styles.likeTextWrapper}>
-              <Feather name="thumbs-up" size={13} color="tomato" />
-              <TextThemed style={styles.iconText}>{hotPost[1].likeCnt}</TextThemed>
-            </View>
-            <View style={styles.commentTextWrapper}>
-              <FontAwesome name="comment-o" size={13} color="blue" />
-              <TextThemed style={styles.iconText}>{hotPost[1].commentCnt}</TextThemed>
-            </View>
+          <View style={styles.likeTextWrapper}>
+            <Feather name="thumbs-up" size={13} color="tomato" />
+            <TextThemed style={styles.iconText}>{hotPost[1].likeCnt}</TextThemed>
+          </View>
+          <View style={styles.commentTextWrapper}>
+            <FontAwesome name="comment-o" size={13} color="blue" />
+            <TextThemed style={styles.iconText}>{hotPost[1].commentCnt}</TextThemed>
           </View>
           <View style={styles.timeTextWrapper}>
             <TextThemed>{formatTimeDifference(new Date(hotPost[1].createdAt))}</TextThemed>
