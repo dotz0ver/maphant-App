@@ -174,7 +174,7 @@ const Chatroom: React.FC = () => {
       style={{ flex: 1 }}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 25}
     >
-      <Container isFullScreen={true} style={{ flex: 1, display: "flex" }}>
+      <Container isForceTopSafeArea={true} style={{ flex: 1, display: "flex", padding: 15 }}>
         <Container
           style={{
             flex: 0.7,
@@ -206,6 +206,7 @@ const Chatroom: React.FC = () => {
             inverted={true}
             onEndReached={handleEndReached}
             onEndReachedThreshold={0.1}
+            contentContainerStyle={{ paddingTop: 10 }}
           />
         </Container>
         <Container
@@ -213,8 +214,7 @@ const Chatroom: React.FC = () => {
           style={{
             flex: 1,
             flexDirection: "row",
-            padding: "3%",
-            marginBottom: 90,
+            marginBottom: 10,
           }}
         >
           <Input
