@@ -73,7 +73,6 @@ const BoardList = () => {
   return (
     <TouchableWithoutFeedback onPress={handle}>
       <View style={styles.container}>
-        <Spacer size={20} />
         <View style={{ ...styles.topic }}>
           <View style={styles.topicInner}>
             <View style={{ justifyContent: "center" }}>

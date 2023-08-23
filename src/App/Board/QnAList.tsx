@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { listArticle, listHotBoard, listVoteBoard } from "../../Api/board";
-import { Container, TextThemed } from "../../components/common";
+import { Container, Spacer, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { BoardArticle, BoardType, HotBoard, VoteBoard } from "../../types/Board";
 import ScrollList from "./ScrollList";
@@ -42,8 +42,9 @@ const QnABoard: React.FC = () => {
 
   return (
     <Container style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.total}>
+          <Spacer size={20} />
           <View style={styles.hHead}>
             <TextThemed style={styles.hFont}>
               {" "}
@@ -68,7 +69,10 @@ const QnABoard: React.FC = () => {
         </View>
         <View style={styles.total}>
           <View style={styles.hHead}>
-            <TextThemed style={styles.hFont}> 최신 게시글</TextThemed>
+            <TextThemed style={styles.hFont}>
+              {" "}
+              최신 게시글 <MaterialCommunityIcons name="elephant" size={25} color="#5299EB" />
+            </TextThemed>
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("DetailList", { boardType: boardType });
@@ -77,7 +81,7 @@ const QnABoard: React.FC = () => {
               <Text style={styles.detail}>더보기</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView horizontal>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {boardData.map(board => (
               <View key={board.boardId} style={styles.content}>
                 <ScrollList post={board} boardType={boardType} />
@@ -89,8 +93,7 @@ const QnABoard: React.FC = () => {
           <View style={styles.hHead}>
             <TextThemed style={styles.hFont}>
               {" "}
-              투표 게시글
-              <MaterialCommunityIcons name="cloud" size={25} color="skyblue" />
+              투표 게시글 <MaterialCommunityIcons name="vote" size={25} color="#5299EB" />
             </TextThemed>
             <TouchableOpacity
               onPress={() => {
@@ -100,7 +103,7 @@ const QnABoard: React.FC = () => {
               <Text style={styles.detail}>더보기</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView horizontal>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             {voteBoard.map(board => (
               <View key={board.boardId} style={styles.content}>
                 <ScrollList post={board} boardType={boardType} />
@@ -116,11 +119,12 @@ const QnABoard: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 30,
+    paddingHorizontal: 25,
+    backgroundColor: "#fff",
   },
   detail: {
     fontSize: 15,
-    color: "gray",
+    color: "#aaa",
     justifyContent: "flex-end",
   },
   total: {
@@ -133,16 +137,18 @@ const styles = StyleSheet.create({
   },
   hFont: {
     fontSize: 20,
+    fontWeight: "bold",
   },
   content: {
     flex: 1,
     alignItems: "flex-start",
-    backgroundColor: "skyblue",
+    backgroundColor: "#5299EB",
     justifyContent: "space-between",
     minWidth: 200,
     minHeight: 90,
     padding: 20,
     marginRight: 10,
+    borderRadius: 25,
   },
 });
 
