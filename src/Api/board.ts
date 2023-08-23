@@ -106,7 +106,9 @@ function deleteLikeBoard(board_id: number) {
 }
 
 function searchArticle(content: string, boardType_id: number) {
-  return GetAPI(`/board/search/?content=${content}&boardTypeId=${boardType_id}`);
+  return GetAPI(
+    `/search/boards?search=${content}&boardTypeId=${boardType_id}&page=1&recordSize=100`,
+  );
 }
 function bookMarkArticle(board_id: number) {
   return PostAPI(`/bookmark/${board_id}`);
