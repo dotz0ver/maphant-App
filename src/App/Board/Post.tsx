@@ -327,6 +327,14 @@ const Post: React.FC = () => {
           multiline={true}
           onEndEditing={addHashtag}
         ></TextInput>
+        <View style={{ flexDirection: "row", marginTop: 10 }}>
+          {hashtags.map((tag, index) => (
+            <Text key={index}>
+              <Text style={{ backgroundColor: "#C9E4F9" }}>{tag}</Text>
+              {"   "}
+            </Text>
+          ))}
+        </View>
         {voteInputs && (
           <>
             <Spacer size={20} />
