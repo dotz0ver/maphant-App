@@ -452,9 +452,16 @@ const BoardDetail = () => {
                 style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}
               >
                 <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-                  <View>
-                    <Text style={styles.nickname}>{post.board.userNickname}</Text>
-                  </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Profile", { id: post.board.isAnonymous } as never);
+                    }}
+                    disabled={post.board.isAnonymous == 1}
+                  >
+                    <View>
+                      <Text style={styles.nickname}>{post.board.userNickname}</Text>
+                    </View>
+                  </TouchableOpacity>
                   <View style={{ marginLeft: 5 }}>
                     <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
                   </View>
