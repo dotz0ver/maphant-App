@@ -1,6 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
+import React from "react";
 import { Alert, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -10,7 +11,7 @@ import { readProfile } from "../../Api/member/Others";
 import { Container, ImageBox, TextButton } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { MessageList } from "../../types/DM";
-import { OtherUserData, OtherUserId, UserCategory } from "../../types/User";
+import { OtherUserData, OtherUserId } from "../../types/User";
 
 const Profile: React.FC = () => {
   const route = useRoute();
@@ -18,7 +19,6 @@ const Profile: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
   const [otherUserProfileList, setOtherUserProfileList] = useState<OtherUserData>();
   const [cmpid, setCmpId] = useState<MessageList[]>([]);
-  const [categoryLists, setCategoryLists] = useState<UserCategory[]>([]);
 
   useEffect(() => {
     // 불러온 id로 상대방 프로필, 소개글, 닉네임을 받아옴
@@ -140,9 +140,8 @@ const Profile: React.FC = () => {
           </Container>
           <Container style={{}}>
             {["작성한 게시글 목록", "작성한 댓글 목록"].map((item, index, array) => (
-              <>
+              <React.Fragment key={index}>
                 <TouchableOpacity
-                  key={index}
                   onPress={() => {
                     changePage(item);
                   }}
@@ -162,7 +161,7 @@ const Profile: React.FC = () => {
                 {index !== array.length - 1 && (
                   <View style={{ width: "100%", height: 1, backgroundColor: "#5299EB" }} />
                 )}
-              </>
+              </React.Fragment>
             ))}
           </Container>
         </Container>
