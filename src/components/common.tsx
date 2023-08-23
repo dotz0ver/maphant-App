@@ -305,7 +305,7 @@ const Input: React.FC<InputProps> = props => {
   };
   const style_text: StyleProp<TextStyle> = {
     fontSize: 16,
-    color: theme.colors.text,
+    // color: theme.colors.text,
   };
 
   return (
@@ -351,7 +351,7 @@ const IconButton: React.FC<IconButtonProps> = props => {
     paddingHorizontal = 11,
     paddingVertical = 5,
     marginHorizontal = 4,
-    borderRadius = 4,
+    borderRadius = 5,
     flexDirection = "row",
     onPress,
     fontSize = 9,

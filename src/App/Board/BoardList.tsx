@@ -13,7 +13,7 @@ import {
 } from "react-native";
 
 import { listBoardType } from "../../Api/board";
-import { Spacer } from "../../components/common";
+import { Spacer, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { BoardType } from "../../types/Board";
 
@@ -49,7 +49,7 @@ const BoardList = () => {
       >
         <View style={styles.boardList} key={boardType.id}>
           <Feather name="message-square" size={24} color="#fff" style={{ paddingVertical: 5 }} />
-          <Text style={{ fontSize: 13, paddingBottom: 5 }}>{boardType.name}</Text>
+          <TextThemed style={{ fontSize: 13, paddingBottom: 5 }}>{boardType.name}</TextThemed>
         </View>
       </TouchableOpacity>
     );
@@ -77,10 +77,10 @@ const BoardList = () => {
         <View style={{ ...styles.topic }}>
           <View style={styles.topicInner}>
             <View style={{ justifyContent: "center" }}>
-              <Text style={{ fontSize: 17 }}> 오늘의 핫한 주제는? </Text>
+              <TextThemed style={{ fontSize: 17 }}> 오늘의 핫한 주제는? </TextThemed>
             </View>
             <TouchableOpacity style={styles.btn} onPress={touch}>
-              <Text style={styles.btnFont}>투표하기</Text>
+              <TextThemed style={styles.btnFont}>투표하기</TextThemed>
             </TouchableOpacity>
           </View>
         </View>
@@ -105,16 +105,16 @@ const BoardList = () => {
         <View style={styles.hotStudy}>
           <View style={{ justifyContent: "center", borderRightWidth: 1, borderRightColor: "#aaa" }}>
             <TouchableOpacity onPress={changePage} style={{ marginHorizontal: 20 }}>
-              <Text style={{ fontSize: 18 }}>
-                HOT 게시글 <MaterialCommunityIcons name="fire" size={24} color="black" />
-              </Text>
+              <TextThemed style={{ fontSize: 18 }}>
+                HOT 게시글 <MaterialCommunityIcons name="fire" size={24} color="red" />
+              </TextThemed>
             </TouchableOpacity>
           </View>
           <View style={{ justifyContent: "center" }}>
             <TouchableOpacity onPress={changeVotePage} style={{ marginHorizontal: 20 }}>
-              <Text style={{ fontSize: 18 }}>
-                투표 게시글 <MaterialCommunityIcons name="fire" size={24} color="black" />
-              </Text>
+              <TextThemed style={{ fontSize: 18 }}>
+                투표 게시글 <MaterialCommunityIcons name="fire" size={24} color="red" />
+              </TextThemed>
             </TouchableOpacity>
           </View>
         </View>
@@ -126,7 +126,6 @@ const BoardList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
   },
   btn: {
     backgroundColor: "#666666",
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
   },
   topic: {
     flex: 1,
-    backgroundColor: "#CBD7E6",
+    backgroundColor: "rgba(82, 153, 235, 0.4)",
     margin: 20,
     borderRadius: 15,
   },
@@ -175,7 +174,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomColor: "#aaa",
     borderBottomWidth: 1,
-    backgroundColor: "#fff",
     paddingHorizontal: 5,
     paddingTop: 10,
     marginHorizontal: 15,
@@ -183,7 +181,7 @@ const styles = StyleSheet.create({
   boardList: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#CBD7E6",
+    backgroundColor: "rgba(82, 153, 235, 0.4)",
     marginVertical: 5,
     padding: 10,
     borderRadius: 10,
@@ -192,7 +190,7 @@ const styles = StyleSheet.create({
     flex: 0.2,
     flexDirection: "row",
     justifyContent: "center",
-    backgroundColor: "#CBD7E6",
+    backgroundColor: "rgba(82, 153, 235, 0.4)",
     marginVertical: 10,
     marginHorizontal: 15,
     padding: 15,

@@ -461,17 +461,19 @@ const BoardDetail = () => {
   };
   return (
     <>
-      <ScrollView style={styles.scroll}>
+      <ScrollView>
         <Container style={styles.container}>
-          <ModalWrapper />
-          <View style={styles.infoBox}>
+          {/* <ModalWrapper /> */}
+          <Container style={{ padding: 10 }}>
             <View>
-              <View style={styles.header}>
-                <View>
+              <View
+                style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
                   <View>
                     <Text style={styles.nickname}>{post.board.userNickname}</Text>
                   </View>
-                  <View>
+                  <View style={{ marginLeft: 5 }}>
                     <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
                   </View>
                 </View>
@@ -496,7 +498,7 @@ const BoardDetail = () => {
                   </View>
                 )}
               </View>
-              <View style={styles.contextBox}>
+              <View style={{ padding: 20 }}>
                 <View>
                   <TextThemed style={styles.title}>{post.board.title}</TextThemed>
                 </View>
@@ -643,26 +645,28 @@ const BoardDetail = () => {
                 신고
               </IconButton>
             </View>
-          </View>
+          </Container>
           {/* 본문 */}
           {comments
             .filter(comment => comment.parent_id === null)
             .map(comment => (
               // comment.parent_id == null ? (
               <>
-                <View style={styles.commentBox} key={comment.id}>
+                <Container style={styles.commentBox} key={comment.id}>
                   <ModalWrapperComment commentId={commentId} />
                   <View style={styles.line} />
-                  <View style={{ flex: 1, margin: "3%" }}>
-                    <View style={styles.commentHeader}>
+                  <View style={{ flex: 1 }}>
+                    {/* <View style={styles.commentHeader}> */}
+                    <View>
                       <View
                         style={{
                           flexDirection: "row",
                           paddingHorizontal: 15,
-                          justifyContent: "flex-start",
+                          // justifyContent: "flex-start",
                         }}
                       >
                         <TouchableOpacity
+                          style={{ backgroundColor: "pink" }}
                           onPress={() => {
                             navigation.navigate("Profile", { id: comment.user_id } as never);
                           }}
@@ -731,55 +735,52 @@ const BoardDetail = () => {
                         <>
                           {/* <View style={styles.commentBox}> */}
                           <View style={styles.replyBox} key={reply.id}>
-                            <View style={styles.line} />
-                            <View style={{ margin: "2%" }}>
-                              <View style={styles.commentHeader}>
-                                <View style={{ flexDirection: "column" }}>
-                                  <TextThemed style={styles.commentName}>
-                                    {reply.nickname}
-                                  </TextThemed>
-                                  <Text style={styles.commentDate}>
-                                    {dateFormat(reply.created_at)}
-                                  </Text>
-                                </View>
-                                <View style={styles.cbutBox}>
-                                  <IconButton
-                                    name="thumbs-o-up"
-                                    color="skyblue"
-                                    onPress={() => {
-                                      handleCommentLike(reply.id, reply.like_cnt);
-                                    }}
-                                  >
-                                    {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
-                                  </IconButton>
-                                  <IconButton
-                                    name="exclamation-circle"
-                                    color="red"
-                                    onPress={() => {
-                                      setCommentId(reply.id);
-                                      setReportCommentModal(true);
-                                    }}
-                                  >
-                                    신고
-                                  </IconButton>
-                                  <IconButton
-                                    name=""
-                                    color="red"
-                                    onPress={() => handleCommentDelete(reply.id)}
-                                  >
-                                    삭제
-                                  </IconButton>
-                                </View>
+                            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                              <View style={{ flexDirection: "column", marginLeft: 5 }}>
+                                <TextThemed style={{ fontSize: 13 }}>{reply.nickname}</TextThemed>
+                                <TextThemed style={{ fontSize: 9 }}>
+                                  {dateFormat(reply.created_at)}
+                                </TextThemed>
                               </View>
-                              <View style={styles.commentContext}>
-                                <TextThemed style={styles.context}>{reply.body}</TextThemed>
+                              <View style={{ flexDirection: "row" }}>
+                                <IconButton
+                                  name="thumbs-o-up"
+                                  color="skyblue"
+                                  onPress={() => {
+                                    handleCommentLike(reply.id, reply.like_cnt);
+                                  }}
+                                >
+                                  {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
+                                </IconButton>
+                                <IconButton
+                                  name="exclamation-circle"
+                                  color="red"
+                                  onPress={() => {
+                                    setCommentId(reply.id);
+                                    setReportCommentModal(true);
+                                  }}
+                                >
+                                  신고
+                                </IconButton>
+                                <IconButton
+                                  name=""
+                                  color="red"
+                                  onPress={() => handleCommentDelete(reply.id)}
+                                >
+                                  삭제
+                                </IconButton>
                               </View>
+                            </View>
+                            <View style={{ marginLeft: 5 }}>
+                              <TextThemed style={{ fontSize: 14, marginTop: 8 }}>
+                                {reply.body}
+                              </TextThemed>
                             </View>
                           </View>
                         </>
                       ))}
                   </View>
-                </View>
+                </Container>
               </>
             ))}
         </Container>
@@ -848,37 +849,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 4,
   },
-  infoBox: {
-    justifyContent: "space-between",
-    flex: 5,
-    padding: "4%",
-  },
-  header: {
-    justifyContent: "space-between",
-    flexDirection: "row",
-  },
+
   buttonBox: {
     flexDirection: "row",
   },
   nickname: {
-    fontSize: 20,
+    fontSize: 15,
   },
   date: {
-    marginLeft: 5,
     fontSize: 10,
     color: "gray",
-  },
-  contextBox: {
-    margin: "5%",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
   },
   context: {
-    marginTop: 10,
-    marginLeft: 5,
-    fontSize: 17,
+    marginTop: 20,
+    fontSize: 15,
   },
   button: {
     borderRadius: 4,
@@ -891,19 +879,20 @@ const styles = StyleSheet.create({
   cbutBox: {
     flexDirection: "row",
   },
-  commentBox: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
+  // commentBox: {
+  //   flexDirection: "row",
+  //   flexWrap: "wrap",
+  //   flex: 1,
+  // },
   line: {
     width: "100%",
     height: 1,
     backgroundColor: "#f2f2f2",
   },
-  commentHeader: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
+  // commentHeader: {
+  //   flexDirection: "row",
+  //   justifyContent: "center",
+  // },
   commentName: {
     fontSize: 15,
     marginRight: 5,
@@ -914,24 +903,15 @@ const styles = StyleSheet.create({
     color: "lightgray",
     // marginLeft: 10,
   },
-  commentContext: {
-    marginVertical: 10,
-    marginHorizontal: 10,
-  },
-  // touchdetail: {
-  //   margin: "3%",
-  // },
-  scroll: {
-    height: "30%",
-  },
+
   replyBox: {
     backgroundColor: "rgba(82, 153, 235, 0.3)",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 10,
+    borderRadius: 10,
+    padding: 13,
     maxHeight: 180,
     overflow: "hidden",
-    margin: 20,
+    marginHorizontal: 20,
+    marginTop: 10,
   },
   modalBackground: {
     flex: 1,
@@ -971,7 +951,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flexDirection: "row",
-    marginTop: "10%",
+    marginTop: 20,
   },
 });
 
