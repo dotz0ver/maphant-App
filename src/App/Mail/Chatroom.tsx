@@ -1,11 +1,12 @@
 //이미지 색만 바뀨기
+import { Ionicons } from "@expo/vector-icons";
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useRef, useState } from "react";
 import { ActivityIndicator, KeyboardAvoidingView, Platform, Text } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 
 import { chartLists, sendContent } from "../../Api/member/FindUser";
-import { Container, ImageBox, Input, TextButton, TextThemed } from "../../components/common";
+import { Container, Input, TextButton, TextThemed } from "../../components/common";
 import { MailFormParams } from "../../Navigator/MailRoute";
 import { NavigationProps } from "../../Navigator/Routes";
 import { ReceiveList } from "../../types/DM";
@@ -182,7 +183,7 @@ const Chatroom: React.FC = () => {
           }}
         >
           <TouchableOpacity onPress={() => navigation.dispatch(StackActions.popToTop())}>
-            <ImageBox source={require("../../../assets/arrow-circle.png")} width={35}></ImageBox>
+            <Ionicons name="arrow-back" size={24} color="gray" />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
