@@ -23,6 +23,7 @@ type BoardArticle = {
   typeId: string;
   boardId: number;
   id: number;
+  userId: number;
   tags?: hashTagType[];
 } & BoardArticleBase;
 
