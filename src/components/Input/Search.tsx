@@ -1,7 +1,8 @@
 import { SearchBar } from "@rneui/themed";
-import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TAutocompleteDropdownItem } from "react-native-autocomplete-dropdown";
+import { FlatList } from "react-native-gesture-handler";
 
 type Props = {
   field: unknown;
@@ -38,31 +39,6 @@ const Search: React.FC<Props> = props => {
     setFieldValue(name, search);
   }, [search]);
 
-  const sliceResults = useCallback((items: TAutocompleteDropdownItem[]) => {
-    const slicedItems = [];
-    let i = 0;
-    const numColumns = 3;
-    while (i < items.length) {
-      slicedItems.push(items.slice(i, i + numColumns));
-      i += numColumns;
-    }
-    return slicedItems;
-  }, []);
-
-  const renderItemGroup = (itemGroup: TAutocompleteDropdownItem[]) => (
-    <View style={styles.itemContainer}>
-      {itemGroup.map(item => (
-        <TouchableOpacity
-          key={item.id}
-          style={styles.itemContainer}
-          onPress={() => (item && item.title ? handleItemClick(item.title) : null)}
-        >
-          <Text style={styles.itemText}>{item.title}</Text>
-        </TouchableOpacity>
-      ))}
-    </View>
-  );
-
   const inputPropsPassed: Props = props;
   inputPropsPassed.onChangeText = onChangeTextInterceptor;
 
@@ -81,16 +57,20 @@ const Search: React.FC<Props> = props => {
       />
 
       <FlatList
+        style={styles.allContainer}
+        nestedScrollEnabled={true}
+        contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
-        data={sliceResults(list)}
+        data={list}
         keyExtractor={(item, index) => index.toString()}
-        horizontal
-        pagingEnabled // 이 옵션을 추가하여 3개씩 스크롤되도록 설정합니다.
-        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {renderItemGroup(item)}
-          </ScrollView>
+          <TouchableOpacity
+            style={styles.itemContainer}
+            onPress={() => (item && item.title ? handleItemClick(item.title) : null)}
+          >
+            <Text style={styles.itemText}>{item.title}</Text>
+          </TouchableOpacity>
         )}
       />
     </View>
@@ -112,10 +92,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
     borderRadius: 30,
   },
+  allContainer: {
+    height: 200,
+  },
   itemContainer: {
     padding: 20,
-
-    borderBottomColor: "#ccc",
     borderBottomWidth: 1,
   },
   itemText: {

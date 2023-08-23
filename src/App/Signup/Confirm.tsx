@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text } from "react-native";
 import { confirmEmail } from "../../Api/member/signUp";
 import { Container, Input, TextButton } from "../../components/common";
 import { SignUpFormParams } from "../../Navigator/SigninRoutes";
+import { ISignupForm } from "../../types/SignUp";
 
 const Confirm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ const Confirm: React.FC = () => {
   const [seconds, setSeconds] = useState(0);
   const [verificationCode, setVerificationCode] = useState("");
   // const verificationCodeInputRef = useRef<TextInput>(null);
-  const [showNextButton, setShowNextButton] = useState(false);
+  const [showNextButton, setShowNextButton] = useState(true);
   const route = useRoute();
   const params = route.params as SignUpFormParams;
 
@@ -22,7 +23,8 @@ const Confirm: React.FC = () => {
     if (params && params.email) setEmail(params.email);
   }, [route]);
 
-  const checkCode = () => {
+  const checkCode = (values: ISignupForm) => {
+    values.email = email;
     if (showNextButton) {
       navigation.navigate("SearchUniversity", params);
     }
@@ -42,7 +44,7 @@ const Confirm: React.FC = () => {
           setShowNextButton(true);
         }
       })
-      .catch(error => console.log(error));
+      .catch(error => console.error(error));
   };
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const Confirm: React.FC = () => {
         </Text>
       </Container>
       <Container style={{ marginBottom: 20 }}>
-        <Text>이메일</Text>
+        <Text style={{ fontSize: 16, paddingLeft: 10 }}>이메일</Text>
         <Input
           value={email}
           placeholder="이메일을 입력해주세요."
@@ -83,9 +85,9 @@ const Confirm: React.FC = () => {
       </Container>
 
       <Container style={{ marginBottom: 20 }}>
-        <Text>인증 번호</Text>
+        <Text style={{ fontSize: 16, paddingLeft: 10 }}>인증 번호</Text>
         <Input
-          // ref={verificationCodeInputRef}
+          // inputRef={verificationCodeInputRef}
           value={verificationCode}
           onChangeText={setVerificationCode}
           placeholder="인증번호 6자리를 입력해주세요."
@@ -139,13 +141,12 @@ const Confirm: React.FC = () => {
 
 const styles = StyleSheet.create({
   input: {
-    borderWidth: 1,
-    borderRadius: 4,
+    borderWidth: 1.5,
+    borderRadius: 50,
     width: 300,
     height: 40,
     padding: 8,
-    borderColor: "#999",
-    marginLeft: 10,
+    borderColor: "#aaa",
     marginTop: 10,
   },
   button: {

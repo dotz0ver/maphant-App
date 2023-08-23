@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 7.4.1" type="incidents">
+
+    <incident
+        id="RedundantLabel"
+        severity="warning"
+        message="Redundant label can be removed">
+        <fix-attribute
+            description="Delete label"
+            namespace="http://schemas.android.com/apk/res/android"
+            attribute="label"/>
+        <location
+            file="${:app*debug*sourceProvider*0*manifest*0}"
+            line="21"
+            column="44"
+            startOffset="1585"
+            endLine="21"
+            endColumn="76"
+            endOffset="1617"/>
+    </incident>
+
+    <incident
+        id="VisibleForTests"
+        severity="warning"
+        message="This method should only be accessed from tests or within private scope">
+        <location
+            file="${:app*debug*sourceProvider*1*javaDir*0}/com/tovelop/maphant/ReactNativeFlipper.java"
+            line="54"
+            column="56"
+            startOffset="2624"
+            endLine="54"
+            endColumn="78"
+            endOffset="2646"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/mipmap-mdpi/ic_launcher.png"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/mipmap-hdpi/ic_launcher.png"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/mipmap-xxxhdpi/ic_launcher.png"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/mipmap-xxhdpi/ic_launcher.png"/>
+    </incident>
+
+    <incident
+        id="IconLauncherShape"
+        severity="warning"
+        message="Launcher icons should not fill every pixel of their square region; see the design guide for details">
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/mipmap-xhdpi/ic_launcher.png"/>
+    </incident>
+
+    <incident
+        id="IconDipSize"
+        severity="warning"
+        message="The image `splashscreen_image.png` varies significantly in its density-independent (dip) size across the various density versions: drawable-hdpi/splashscreen_image.png: 856x1852 dp (1284x2778 px), drawable-mdpi/splashscreen_image.png: 1284x2778 dp (1284x2778 px), drawable-xhdpi/splashscreen_image.png: 642x1389 dp (1284x2778 px), drawable-xxhdpi/splashscreen_image.png: 428x926 dp (1284x2778 px), drawable-xxxhdpi/splashscreen_image.png: 321x695 dp (1284x2778 px)">
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-xxxhdpi/splashscreen_image.png"/>
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-xxhdpi/splashscreen_image.png"/>
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-xhdpi/splashscreen_image.png"/>
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-hdpi/splashscreen_image.png"/>
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-mdpi/splashscreen_image.png"/>
+    </incident>
+
+    <incident
+        id="IconDuplicatesConfig"
+        severity="warning"
+        message="The `splashscreen_image.png` icon has identical contents in the following configuration folders: drawable-hdpi, drawable-mdpi, drawable-xhdpi, drawable-xxhdpi, drawable-xxxhdpi">
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-xxxhdpi/splashscreen_image.png"/>
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-xxhdpi/splashscreen_image.png"/>
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-xhdpi/splashscreen_image.png"/>
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-mdpi/splashscreen_image.png"/>
+        <location
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-hdpi/splashscreen_image.png"/>
+    </incident>
+
+</incidents>

@@ -37,6 +37,33 @@ const CustomInput = (props: CustomInputProps) => {
     ...inputProps
   } = props;
   const hasError = errors[name] && touched[name];
+  const placeholderTextColor = "#636363";
+
+  let debounce_lastTime = Date.now();
+  let debounce_timer: string | number | NodeJS.Timeout | undefined;
+
+  function debounce(func: () => void, delay = 500) {
+    const now = Date.now();
+    debounce_timer && clearTimeout(debounce_timer);
+
+    if (now - debounce_lastTime < delay) {
+      debounce_timer = setTimeout(() => {
+        debounce(func, delay);
+      }, delay);
+
+      return;
+    }
+
+    debounce_lastTime = now;
+    func();
+  }
+
+  function saveInput() {
+    console.log("Saving data to the server");
+  }
+
+  const processChange = () => debounce(() => saveInput());
+
   return (
     <View>
       <Text
@@ -54,6 +81,7 @@ const CustomInput = (props: CustomInputProps) => {
       <TextInput
         style={{ ...styles.input, marginTop: isFocused ? 25 : 20 }}
         value={value}
+        placeholderTextColor={placeholderTextColor}
         onChangeText={text => {
           handleInputChange(text, setFieldValue);
           setFieldValue(name, text);
@@ -65,6 +93,8 @@ const CustomInput = (props: CustomInputProps) => {
         }}
         onFocus={handleFocus}
         keyboardType={name === "phoneNumber" || name === "studentNumber" ? "numeric" : "default"}
+        secureTextEntry={name === "password" || name === "confirmPassword"}
+        onKeyPress={processChange}
         {...inputProps}
       />
       {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}

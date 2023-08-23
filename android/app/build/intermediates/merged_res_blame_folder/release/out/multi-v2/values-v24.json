@@ -1,0 +1,36 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.tovelop.maphant.app-mergeReleaseResources-39:/values-v24/values-v24.xml",
+            "map": [
+                {
+                    "source": "/Users/jimin/.gradle/caches/transforms-3/9e1c7f8091de9a41253fe08431767c21/transformed/appcompat-1.4.2/res/values-v24/values-v24.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,212",
+                        "endColumns": "156,134",
+                        "endOffsets": "207,342"
+                    }
+                },
+                {
+                    "source": "/Users/jimin/.gradle/caches/transforms-3/29a7a0907981a1e254d586a0a6df9d1a/transformed/media-1.0.0/res/values-v24/values-v24.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,121,182,248",
+                        "endColumns": "65,60,65,66",
+                        "endOffsets": "116,177,243,310"
+                    },
+                    "to": {
+                        "startLines": "4,5,6,7",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "347,413,474,540",
+                        "endColumns": "65,60,65,66",
+                        "endOffsets": "408,469,535,602"
+                    }
+                }
+            ]
+        }
+    ]
+}

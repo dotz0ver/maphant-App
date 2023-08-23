@@ -1,0 +1,180 @@
+/Users/jimin/.gradle/caches/transforms-3/6aa490512adf9b78cd4a4f8a173169e6/transformed/fragment-1.4.1/jars/lint.jar: Warning: Library lint checks out of date;
+these checks will be skipped!
+
+Lint found an issue registry (androidx.fragment.lint.FragmentIssueRegistry)
+which was compiled against an older version of lint
+than this one. This is usually fine, but not in this
+case; some basic verification shows that the lint
+check jar references (for example) the following API
+which is no longer valid in this version of lint:
+org.jetbrains.uast.kotlin.KotlinUClass: org.jetbrains.kotlin.psi.KtClassOrObject getKtClass()
+(Referenced from androidx/fragment/lint/OnCreateDialogIncorrectCallbackDetector$UastHandler.class)
+
+Therefore, this lint check library is not included
+in analysis. This affects the following lint checks:
+FragmentTagUsage
+FragmentAddMenuProvider
+FragmentBackPressedCallback
+FragmentLiveDataObserve
+UseRequireInsteadOfGet
+UseGetLayoutInflater
+DialogFragmentCallbacksDetector
+UnsafeRepeatOnLifecycleDetector
+DetachAndAttachSameFragment
+
+Recompile the checks against the latest version, or if
+this is a check bundled with a third-party library, see
+if there is a more recent version available.
+
+Version of Lint API this lint check is using is 11.
+The Lint API version currently running is 13 (7.3+). [ObsoleteLintCustomCheck]
+
+   Explanation for issues of type "ObsoleteLintCustomCheck":
+   Lint can be extended with "custom checks": additional checks implemented by
+   developers and libraries to for example enforce specific API usages
+   required by a library or a company coding style guideline.
+
+   The Lint APIs are not yet stable, so these checks may either cause a
+   performance degradation, or stop working, or provide wrong results.
+
+   This warning flags custom lint checks that are found to be using obsolete
+   APIs and will need to be updated to run in the current lint environment.
+
+   It may also flag issues found to be using a newer version of the API,
+   meaning that you need to use a newer version of lint (or Android Studio or
+   Gradle plugin etc) to work with these checks.
+
+/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:7: Warning: WRITE_EXTERNAL_STORAGE no longer provides write access when targeting Android 10+ [ScopedStorage]
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ScopedStorage":
+   Scoped storage is enforced on Android 10+ (or Android 11+ if using
+   requestLegacyExternalStorage). In particular, WRITE_EXTERNAL_STORAGE will
+   no longer provide write access to all files; it will provide the equivalent
+   of READ_EXTERNAL_STORAGE instead.
+
+   The MANAGE_EXTERNAL_STORAGE permission can be used to manage all files, but
+   it is rarely necessary and most apps on Google Play are not allowed to use
+   it. Most apps should instead migrate to use scoped storage. To modify or
+   delete files, apps should request write access from the user as described
+   at https://goo.gle/android-mediastore-createwriterequest.
+
+   To learn more, read these resources: Play policy:
+   https://goo.gle/policy-storage-help Allowable use cases:
+   https://goo.gle/policy-storage-usecases
+
+   https://goo.gle/android-storage-usecases
+
+/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:15: Warning: Attribute usesCleartextTraffic is only used in API level 23 and higher (current min is 21) [UnusedAttribute]
+  <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true" android:theme="@style/AppTheme" android:usesCleartextTraffic="true">
+                                                                                                                                                                                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedAttribute":
+   This check finds attributes set in XML files that were introduced in a
+   version newer than the oldest version targeted by your application (with
+   the minSdkVersion attribute).
+
+   This is not an error; the application will simply ignore the attribute.
+   However, if the attribute is important to the appearance or functionality
+   of your application, you should consider finding an alternative way to
+   achieve the same result with only available attributes, and then you can
+   optionally create a copy of the layout in a layout-vNN folder which will be
+   used on API NN or higher where you can take advantage of the newer
+   attribute.
+
+   Note: This check does not only apply to attributes. For example, some tags
+   can be unused too, such as the new <tag> element in layouts introduced in
+   API 21.
+
+/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21: Warning: Redundant label can be removed [RedundantLabel]
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/Theme.App.SplashScreen" android:exported="true" android:screenOrientation="portrait">
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "RedundantLabel":
+   When an activity does not have a label attribute, it will use the one from
+   the application tag. Since the application has already specified the same
+   label, the label on this activity can be omitted.
+
+/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21: Warning: Expecting android:screenOrientation="unspecified" or "fullSensor" for this activity so the user can use the application in any orientation and provide a great experience on Chrome OS devices [LockedOrientationActivity]
+    <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/Theme.App.SplashScreen" android:exported="true" android:screenOrientation="portrait">
+                                                                                                                                                                                                                                                                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "LockedOrientationActivity":
+   The <activity> element should not be locked to any orientation so that
+   users can take advantage of the multi-window environments and larger
+   screens available on Android. To fix the issue, consider declaring the
+   corresponding activity element with `screenOrientation="unspecified"or
+   "fullSensor"` attribute.
+
+   https://developer.android.com/topic/arc/window-management
+
+/Users/jimin/develop/tovelop/android/app/src/debug/java/com/tovelop/maphant/ReactNativeFlipper.java:54: Warning: This method should only be accessed from tests or within private scope [VisibleForTests]
+      ReactContext reactContext = reactInstanceManager.getCurrentReactContext();
+                                                       ~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "VisibleForTests":
+   With the @VisibleForTesting annotation you can specify an otherwise=
+   attribute which specifies the intended visibility if the method had not
+   been made more widely visible for the tests.
+
+   This check looks for accesses from production code (e.g. not tests) where
+   the access would not have been allowed with the intended production
+   visibility.
+
+/Users/jimin/develop/tovelop/android/app/build.gradle: Warning: The resource R.integer.react_native_dev_server_port appears to be unused [UnusedResources]
+/Users/jimin/develop/tovelop/android/app/build.gradle: Warning: The resource R.integer.react_native_inspector_proxy_port appears to be unused [UnusedResources]
+/Users/jimin/develop/tovelop/android/app/src/main/res/drawable-hdpi/splashscreen_image.png: Warning: The resource R.drawable.splashscreen_image appears to be unused [UnusedResources]
+/Users/jimin/develop/tovelop/android/app/src/main/res/values/strings.xml:3: Warning: The resource R.string.expo_splash_screen_resize_mode appears to be unused [UnusedResources]
+  <string name="expo_splash_screen_resize_mode" translatable="false">contain</string>
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/jimin/develop/tovelop/android/app/src/main/res/values/strings.xml:4: Warning: The resource R.string.expo_splash_screen_status_bar_translucent appears to be unused [UnusedResources]
+  <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests =true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests =true.
+   ,
+
+/Users/jimin/develop/tovelop/android/app/src/main/res/mipmap-hdpi/ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+/Users/jimin/develop/tovelop/android/app/src/main/res/mipmap-mdpi/ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+/Users/jimin/develop/tovelop/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+/Users/jimin/develop/tovelop/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+/Users/jimin/develop/tovelop/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+
+   Explanation for issues of type "IconLauncherShape":
+   According to the Android Design Guide
+   (https://material.io/design/iconography/) your launcher icons should "use a
+   distinct silhouette", a "three-dimensional, front view, with a slight
+   perspective as if viewed from above, so that users perceive some depth."
+
+   The unique silhouette implies that your launcher icon should not be a
+   filled square.
+
+/Users/jimin/develop/tovelop/android/app/src/main/res/drawable-xxxhdpi/splashscreen_image.png: Warning: The image splashscreen_image.png varies significantly in its density-independent (dip) size across the various density versions: drawable-hdpi/splashscreen_image.png: 856x1852 dp (1284x2778 px), drawable-mdpi/splashscreen_image.png: 1284x2778 dp (1284x2778 px), drawable-xhdpi/splashscreen_image.png: 642x1389 dp (1284x2778 px), drawable-xxhdpi/splashscreen_image.png: 428x926 dp (1284x2778 px), drawable-xxxhdpi/splashscreen_image.png: 321x695 dp (1284x2778 px) [IconDipSize]
+
+   Explanation for issues of type "IconDipSize":
+   Checks the all icons which are provided in multiple densities, all compute
+   to roughly the same density-independent pixel (dip) size. This catches
+   errors where images are either placed in the wrong folder, or icons are
+   changed to new sizes but some folders are forgotten.
+
+/Users/jimin/develop/tovelop/android/app/src/main/res/drawable-xxxhdpi/splashscreen_image.png: Warning: The splashscreen_image.png icon has identical contents in the following configuration folders: drawable-hdpi, drawable-mdpi, drawable-xhdpi, drawable-xxhdpi, drawable-xxxhdpi [IconDuplicatesConfig]
+
+   Explanation for issues of type "IconDuplicatesConfig":
+   If an icon is provided under different configuration parameters such as
+   drawable-hdpi or -v11, they should typically be different. This detector
+   catches cases where the same icon is provided in different configuration
+   folder which is usually not intentional.
+
+0 errors, 18 warnings

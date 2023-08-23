@@ -1,0 +1,238 @@
+[
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_assets_user.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/assets_user.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_feather.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_feather.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-hdpi_splashscreen_image.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/drawable-hdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_node_modules_reactnativeratings_dist_images_airbnbstarselected.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/node_modules_reactnativeratings_dist_images_airbnbstarselected.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_assets_logo_ko.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/assets_logo_ko.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-hdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-hdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_assets_image3.jpg.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/assets_image3.jpg"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontisto.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontisto.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-xxhdpi_splashscreen_image.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/drawable-xxhdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-xxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-xxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-xxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_regular.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_regular.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_antdesign.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_antdesign.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_node_modules_reactnativeratings_dist_images_star.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/node_modules_reactnativeratings_dist_images_star.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_assets_arrowcircle.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/assets_arrowcircle.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_ionicons.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_ionicons.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_assets_image2.jpg.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/assets_image2.jpg"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-hdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-xhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable_splashscreen.xml.flat",
+        "source": "com.tovelop.maphant.app-main-42:/drawable/splashscreen.xml"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_node_modules_reactnativeratings_dist_images_heart.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/node_modules_reactnativeratings_dist_images_heart.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_node_modules_reactnativeratings_dist_images_bell.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/node_modules_reactnativeratings_dist_images_bell.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_node_modules_reactnativeratings_dist_images_airbnbstar.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/node_modules_reactnativeratings_dist_images_airbnbstar.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-xxxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_brands.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_brands.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_assets_image1.jpg.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/assets_image1.jpg"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_evilicons.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_evilicons.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-xhdpi_splashscreen_image.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/drawable-xhdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_solid.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_fontawesome5_solid.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialicons.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialicons.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_zocial.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_zocial.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-xhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-xhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_node_modules_reactnavigation_elements_src_assets_backiconmask.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/node_modules_reactnavigation_elements_src_assets_backiconmask.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_splashscreen_image.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/drawable-mdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable_rn_edit_text_material.xml.flat",
+        "source": "com.tovelop.maphant.app-main-42:/drawable/rn_edit_text_material.xml"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_foundation.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_foundation.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-xxxhdpi_node_modules_reactnavigation_elements_src_assets_backicon.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-xxxhdpi/node_modules_reactnavigation_elements_src_assets_backicon.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_assets_adv1.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/assets_adv1.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-xxxhdpi_splashscreen_image.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/drawable-xxxhdpi/splashscreen_image.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-mdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_entypo.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_entypo.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_octicons.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_octicons.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.tovelop.maphant.app-main-42:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialcommunityicons.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_materialcommunityicons.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/raw_node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_simplelineicons.ttf.flat",
+        "source": "com.tovelop.maphant.app-react-36:/raw/node_modules_expo_vectoricons_build_vendor_reactnativevectoricons_fonts_simplelineicons.ttf"
+    },
+    {
+        "merged": "com.tovelop.maphant.app-merged_res-41:/drawable-mdpi_node_modules_reactnativeratings_dist_images_rocket.png.flat",
+        "source": "com.tovelop.maphant.app-react-36:/drawable-mdpi/node_modules_reactnativeratings_dist_images_rocket.png"
+    }
+]
