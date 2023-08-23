@@ -109,9 +109,9 @@ function Bookmark(): JSX.Element {
         </View>
       ) : (
         <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
-          {bookmark.map(bookmark => (
-            <>
-              <Pressable key={bookmark.id} onPress={() => detailContent(bookmark)}>
+          {bookmark.map((bookmark, index) => (
+            <React.Fragment key={index}>
+              <Pressable onPress={() => detailContent(bookmark)}>
                 <View style={styles.container}>
                   <View style={styles.head}>
                     <Text>
@@ -160,7 +160,7 @@ function Bookmark(): JSX.Element {
                 </View>
               </Pressable>
               <View style={{ borderBottomWidth: 1, borderColor: "#e8eaec", height: 0 }}></View>
-            </>
+            </React.Fragment>
           ))}
           {(isLoading || isComplete) && (
             <View style={styles.loadingContainer}>
