@@ -20,11 +20,7 @@ type OtherUserData = {
   nickname: string;
   body: string;
   profileImg: string;
-  category: string;
-  categoryId: number;
-  categoryName: string;
-  majorId: number;
-  majorName: string;
+  category: UserCategory[];
 };
 
 type OtherUserId = {
