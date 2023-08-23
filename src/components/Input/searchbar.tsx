@@ -15,7 +15,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChange, onCl
     <View style={styles.searchContainer}>
       <View style={styles.searchBox}>
         <View>
-          <Icon name="search" size={28} color="black" style={{}} />
+          <Icon name="search" size={25} color="#666666" style={{}} />
         </View>
         <TextInput
           value={searchQuery}
@@ -30,7 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChange, onCl
         />
 
         <TouchableOpacity onPress={clearTextHandler}>
-          <Icon name="close" size={28} color="black" style={{}} />
+          <Icon name="close" size={25} color="#666666" style={{}} />
         </TouchableOpacity>
       </View>
     </View>
@@ -63,19 +63,15 @@ const styles = StyleSheet.create({
   searchContainer: {
     height: Dimensions.get("window").height * 0.07,
     flexDirection: "row",
-    //backgroundColor: "teal",
     justifyContent: "center",
   },
   searchBox: {
     flex: 1,
     flexDirection: "row",
-    marginTop: "2.5%",
-    marginBottom: "2.5%",
-    marginLeft: "5%",
-    marginRight: "5%",
-    paddingLeft: "3%",
-    paddingRight: "3%",
-    backgroundColor: "#e5e5e5",
+    marginVertical: "2%",
+    marginHorizontal: "3%",
+    paddingHorizontal: "3%",
+    backgroundColor: "#CBD7E6",
     borderRadius: 30,
     alignItems: "center",
     justifyContent: "space-between",

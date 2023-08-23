@@ -125,7 +125,6 @@ const BoardList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
   },
   btn: {
     backgroundColor: "#666666",
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   btnFont: {
-    color: "white",
+    color: "#fff",
     paddingBottom: 15,
   },
   header: {
@@ -174,7 +173,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomColor: "#aaa",
     borderBottomWidth: 1,
-    backgroundColor: "#fff",
     paddingHorizontal: 5,
     paddingTop: 10,
     marginHorizontal: 15,

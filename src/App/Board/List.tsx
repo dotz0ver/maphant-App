@@ -1,5 +1,6 @@
 //글자 흰색으로
 import { Entypo } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
@@ -113,6 +114,7 @@ const DetailList: React.FC = () => {
     <Container style={styles.container}>
       <SearchBar onSearchChange={handleSearch} />
       <View style={styles.sortContainer}>
+        <FontAwesome name="sort" size={24} color="#666666" style={{ marginRight: 10 }} />
         {sortType.map((sort, index) => (
           <TouchableOpacity key={index}>
             <TextButton
@@ -122,6 +124,7 @@ const DetailList: React.FC = () => {
                 console.log(sort);
               }} // 선택된 정렬 유형 id를 핸들러에 전달합니다.
               style={styles.sortKey}
+              fontColor="#666666"
             >
               {sort.id === 1 ? "최신 순" : sort.id === 2 ? "좋아요 순" : ""}
             </TextButton>
@@ -164,7 +167,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   btn: {
-    backgroundColor: "#e9ecef",
+    backgroundColor: "#CBD7E6",
     borderRadius: 30,
     zIndex: 99,
     position: "absolute",
@@ -174,16 +177,19 @@ const styles = StyleSheet.create({
   },
   sortContainer: {
     flexDirection: "row",
+    marginHorizontal: 15,
+    // backgroundColor: "#D8E1EC",
+    // justifyContent: "space-around",
+    alignItems: "center",
+    paddingVertical: 5,
+    // borderBottomColor: "#aaa",
+    // borderBottomWidth: 1.5,
   },
   sortKey: {
-    // backgroundColor: "#5299EB",
-    // marginRight: "5%",
-    // width: 120, // 원하는 너비로 조절
-    // height: 50,
     borderRadius: 4,
     paddingVertical: 5,
     paddingHorizontal: 11,
-    marginHorizontal: 4,
+    marginRight: 10,
     backgroundColor: "#CBD7E6",
   },
 });
