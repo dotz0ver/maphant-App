@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
-import { red100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+import Toast from "react-native-root-toast";
 
 import { sendFcm } from "../../Api/member/Fcm";
 import UserAPI from "../../Api/memberAPI";
