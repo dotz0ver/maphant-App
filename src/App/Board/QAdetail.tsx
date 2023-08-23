@@ -13,6 +13,7 @@ import {
   deleteLikeBoard,
   getArticle,
   insertLikePost,
+  listArticle,
   listReportType,
   ReportPost,
 } from "../../Api/board";
@@ -37,6 +38,7 @@ const QAdetail = () => {
   const [reportModal, setReportModal] = useState(false);
   const [reportType, setReportType] = React.useState<ReportType[]>([]);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [answer, setAnswer] = useState<BoardArticle[]>([]);
 
   const handleDelete = async () => {
     try {
@@ -60,6 +62,12 @@ const QAdetail = () => {
       })
       .catch(err => Alert.alert(err));
   }, []);
+
+  useEffect(() => {
+    listArticle(7, 1, 10, 1, 1, id).then(data => {
+      setAnswer(data.data.list as BoardArticle[]);
+    });
+  }, [post]);
 
   useEffect(() => {
     if (post.board === undefined && !LoadingOverlay) {
@@ -293,10 +301,10 @@ const QAdetail = () => {
         </View>
       </View>
       <ScrollView style={styles.scroll}>
-        {!post.answerList ? (
+        {!answer ? (
           <></>
         ) : (
-          post.answerList.map(answer => (
+          answer.map(answer => (
             <View style={styles.answerBox} key={answer.id}>
               <View style={styles.line} />
               <View style={{ margin: "3%" }}>
