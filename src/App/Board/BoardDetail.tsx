@@ -633,144 +633,141 @@ const BoardDetail = () => {
             .filter(comment => comment.parent_id === null)
             .map(comment => (
               // comment.parent_id == null ? (
-              <>
-                <Container key={comment.id}>
-                  <ModalWrapperComment commentId={commentId} />
-                  <View style={styles.line} />
-                  <View style={{ flex: 1, marginTop: 10 }}>
-                    {/* <View style={styles.commentHeader}> */}
-                    <View>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          paddingHorizontal: 15,
-                          // justifyContent: "flex-start",
+
+              <Container key={comment.id}>
+                <ModalWrapperComment commentId={commentId} />
+                <View style={styles.line} />
+                <View style={{ flex: 1, marginTop: 10 }}>
+                  {/* <View style={styles.commentHeader}> */}
+                  <View>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        paddingHorizontal: 15,
+                        // justifyContent: "flex-start",
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => {
+                          navigation.navigate("Profile", { id: comment.user_id } as never);
+                        }}
+                        disabled={comment.is_anonymous == 1}
+                      >
+                        <TextThemed style={styles.commentName}>{comment.nickname}</TextThemed>
+                      </TouchableOpacity>
+                      <Text style={styles.commentDate}>{dateFormat(comment.created_at)}</Text>
+                      {comment.isMyComment && (
+                        <View style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}>
+                          <TextButton
+                            style={styles.button}
+                            fontSize={13}
+                            fontColor={"#000"}
+                            onPress={() => {
+                              alertComment(comment.id);
+                            }}
+                          >
+                            삭제
+                          </TextButton>
+                        </View>
+                      )}
+                    </View>
+                  </View>
+                  <View style={{ paddingHorizontal: 10 }}>
+                    <View style={{ margin: 10 }}>
+                      <TextThemed>{comment.body}</TextThemed>
+                    </View>
+                    <View style={styles.cbutBox}>
+                      <IconButton
+                        name="comment"
+                        color="skyblue"
+                        size={12}
+                        onPress={() => {
+                          setParentId(comment.id);
+                          setChecked(!checked);
                         }}
                       >
-                        <TouchableOpacity
-                          onPress={() => {
-                            navigation.navigate("Profile", { id: comment.user_id } as never);
-                          }}
-                          disabled={comment.is_anonymous == 1}
-                        >
-                          <TextThemed style={styles.commentName}>{comment.nickname}</TextThemed>
-                        </TouchableOpacity>
-                        <Text style={styles.commentDate}>{dateFormat(comment.created_at)}</Text>
-                        {comment.isMyComment && (
-                          <View
-                            style={{ flex: 1, flexDirection: "row", justifyContent: "flex-end" }}
-                          >
-                            <TextButton
-                              style={styles.button}
-                              fontSize={13}
-                              fontColor={"#000"}
-                              onPress={() => {
-                                alertComment(comment.id);
+                        대댓글
+                      </IconButton>
+                      <IconButton
+                        name="thumbs-o-up"
+                        color="skyblue"
+                        onPress={() => {
+                          handleCommentLike(comment.id, comment.like_cnt);
+                        }}
+                      >
+                        {comment.like_cnt === 0 ? "추천" : comment.like_cnt}
+                      </IconButton>
+                      <IconButton
+                        name="exclamation-circle"
+                        color="red"
+                        onPress={() => {
+                          setCommentId(comment.id);
+                          setReportCommentModal(true);
+                        }}
+                      >
+                        신고
+                      </IconButton>
+                    </View>
+                  </View>
+
+                  {/* 대댓글 */}
+                  {replies
+                    .filter(reply => reply.parent_id === comment.id)
+                    .map(reply => (
+                      <>
+                        {/* <View style={styles.commentBox}> */}
+                        <View style={styles.replyBox} key={reply.id}>
+                          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                            <View
+                              style={{
+                                marginLeft: 5,
+                                flexDirection: "row",
                               }}
                             >
-                              삭제
-                            </TextButton>
-                          </View>
-                        )}
-                      </View>
-                    </View>
-                    <View style={{ paddingHorizontal: 10 }}>
-                      <View style={{ margin: 10 }}>
-                        <TextThemed>{comment.body}</TextThemed>
-                      </View>
-                      <View style={styles.cbutBox}>
-                        <IconButton
-                          name="comment"
-                          color="skyblue"
-                          size={12}
-                          onPress={() => {
-                            setParentId(comment.id);
-                            setChecked(!checked);
-                          }}
-                        >
-                          대댓글
-                        </IconButton>
-                        <IconButton
-                          name="thumbs-o-up"
-                          color="skyblue"
-                          onPress={() => {
-                            handleCommentLike(comment.id, comment.like_cnt);
-                          }}
-                        >
-                          {comment.like_cnt === 0 ? "추천" : comment.like_cnt}
-                        </IconButton>
-                        <IconButton
-                          name="exclamation-circle"
-                          color="red"
-                          onPress={() => {
-                            setCommentId(comment.id);
-                            setReportCommentModal(true);
-                          }}
-                        >
-                          신고
-                        </IconButton>
-                      </View>
-                    </View>
-
-                    {/* 대댓글 */}
-                    {replies
-                      .filter(reply => reply.parent_id === comment.id)
-                      .map(reply => (
-                        <>
-                          {/* <View style={styles.commentBox}> */}
-                          <View style={styles.replyBox} key={reply.id}>
-                            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                              <View
-                                style={{
-                                  marginLeft: 5,
-                                  flexDirection: "row",
-                                }}
-                              >
-                                <TextThemed style={styles.commentName}>{reply.nickname}</TextThemed>
-                                <TextThemed style={styles.commentDate}>
-                                  {dateFormat(reply.created_at)}
-                                </TextThemed>
-                              </View>
-                              <View style={{ flexDirection: "row" }}>
-                                <IconButton
-                                  name="thumbs-o-up"
-                                  color="skyblue"
-                                  onPress={() => {
-                                    handleCommentLike(reply.id, reply.like_cnt);
-                                  }}
-                                >
-                                  {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
-                                </IconButton>
-                                <IconButton
-                                  name="exclamation-circle"
-                                  color="red"
-                                  onPress={() => {
-                                    setCommentId(reply.id);
-                                    setReportCommentModal(true);
-                                  }}
-                                >
-                                  신고
-                                </IconButton>
-                                <IconButton
-                                  name=""
-                                  color="red"
-                                  onPress={() => handleCommentDelete(reply.id)}
-                                >
-                                  삭제
-                                </IconButton>
-                              </View>
-                            </View>
-                            <View style={{ marginLeft: 5 }}>
-                              <TextThemed style={{ fontSize: 14, marginTop: 3 }}>
-                                {reply.body}
+                              <TextThemed style={styles.commentName}>{reply.nickname}</TextThemed>
+                              <TextThemed style={styles.commentDate}>
+                                {dateFormat(reply.created_at)}
                               </TextThemed>
                             </View>
+                            <View style={{ flexDirection: "row" }}>
+                              <IconButton
+                                name="thumbs-o-up"
+                                color="skyblue"
+                                onPress={() => {
+                                  handleCommentLike(reply.id, reply.like_cnt);
+                                }}
+                              >
+                                {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
+                              </IconButton>
+                              <IconButton
+                                name="exclamation-circle"
+                                color="red"
+                                onPress={() => {
+                                  setCommentId(reply.id);
+                                  setReportCommentModal(true);
+                                }}
+                              >
+                                신고
+                              </IconButton>
+                              <IconButton
+                                name=""
+                                color="red"
+                                onPress={() => handleCommentDelete(reply.id)}
+                              >
+                                삭제
+                              </IconButton>
+                            </View>
                           </View>
-                        </>
-                      ))}
-                  </View>
-                </Container>
-              </>
+                          <View style={{ marginLeft: 5 }}>
+                            <TextThemed style={{ fontSize: 14, marginTop: 3 }}>
+                              {reply.body}
+                            </TextThemed>
+                          </View>
+                        </View>
+                      </>
+                    ))}
+                </View>
+              </Container>
             ))}
         </Container>
       </ScrollView>
