@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.tovelop.maphant.app-mergeDebugResources-40:/values-id/values-id.xml",
+            "map": [
+                {
+                    "source": "/Users/jimin/.gradle/caches/transforms-3/be8fd05c63cab8ae25445912d65d5a56/transformed/jetified-Android-Image-Cropper-4.3.0/res/values-id/values-id.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9,10",
+                        "startColumns": "4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,170,217,273,318,394,466,544,597",
+                        "endColumns": "114,46,55,44,75,71,77,52,65",
+                        "endOffsets": "165,212,268,313,389,461,539,592,658"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,698 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.tovelop.maphant"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml
+9        android:targetSdkVersion="33" />
+9-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:2:3-64
+11-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:2:20-62
+12    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+12-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:3:3-77
+12-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:3:20-75
+13    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+13-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:4:3-68
+13-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:4:20-66
+14    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+14-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:5:3-75
+14-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:5:20-73
+15    <uses-permission android:name="android.permission.VIBRATE" />
+15-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:6:3-63
+15-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:6:20-61
+16    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+16-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:7:3-78
+16-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:7:20-76
+17
+18    <queries>
+18-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:8:3-14:13
+19        <intent>
+19-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:9:5-13:14
+20            <action android:name="android.intent.action.VIEW" />
+20-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:10:7-58
+20-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:10:15-56
+21
+22            <category android:name="android.intent.category.BROWSABLE" />
+22-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:11:7-67
+22-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:11:17-65
+23
+24            <data android:scheme="https" />
+24-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:12:7-37
+24-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:12:13-35
+25        </intent>
+26        <!-- Query open documents -->
+27        <intent>
+27-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:15:9-17:18
+28            <action android:name="android.intent.action.OPEN_DOCUMENT_TREE" />
+28-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:16:13-79
+28-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:16:21-76
+29        </intent>
+30        <intent>
+30-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:16:9-20:18
+31
+32            <!-- Required for picking images from the camera roll if targeting API 30 -->
+33            <action android:name="android.media.action.IMAGE_CAPTURE" />
+33-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:13-73
+33-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:21-70
+34        </intent>
+35        <intent>
+35-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:21:9-25:18
+36
+37            <!-- Required for picking images from the camera if targeting API 30 -->
+38            <action android:name="android.media.action.ACTION_VIDEO_CAPTURE" />
+38-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:24:13-80
+38-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:24:21-77
+39        </intent>
+40        <intent>
+40-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:10:9-16:18
+41            <action android:name="android.intent.action.GET_CONTENT" />
+41-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:11:13-72
+41-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:11:21-69
+42
+43            <category android:name="android.intent.category.OPENABLE" />
+43-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:13:13-73
+43-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:13:23-70
+44
+45            <data android:mimeType="*/*" />
+45-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:12:7-37
+46        </intent>
+47    </queries>
+48
+49    <uses-permission android:name="android.permission.WAKE_LOCK" />
+49-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:5-68
+49-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:22-65
+50    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Required for picking images from camera directly -->
+50-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:5-79
+50-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:22-76
+51    <uses-permission android:name="android.permission.CAMERA" />
+51-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:5-65
+51-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:22-62
+52    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+52-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:12:5-76
+52-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:12:22-73
+53    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+53-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:13:5-75
+53-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:13:22-72
+54    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+54-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:5-81
+54-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:7:22-78
+55    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+55-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:5-77
+55-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:22-74
+56    <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- suppress DeprecatedClassUsageInspection -->
+56-->[androidx.biometric:biometric:1.1.0] /Users/jimin/.gradle/caches/transforms-3/0c4f0022af882e91b23b846396a11d79/transformed/biometric-1.1.0/AndroidManifest.xml:24:5-72
+56-->[androidx.biometric:biometric:1.1.0] /Users/jimin/.gradle/caches/transforms-3/0c4f0022af882e91b23b846396a11d79/transformed/biometric-1.1.0/AndroidManifest.xml:24:22-69
+57    <uses-permission android:name="android.permission.USE_FINGERPRINT" /> <!-- Required by older versions of Google Play services to create IID tokens -->
+57-->[androidx.biometric:biometric:1.1.0] /Users/jimin/.gradle/caches/transforms-3/0c4f0022af882e91b23b846396a11d79/transformed/biometric-1.1.0/AndroidManifest.xml:27:5-74
+57-->[androidx.biometric:biometric:1.1.0] /Users/jimin/.gradle/caches/transforms-3/0c4f0022af882e91b23b846396a11d79/transformed/biometric-1.1.0/AndroidManifest.xml:27:22-71
+58    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+58-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:28:5-82
+58-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:28:22-79
+59    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" /> <!-- for android -->
+59-->[com.android.installreferrer:installreferrer:1.0] /Users/jimin/.gradle/caches/transforms-3/5fe6e8b54898f834a65147b2ee176583/transformed/jetified-installreferrer-1.0/AndroidManifest.xml:9:5-110
+59-->[com.android.installreferrer:installreferrer:1.0] /Users/jimin/.gradle/caches/transforms-3/5fe6e8b54898f834a65147b2ee176583/transformed/jetified-installreferrer-1.0/AndroidManifest.xml:9:22-107
+60    <!-- <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/> -->
+61    <!-- <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/> -->
+62    <!-- <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" /> -->
+63    <!-- <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" /> -->
+64    <!-- for Samsung -->
+65    <uses-permission android:name="com.sec.android.provider.badge.permission.READ" />
+65-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:19:5-86
+65-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:19:22-83
+66    <uses-permission android:name="com.sec.android.provider.badge.permission.WRITE" /> <!-- for htc -->
+66-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:20:5-87
+66-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:20:22-84
+67    <uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS" />
+67-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:23:5-81
+67-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:23:22-78
+68    <uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT" /> <!-- for sony -->
+68-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:24:5-83
+68-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:24:22-80
+69    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE" />
+69-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:27:5-88
+69-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:27:22-85
+70    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE" /> <!-- for apex -->
+70-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:28:5-92
+70-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:28:22-89
+71    <uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT" /> <!-- for solid -->
+71-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:31:5-84
+71-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:31:22-81
+72    <uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE" /> <!-- for huawei -->
+72-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:34:5-83
+72-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:34:22-80
+73    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+73-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:37:5-91
+73-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:37:22-88
+74    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+74-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:38:5-92
+74-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:38:22-89
+75    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" /> <!-- for ZUK -->
+75-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:39:5-93
+75-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:39:22-90
+76    <uses-permission android:name="android.permission.READ_APP_BADGE" /> <!-- for OPPO -->
+76-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:42:5-73
+76-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:42:22-70
+77    <uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS" />
+77-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:45:5-82
+77-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:45:22-79
+78    <uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS" /> <!-- for EvMe -->
+78-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:46:5-83
+78-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:46:22-80
+79    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ" />
+79-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:49:5-88
+79-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:49:22-85
+80    <uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE" />
+80-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:50:5-89
+80-->[me.leolin:ShortcutBadger:1.1.22] /Users/jimin/.gradle/caches/transforms-3/89faaec9305d8ce686aa24c257b4277e/transformed/jetified-ShortcutBadger-1.1.22/AndroidManifest.xml:50:22-86
+81
+82    <application
+82-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:15:3-34:17
+83        android:name="com.tovelop.maphant.MainApplication"
+83-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:15:16-47
+84        android:allowBackup="true"
+84-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:15:162-188
+85        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+85-->[androidx.core:core:1.7.0] /Users/jimin/.gradle/caches/transforms-3/948c3612aee17d86e5c180e70c3ba7eb/transformed/core-1.7.0/AndroidManifest.xml:24:18-86
+86        android:icon="@mipmap/ic_launcher"
+86-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:15:81-115
+87        android:label="@string/app_name"
+87-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:15:48-80
+88        android:roundIcon="@mipmap/ic_launcher_round"
+88-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:15:116-161
+89        android:theme="@style/AppTheme"
+89-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:15:189-220
+90        android:usesCleartextTraffic="true" >
+90-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:15:221-256
+91        <meta-data
+91-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:16:5-82
+92            android:name="expo.modules.updates.ENABLED"
+92-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:16:16-59
+93            android:value="true" />
+93-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:16:60-80
+94        <meta-data
+94-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:17:5-93
+95            android:name="expo.modules.updates.EXPO_SDK_VERSION"
+95-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:17:16-68
+96            android:value="48.0.0" />
+96-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:17:69-91
+97        <meta-data
+97-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:18:5-105
+98            android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH"
+98-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:18:16-80
+99            android:value="ALWAYS" />
+99-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:18:81-103
+100        <meta-data
+100-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:19:5-99
+101            android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS"
+101-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:19:16-79
+102            android:value="0" />
+102-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:19:80-97
+103        <meta-data
+103-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:20:5-120
+104            android:name="expo.modules.updates.EXPO_UPDATE_URL"
+104-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:20:16-67
+105            android:value="https://exp.host/@anonymous/my-app" />
+105-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:20:68-118
+106
+107        <activity
+107-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21:5-32:16
+108            android:name="com.tovelop.maphant.MainActivity"
+108-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21:15-43
+109            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
+109-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21:77-154
+110            android:exported="true"
+110-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21:276-299
+111            android:label="@string/app_name"
+111-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21:44-76
+112            android:launchMode="singleTask"
+112-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21:155-186
+113            android:screenOrientation="portrait"
+113-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21:300-336
+114            android:theme="@style/Theme.App.SplashScreen"
+114-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21:230-275
+115            android:windowSoftInputMode="adjustResize" >
+115-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:21:187-229
+116            <intent-filter>
+116-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:22:7-25:23
+117                <action android:name="android.intent.action.MAIN" />
+117-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:23:9-60
+117-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:23:17-58
+118
+119                <category android:name="android.intent.category.LAUNCHER" />
+119-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:24:9-68
+119-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:24:19-66
+120            </intent-filter>
+121            <intent-filter>
+121-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:26:7-31:23
+122                <action android:name="android.intent.action.VIEW" />
+122-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:10:7-58
+122-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:10:15-56
+123
+124                <category android:name="android.intent.category.DEFAULT" />
+124-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:28:9-67
+124-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:28:19-65
+125                <category android:name="android.intent.category.BROWSABLE" />
+125-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:11:7-67
+125-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:11:17-65
+126
+127                <data android:scheme="com.tovelop.maphant" />
+127-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:12:7-37
+127-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:12:13-35
+128            </intent-filter>
+129        </activity>
+130        <activity
+130-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:33:5-106
+131            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+131-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:33:15-79
+132            android:exported="false" />
+132-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:33:80-104
+133
+134        <service
+134-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:12:9-14:40
+135            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingHeadlessService"
+135-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:13:13-103
+136            android:exported="false" />
+136-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:14:13-37
+137        <service
+137-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:15:9-21:19
+138            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingService"
+138-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:16:13-95
+139            android:exported="false" >
+139-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:17:13-37
+140            <intent-filter>
+140-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:18:13-20:29
+141                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+141-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:17-78
+141-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:25-75
+142            </intent-filter>
+143        </service>
+144
+145        <receiver
+145-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:23:9-30:20
+146            android:name="io.invertase.firebase.messaging.ReactNativeFirebaseMessagingReceiver"
+146-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:24:13-96
+147            android:exported="true"
+147-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:25:13-36
+148            android:permission="com.google.android.c2dm.permission.SEND" >
+148-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:26:13-73
+149            <intent-filter>
+149-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:27:13-29:29
+150                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+150-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:28:17-81
+150-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:28:25-78
+151            </intent-filter>
+152        </receiver>
+153
+154        <meta-data
+154-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:32:9-34:36
+155            android:name="firebase_messaging_auto_init_enabled"
+155-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:33:13-64
+156            android:value="true" />
+156-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:34:13-33
+157        <meta-data
+157-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:35:9-37:32
+158            android:name="com.google.firebase.messaging.default_notification_channel_id"
+158-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:36:13-89
+159            android:value="" />
+159-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:37:13-29
+160        <meta-data
+160-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:38:9-40:47
+161            android:name="com.google.firebase.messaging.default_notification_color"
+161-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:39:13-84
+162            android:resource="@color/white" />
+162-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:40:13-44
+163        <meta-data
+163-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:9-11:36
+164            android:name="app_data_collection_default_enabled"
+164-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:10:13-63
+165            android:value="true" />
+165-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:11:13-33
+166
+167        <service
+167-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:13:9-21:19
+168            android:name="com.google.firebase.components.ComponentDiscoveryService"
+168-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:14:13-84
+169            android:directBootAware="true"
+169-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:15:13-43
+170            android:exported="false" >
+170-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:16:13-37
+171            <meta-data
+171-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:18:13-20:85
+172                android:name="com.google.firebase.components:io.invertase.firebase.app.ReactNativeFirebaseAppRegistrar"
+172-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:17-120
+173                android:value="com.google.firebase.components.ComponentRegistrar" />
+173-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:20:17-82
+174            <meta-data
+174-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:55:13-57:85
+175                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+175-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:56:17-119
+176                android:value="com.google.firebase.components.ComponentRegistrar" />
+176-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:57:17-82
+177            <meta-data
+177-->[com.google.firebase:firebase-datatransport:18.1.7] /Users/jimin/.gradle/caches/transforms-3/2897a519776a2107689859e29bb55b7c/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:27:13-29:85
+178                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+178-->[com.google.firebase:firebase-datatransport:18.1.7] /Users/jimin/.gradle/caches/transforms-3/2897a519776a2107689859e29bb55b7c/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:28:17-115
+179                android:value="com.google.firebase.components.ComponentRegistrar" />
+179-->[com.google.firebase:firebase-datatransport:18.1.7] /Users/jimin/.gradle/caches/transforms-3/2897a519776a2107689859e29bb55b7c/transformed/jetified-firebase-datatransport-18.1.7/AndroidManifest.xml:29:17-82
+180            <meta-data
+180-->[com.google.firebase:firebase-installations:17.1.3] /Users/jimin/.gradle/caches/transforms-3/b6b19da64a37929586a12d3553483abb/transformed/jetified-firebase-installations-17.1.3/AndroidManifest.xml:17:13-19:85
+181                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+181-->[com.google.firebase:firebase-installations:17.1.3] /Users/jimin/.gradle/caches/transforms-3/b6b19da64a37929586a12d3553483abb/transformed/jetified-firebase-installations-17.1.3/AndroidManifest.xml:18:17-127
+182                android:value="com.google.firebase.components.ComponentRegistrar" />
+182-->[com.google.firebase:firebase-installations:17.1.3] /Users/jimin/.gradle/caches/transforms-3/b6b19da64a37929586a12d3553483abb/transformed/jetified-firebase-installations-17.1.3/AndroidManifest.xml:19:17-82
+183        </service>
+184
+185        <provider
+185-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:23:9-27:38
+186            android:name="io.invertase.firebase.app.ReactNativeFirebaseAppInitProvider"
+186-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:24:13-88
+187            android:authorities="com.tovelop.maphant.reactnativefirebaseappinitprovider"
+187-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:25:13-86
+188            android:exported="false"
+188-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:26:13-37
+189            android:initOrder="99" />
+189-->[:react-native-firebase_app] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/app/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:27:13-35
+190        <provider
+190-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:21:9-30:20
+191            android:name="expo.modules.filesystem.FileSystemFileProvider"
+191-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:22:13-74
+192            android:authorities="com.tovelop.maphant.FileSystemFileProvider"
+192-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:23:13-74
+193            android:exported="false"
+193-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:24:13-37
+194            android:grantUriPermissions="true" >
+194-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:25:13-47
+195            <meta-data
+195-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:27:13-29:70
+196                android:name="android.support.FILE_PROVIDER_PATHS"
+196-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:28:17-67
+197                android:resource="@xml/file_system_provider_paths" />
+197-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:29:17-67
+198        </provider>
+199
+200        <activity
+200-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:29:9-31:59
+201            android:name="com.canhub.cropper.CropImageActivity"
+201-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:30:13-64
+202            android:exported="true"
+202-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:35:13-36
+203            android:theme="@style/Base.Theme.AppCompat" /> <!-- https://developer.android.com/guide/topics/manifest/provider-element.html -->
+203-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:31:13-56
+204        <provider
+204-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:33:9-41:20
+205            android:name="expo.modules.imagepicker.fileprovider.ImagePickerFileProvider"
+205-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:34:13-89
+206            android:authorities="com.tovelop.maphant.ImagePickerFileProvider"
+206-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:35:13-75
+207            android:exported="false"
+207-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:36:13-37
+208            android:grantUriPermissions="true" >
+208-->[:expo-image-picker] /Users/jimin/develop/tovelop/node_modules/expo-image-picker/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:37:13-47
+209            <meta-data
+209-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:27:13-29:70
+210                android:name="android.support.FILE_PROVIDER_PATHS"
+210-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:28:17-67
+211                android:resource="@xml/image_picker_provider_paths" />
+211-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:29:17-67
+212        </provider>
+213
+214        <service
+214-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:11:9-17:19
+215            android:name="expo.modules.notifications.service.ExpoFirebaseMessagingService"
+215-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:12:13-91
+216            android:exported="false" >
+216-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:13:13-37
+217            <intent-filter android:priority="-1" >
+217-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:18:13-20:29
+218                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+218-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:17-78
+218-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:25-75
+219            </intent-filter>
+220        </service>
+221
+222        <receiver
+222-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:9-31:20
+223            android:name="expo.modules.notifications.service.NotificationsService"
+223-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:20:13-83
+224            android:enabled="true"
+224-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:21:13-35
+225            android:exported="false" >
+225-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:22:13-37
+226            <intent-filter android:priority="-1" >
+226-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:23:13-30:29
+226-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:23:28-49
+227                <action android:name="expo.modules.notifications.NOTIFICATION_EVENT" />
+227-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:24:17-88
+227-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:24:25-85
+228                <action android:name="android.intent.action.BOOT_COMPLETED" />
+228-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:25:17-79
+228-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:25:25-76
+229                <action android:name="android.intent.action.REBOOT" />
+229-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:26:17-71
+229-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:26:25-68
+230                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+230-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:27:17-82
+230-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:27:25-79
+231                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
+231-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:28:17-82
+231-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:28:25-79
+232                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+232-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:29:17-84
+232-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:29:25-81
+233            </intent-filter>
+234        </receiver>
+235
+236        <activity
+236-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:33:9-40:75
+237            android:name="expo.modules.notifications.service.NotificationForwarderActivity"
+237-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:34:13-92
+238            android:excludeFromRecents="true"
+238-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:35:13-46
+239            android:exported="false"
+239-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:36:13-37
+240            android:launchMode="standard"
+240-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:37:13-42
+241            android:noHistory="true"
+241-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:38:13-37
+242            android:taskAffinity=""
+242-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:39:13-36
+243            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+243-->[:expo-notifications] /Users/jimin/develop/tovelop/node_modules/expo-notifications/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:40:13-72
+244
+245        <meta-data
+245-->[:expo-modules-core] /Users/jimin/develop/tovelop/node_modules/expo-modules-core/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:8:9-10:89
+246            android:name="org.unimodules.core.AppLoader#react-native-headless"
+246-->[:expo-modules-core] /Users/jimin/develop/tovelop/node_modules/expo-modules-core/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:9:13-79
+247            android:value="expo.modules.adapters.react.apploader.RNHeadlessAppLoader" />
+247-->[:expo-modules-core] /Users/jimin/develop/tovelop/node_modules/expo-modules-core/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:10:13-86
+248
+249        <provider
+249-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:23:9-31:20
+250            android:name="com.canhub.cropper.CropFileProvider"
+250-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:24:13-63
+251            android:authorities="com.tovelop.maphant.cropper.fileprovider"
+251-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:25:13-72
+252            android:exported="false"
+252-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:26:13-37
+253            android:grantUriPermissions="true" >
+253-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:27:13-47
+254            <meta-data
+254-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:27:13-29:70
+255                android:name="android.support.FILE_PROVIDER_PATHS"
+255-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:28:17-67
+256                android:resource="@xml/library_file_paths" />
+256-->[:expo-file-system] /Users/jimin/develop/tovelop/node_modules/expo-file-system/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:29:17-67
+257        </provider> <!-- This is here because the library did not update yet to Android 12 so we force the exported value when merging manifests -->
+258        <activity
+258-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:38:9-45:20
+259            android:name="androidx.test.core.app.InstrumentationActivityInvoker$BootstrapActivity"
+259-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:39:13-99
+260            android:exported="true"
+260-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:40:13-36
+261            android:theme="@android:style/Theme" >
+261-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:41:13-49
+262            <intent-filter>
+262-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:42:13-44:29
+263                <action android:name="android.intent.action.MAIN" />
+263-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:23:9-60
+263-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:23:17-58
+264            </intent-filter>
+265        </activity>
+266        <activity
+266-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:46:9-53:20
+267            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyActivity"
+267-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:47:13-95
+268            android:exported="true"
+268-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:48:13-36
+269            android:theme="@android:style/Theme" >
+269-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:49:13-49
+270            <intent-filter>
+270-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:42:13-44:29
+271                <action android:name="android.intent.action.MAIN" />
+271-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:23:9-60
+271-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:23:17-58
+272            </intent-filter>
+273        </activity>
+274        <activity
+274-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:54:9-61:20
+275            android:name="androidx.test.core.app.InstrumentationActivityInvoker$EmptyFloatingActivity"
+275-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:55:13-103
+276            android:exported="true"
+276-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:56:13-36
+277            android:theme="@android:style/Theme.Dialog" >
+277-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:57:13-56
+278            <intent-filter>
+278-->[com.github.CanHub:Android-Image-Cropper:4.3.0] /Users/jimin/.gradle/caches/transforms-3/a212bc07ebd1ff1092295d3f2a5647c1/transformed/jetified-Android-Image-Cropper-4.3.0/AndroidManifest.xml:42:13-44:29
+279                <action android:name="android.intent.action.MAIN" />
+279-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:23:9-60
+279-->/Users/jimin/develop/tovelop/android/app/src/main/AndroidManifest.xml:23:17-58
+280            </intent-filter>
+281        </activity>
+282        <activity
+282-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:23:9-27:75
+283            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+283-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:24:13-93
+284            android:excludeFromRecents="true"
+284-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:25:13-46
+285            android:exported="false"
+285-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:26:13-37
+286            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+286-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:27:13-72
+287        <!--
+288            Service handling Google Sign-In user revocation. For apps that do not integrate with
+289            Google Sign-In, this service will never be started.
+290        -->
+291        <service
+291-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:33:9-37:51
+292            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+292-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:34:13-89
+293            android:exported="true"
+293-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:35:13-36
+294            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+294-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:36:13-107
+295            android:visibleToInstantApps="true" />
+295-->[com.google.android.gms:play-services-auth:20.5.0] /Users/jimin/.gradle/caches/transforms-3/7debc5de1d7b5caf6df9671ec966474b/transformed/jetified-play-services-auth-20.5.0/AndroidManifest.xml:37:13-48
+296
+297        <receiver
+297-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:31:9-38:20
+298            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+298-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:32:13-78
+299            android:exported="true"
+299-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:33:13-36
+300            android:permission="com.google.android.c2dm.permission.SEND" >
+300-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:34:13-73
+301            <intent-filter>
+301-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:27:13-29:29
+302                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+302-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:28:17-81
+302-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:28:25-78
+303            </intent-filter>
+304        </receiver>
+305        <!--
+306             FirebaseMessagingService performs security checks at runtime,
+307             but set to not exported to explicitly avoid allowing another app to call it.
+308        -->
+309        <service
+309-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:44:9-51:19
+310            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+310-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:45:13-82
+311            android:directBootAware="true"
+311-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:46:13-43
+312            android:exported="false" >
+312-->[com.google.firebase:firebase-messaging:23.1.2] /Users/jimin/.gradle/caches/transforms-3/bd63366a8cef66b6db67250200811a64/transformed/jetified-firebase-messaging-23.1.2/AndroidManifest.xml:47:13-37
+313            <intent-filter android:priority="-500" >
+313-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:18:13-20:29
+314                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+314-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:17-78
+314-->[:react-native-firebase_messaging] /Users/jimin/develop/tovelop/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml:19:25-75
+315            </intent-filter>
+316        </service>
+317
+318        <activity
+318-->[com.google.android.gms:play-services-base:18.0.1] /Users/jimin/.gradle/caches/transforms-3/d0bc646d15ed12bc45bfd6dfc4dd6ce6/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:9-22:45
+319            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+319-->[com.google.android.gms:play-services-base:18.0.1] /Users/jimin/.gradle/caches/transforms-3/d0bc646d15ed12bc45bfd6dfc4dd6ce6/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:20:19-85
+320            android:exported="false"
+320-->[com.google.android.gms:play-services-base:18.0.1] /Users/jimin/.gradle/caches/transforms-3/d0bc646d15ed12bc45bfd6dfc4dd6ce6/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:22:19-43
+321            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+321-->[com.google.android.gms:play-services-base:18.0.1] /Users/jimin/.gradle/caches/transforms-3/d0bc646d15ed12bc45bfd6dfc4dd6ce6/transformed/jetified-play-services-base-18.0.1/AndroidManifest.xml:21:19-78
+322
+323        <provider
+323-->[com.google.firebase:firebase-common:20.3.2] /Users/jimin/.gradle/caches/transforms-3/62ff89ad882d6db93b8aa2cc0ff90393/transformed/jetified-firebase-common-20.3.2/AndroidManifest.xml:25:9-30:39
+324            android:name="com.google.firebase.provider.FirebaseInitProvider"
+324-->[com.google.firebase:firebase-common:20.3.2] /Users/jimin/.gradle/caches/transforms-3/62ff89ad882d6db93b8aa2cc0ff90393/transformed/jetified-firebase-common-20.3.2/AndroidManifest.xml:26:13-77
+325            android:authorities="com.tovelop.maphant.firebaseinitprovider"
+325-->[com.google.firebase:firebase-common:20.3.2] /Users/jimin/.gradle/caches/transforms-3/62ff89ad882d6db93b8aa2cc0ff90393/transformed/jetified-firebase-common-20.3.2/AndroidManifest.xml:27:13-72
+326            android:directBootAware="true"
+326-->[com.google.firebase:firebase-common:20.3.2] /Users/jimin/.gradle/caches/transforms-3/62ff89ad882d6db93b8aa2cc0ff90393/transformed/jetified-firebase-common-20.3.2/AndroidManifest.xml:28:13-43
+327            android:exported="false"
+327-->[com.google.firebase:firebase-common:20.3.2] /Users/jimin/.gradle/caches/transforms-3/62ff89ad882d6db93b8aa2cc0ff90393/transformed/jetified-firebase-common-20.3.2/AndroidManifest.xml:29:13-37
+328            android:initOrder="100" />
+328-->[com.google.firebase:firebase-common:20.3.2] /Users/jimin/.gradle/caches/transforms-3/62ff89ad882d6db93b8aa2cc0ff90393/transformed/jetified-firebase-common-20.3.2/AndroidManifest.xml:30:13-36
+329
+330        <meta-data
+330-->[com.google.android.gms:play-services-basement:18.2.0] /Users/jimin/.gradle/caches/transforms-3/f8c6fe314e082e09ec8d53d9f784df19/transformed/jetified-play-services-basement-18.2.0/AndroidManifest.xml:21:9-23:69
+331            android:name="com.google.android.gms.version"
+331-->[com.google.android.gms:play-services-basement:18.2.0] /Users/jimin/.gradle/caches/transforms-3/f8c6fe314e082e09ec8d53d9f784df19/transformed/jetified-play-services-basement-18.2.0/AndroidManifest.xml:22:13-58
+332            android:value="@integer/google_play_services_version" />
+332-->[com.google.android.gms:play-services-basement:18.2.0] /Users/jimin/.gradle/caches/transforms-3/f8c6fe314e082e09ec8d53d9f784df19/transformed/jetified-play-services-basement-18.2.0/AndroidManifest.xml:23:13-66
+333
+334        <provider
+334-->[androidx.emoji2:emoji2:1.0.0] /Users/jimin/.gradle/caches/transforms-3/6a062b21418219d1f36fa88bd61c9016/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:26:9-34:20
+335            android:name="androidx.startup.InitializationProvider"
+335-->[androidx.emoji2:emoji2:1.0.0] /Users/jimin/.gradle/caches/transforms-3/6a062b21418219d1f36fa88bd61c9016/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:27:13-67
+336            android:authorities="com.tovelop.maphant.androidx-startup"
+336-->[androidx.emoji2:emoji2:1.0.0] /Users/jimin/.gradle/caches/transforms-3/6a062b21418219d1f36fa88bd61c9016/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:28:13-68
+337            android:exported="false" >
+337-->[androidx.emoji2:emoji2:1.0.0] /Users/jimin/.gradle/caches/transforms-3/6a062b21418219d1f36fa88bd61c9016/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:29:13-37
+338            <meta-data
+338-->[androidx.emoji2:emoji2:1.0.0] /Users/jimin/.gradle/caches/transforms-3/6a062b21418219d1f36fa88bd61c9016/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:31:13-33:52
+339                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+339-->[androidx.emoji2:emoji2:1.0.0] /Users/jimin/.gradle/caches/transforms-3/6a062b21418219d1f36fa88bd61c9016/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:32:17-75
+340                android:value="androidx.startup" />
+340-->[androidx.emoji2:emoji2:1.0.0] /Users/jimin/.gradle/caches/transforms-3/6a062b21418219d1f36fa88bd61c9016/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:33:17-49
+341            <meta-data
+341-->[androidx.lifecycle:lifecycle-process:2.4.0] /Users/jimin/.gradle/caches/transforms-3/010b64a8b5f74270f65831dbc9c1f706/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:31:13-33:52
+342                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+342-->[androidx.lifecycle:lifecycle-process:2.4.0] /Users/jimin/.gradle/caches/transforms-3/010b64a8b5f74270f65831dbc9c1f706/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:32:17-78
+343                android:value="androidx.startup" />
+343-->[androidx.lifecycle:lifecycle-process:2.4.0] /Users/jimin/.gradle/caches/transforms-3/010b64a8b5f74270f65831dbc9c1f706/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:33:17-49
+344        </provider>
+345
+346        <service
+346-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /Users/jimin/.gradle/caches/transforms-3/f04cd14c6358383a465cf63493c86653/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:28:9-34:19
+347            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+347-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /Users/jimin/.gradle/caches/transforms-3/f04cd14c6358383a465cf63493c86653/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:29:13-103
+348            android:exported="false" >
+348-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /Users/jimin/.gradle/caches/transforms-3/f04cd14c6358383a465cf63493c86653/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:30:13-37
+349            <meta-data
+349-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /Users/jimin/.gradle/caches/transforms-3/f04cd14c6358383a465cf63493c86653/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:31:13-33:39
+350                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+350-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /Users/jimin/.gradle/caches/transforms-3/f04cd14c6358383a465cf63493c86653/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:32:17-94
+351                android:value="cct" />
+351-->[com.google.android.datatransport:transport-backend-cct:3.1.8] /Users/jimin/.gradle/caches/transforms-3/f04cd14c6358383a465cf63493c86653/transformed/jetified-transport-backend-cct-3.1.8/AndroidManifest.xml:33:17-36
+352        </service>
+353        <service
+353-->[com.google.android.datatransport:transport-runtime:3.1.8] /Users/jimin/.gradle/caches/transforms-3/dec0c3f6d2d01f20867cec7f6d24b743/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:26:9-30:19
+354            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+354-->[com.google.android.datatransport:transport-runtime:3.1.8] /Users/jimin/.gradle/caches/transforms-3/dec0c3f6d2d01f20867cec7f6d24b743/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:27:13-117
+355            android:exported="false"
+355-->[com.google.android.datatransport:transport-runtime:3.1.8] /Users/jimin/.gradle/caches/transforms-3/dec0c3f6d2d01f20867cec7f6d24b743/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:28:13-37
+356            android:permission="android.permission.BIND_JOB_SERVICE" >
+356-->[com.google.android.datatransport:transport-runtime:3.1.8] /Users/jimin/.gradle/caches/transforms-3/dec0c3f6d2d01f20867cec7f6d24b743/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:29:13-69
+357        </service>
+358
+359        <receiver
+359-->[com.google.android.datatransport:transport-runtime:3.1.8] /Users/jimin/.gradle/caches/transforms-3/dec0c3f6d2d01f20867cec7f6d24b743/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:32:9-34:40
+360            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+360-->[com.google.android.datatransport:transport-runtime:3.1.8] /Users/jimin/.gradle/caches/transforms-3/dec0c3f6d2d01f20867cec7f6d24b743/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:33:13-132
+361            android:exported="false" />
+361-->[com.google.android.datatransport:transport-runtime:3.1.8] /Users/jimin/.gradle/caches/transforms-3/dec0c3f6d2d01f20867cec7f6d24b743/transformed/jetified-transport-runtime-3.1.8/AndroidManifest.xml:34:13-37
+362    </application>
+363
+364</manifest>

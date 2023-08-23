@@ -2,7 +2,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { Field, Formik, FormikErrors } from "formik";
 import React, { useCallback, useMemo } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import Toast from "react-native-root-toast";
 import * as Yup from "yup";
 
 import { categorymajor, fieldList, majorList } from "../../Api/member/signUp";

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 7.4.1" type="partial_results">
+    <map id="NotificationPermission">
+        <entry
+            name="className"
+            string="com/bumptech/glide/request/target/NotificationTarget"/>
+        <location id="class"
+            file="$GRADLE_USER_HOME/caches/transforms-3/c5d8210178754cbfc752d7c68e0a0b05/transformed/jetified-glide-4.9.0/jars/classes.jar"/>
+    </map>
+    <map id="UnusedResources">
+        <location id="R.string.expo_splash_screen_status_bar_translucent"
+            file="${:app*debug*sourceProvider*0*resDir*0}/values/strings.xml"
+            line="4"
+            column="11"
+            startOffset="150"
+            endLine="4"
+            endColumn="59"
+            endOffset="198"/>
+        <location id="R.integer.react_native_inspector_proxy_port"
+            file="${:app*projectDir}/build.gradle"/>
+        <location id="R.drawable.splashscreen_image"
+            file="${:app*debug*sourceProvider*0*resDir*0}/drawable-hdpi/splashscreen_image.png"/>
+        <entry
+            name="model"
+            string="color[colorPrimary(U),splashscreen_background(U),colorPrimaryDark(U),iconBackground(U)],dimen[abc_edit_text_inset_bottom_material(R),abc_edit_text_inset_top_material(R),abc_edit_text_inset_horizontal_material(R)],drawable[abc_textfield_activated_mtrl_alpha(R),rn_edit_text_material(U),splashscreen(U),abc_textfield_default_mtrl_alpha(R),splashscreen_image(D)],integer[react_native_dev_server_port(D),react_native_inspector_proxy_port(D)],mipmap[ic_launcher_round(U),ic_launcher_foreground(U),ic_launcher(U)],string[app_name(U),expo_splash_screen_resize_mode(D),expo_splash_screen_status_bar_translucent(D)],style[Theme_AppCompat_Light_NoActionBar(R),ResetEditText(U),Theme_App_SplashScreen(U),AppTheme(U)];8^4^6^5^a^7,9^1,e^3^f,10^3^f,16^17^9,17^14^15^8^0^2;;;"/>
+        <location id="R.string.expo_splash_screen_resize_mode"
+            file="${:app*debug*sourceProvider*0*resDir*0}/values/strings.xml"
+            line="3"
+            column="11"
+            startOffset="64"
+            endLine="3"
+            endColumn="48"
+            endOffset="101"/>
+        <location id="R.integer.react_native_dev_server_port"
+            file="${:app*projectDir}/build.gradle"/>
+    </map>
+
+</incidents>

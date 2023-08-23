@@ -99,6 +99,7 @@ const ConfirmEmail = ({
             onEmailChange(value);
           }}
           placeholder="이메일"
+          placeholderTextColor="#636363"
           inputMode="email"
         />
       </View>
