@@ -56,7 +56,7 @@ const QnABoard: React.FC = () => {
                 navigation.navigate("HotDetailList", { boardType: boardType });
               }}
             >
-              <Text style={styles.detail}>더보기</Text>
+              <TextThemed style={styles.detail}>더보기</TextThemed>
             </TouchableOpacity>
           </View>
           <ScrollView horizontal>
@@ -78,7 +78,7 @@ const QnABoard: React.FC = () => {
                 navigation.navigate("DetailList", { boardType: boardType });
               }}
             >
-              <Text style={styles.detail}>더보기</Text>
+              <TextThemed style={styles.detail}>더보기</TextThemed>
             </TouchableOpacity>
           </View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -100,7 +100,7 @@ const QnABoard: React.FC = () => {
                 navigation.navigate("VoteDetailList", { boardType: boardType });
               }}
             >
-              <Text style={styles.detail}>더보기</Text>
+              <TextThemed style={styles.detail}>더보기</TextThemed>
             </TouchableOpacity>
           </View>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
