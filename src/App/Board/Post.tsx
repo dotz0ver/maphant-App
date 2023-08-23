@@ -6,6 +6,7 @@ import * as ImagePicker from "expo-image-picker";
 import { sha512 } from "js-sha512";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -38,7 +39,6 @@ function uploadAPI<T extends statusResponse>(
       signal: abortSignal,
       headers: {},
     };
-    console.info(token);
     if (token != undefined) {
       // @ts-expect-error
       options.headers["x-auth"] = token.token;
@@ -56,10 +56,8 @@ function uploadAPI<T extends statusResponse>(
     }
 
     const url_complete = `https://dev.api.tovelop.esm.kr${url}`;
-    console.info(url_complete, options);
     return fetch(url_complete, options)
       .catch(err => {
-        console.warn(method, url_complete, body, err);
         if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
           return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
         }
@@ -67,8 +65,6 @@ function uploadAPI<T extends statusResponse>(
         return Promise.reject("서버와 통신 중 오류가 발생했습니다.");
       })
       .then(res => {
-        console.log(res);
-        console.info(res.body);
         // 특수 처리 (로그인 실패시에도 401이 들어옴)
         // 로그인의 경우는 바로 내려 보냄
         if (url == "/user/login") {
@@ -84,7 +80,6 @@ function uploadAPI<T extends statusResponse>(
         return res.json();
       })
       .then(json => {
-        console.log(json);
         const resp = json as T;
 
         return Promise.resolve({ json: resp });
@@ -115,7 +110,6 @@ const Post: React.FC = () => {
 
   useEffect(() => {
     // 받아온 게시판 타입(boardType)을 이용하여 필요한 작업 수행
-    console.log("게시판 타입:", boardType);
   }, [boardType]);
 
   const check = (name: string, isChecked: boolean) => {
@@ -127,11 +121,7 @@ const Post: React.FC = () => {
   };
 
   const complete = async () => {
-    console.log(postImageUrl);
-    console.log("hashtagInput : ", hashtagInput);
-    console.log("hashtags", hashtags);
     const DBnewHashtags = hashtags.map(word => word.replace(/^#/, ""));
-    console.log("DBnewHashtags", DBnewHashtags);
 
     if (voteOptions.some(option => option.trim() === "")) {
       alert("옵션 내용을 입력해 주세요.");
@@ -151,18 +141,16 @@ const Post: React.FC = () => {
         { title: voteTitle, options: voteOptions }, // poll
         DBnewHashtags,
       );
-      console.log("게시물 작성 성공", response);
+      Alert.alert("게시물 작성 되었습니다.");
       navigation.navigate("DetailList", { boardType: boardType });
     } catch (error) {
-      console.error("게시물 작성 오류", error);
+      Alert.alert(error);
     }
   };
 
   const updateHashtags = () => {
     const words = hashtagInput.split(" ");
-    console.log("words", words);
     const newHashtags = words.filter(word => word.startsWith("#"));
-    console.log("newHashtags ", newHashtags);
     setHashtags(newHashtags);
   };
 
@@ -192,7 +180,6 @@ const Post: React.FC = () => {
   };
 
   const uploadImage = async () => {
-    console.log("사진 올려지나여");
     if (!requsetpermission?.granted) {
       const permission = await setRequestPermission();
       if (!permission.granted) {
@@ -215,17 +202,14 @@ const Post: React.FC = () => {
       // Call the uploadImageAsync function to upload the selected images
       await uploadImageAsync(selectedImages);
     } catch (error) {
-      console.error("Image upload error:", error);
       // Handle the error
+      Alert.alert("이미지 업로드에 실패했습니다.");
     }
     setImageUrl(selectedImages.map(image => image.uri));
-
-    console.log("selectedImages", selectedImages);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function uploadImageAsync(images: any[]) {
       const formData = new FormData();
-      console.log(images);
 
       images.forEach((image, index) => {
         // @ts-expect-error
@@ -236,12 +220,9 @@ const Post: React.FC = () => {
         });
       });
 
-      console.log(formData);
-
       try {
         // const response = await uploadAPI(formData);
         const response = uploadAPI("POST", "/image", formData);
-        console.log("Image upload response:", (await response).json);
         const jsonResponse = (await response).json;
         for (const item of jsonResponse) {
           const imageUrl = item.url;
@@ -249,7 +230,7 @@ const Post: React.FC = () => {
         }
         setPostImageUrl(postImageUrl);
       } catch (error) {
-        console.error("Image upload error:", error);
+        Alert.alert("이미지 업로드에 실패했습니다.");
       }
     }
   };

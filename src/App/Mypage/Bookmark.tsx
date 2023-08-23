@@ -1,7 +1,15 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { GetAPI } from "../../Api/fetchAPI";
 import { BoardArticle } from "../../types/Board";
@@ -34,7 +42,7 @@ function Bookmark(): JSX.Element {
       })
       .then(res => {
         if (res.success === false) {
-          console.log(res.errors);
+          Alert.alert(res.errors);
           return;
         } else {
           const boardIds = res.data.list.map(item => item.boardId);
@@ -51,7 +59,7 @@ function Bookmark(): JSX.Element {
       for (let i = boardIds.length - 1; i >= 0; i--) {
         await GetAPI(`/board/${boardIds[i]}/`).then(res => {
           if (res.success === false) {
-            console.log(res.errors);
+            Alert.alert(res.errors);
             return;
           } else {
             bookmarks.push(res.data.board);

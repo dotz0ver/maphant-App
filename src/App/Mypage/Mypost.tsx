@@ -1,7 +1,15 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { useSelector } from "react-redux";
 
 import { GetAPI } from "../../Api/fetchAPI";
@@ -31,7 +39,7 @@ function MyPost(): JSX.Element {
     GetAPI(`/profile/board?page=${pages}&recordSize=${recordSize}&targetUserId=${userID}`).then(
       res => {
         if (res.success === false) {
-          console.log(res.errors);
+          Alert.alert(res.errors);
           return;
         } else {
           setPosts([...posts, ...res.data.list]);

@@ -2,7 +2,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CheckBox from "expo-checkbox";
 import React, { useState } from "react";
-import { Text } from "react-native";
+import { Alert, Text } from "react-native";
 
 import { boardPost } from "../../Api/board";
 import { Container, Input, Spacer, TextButton } from "../../components/common";
@@ -41,7 +41,7 @@ const QA_answer: React.FC = () => {
         isanonymous,
         //hashtags.join(" "),
       );
-      console.log(response);
+      Alert.alert("게시물이 작성되었습니다.");
       navigation.goBack();
     } catch (error) {
       console.error("게시물 작성 오류", error);

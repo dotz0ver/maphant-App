@@ -2,6 +2,7 @@ import { Entypo } from "@expo/vector-icons";
 import { NavigationProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Pressable,
   RefreshControl,
@@ -38,7 +39,7 @@ const HotDetailList: React.FC = () => {
         setboardData(data.data.list as HotBoard[]);
       }
     } catch (err) {
-      console.log(err);
+      Alert.alert(err);
     } finally {
       setRefreshing(false);
     }
@@ -57,9 +58,9 @@ const HotDetailList: React.FC = () => {
       return;
     }
     try {
-      const data = await searchArticle(searchText); // Implement your searchArticle function to call the API for search results
+      const data = await searchArticle(searchText, boardType.id); // Implement your searchArticle function to call the API for search results
       setSearchResults(data.data as HotBoard[]);
-      console.log(data.data);
+      // console.log(data.data);
     } catch (err) {
       console.log(err);
     }
@@ -70,7 +71,6 @@ const HotDetailList: React.FC = () => {
   }, []);
 
   const createBoard = () => {
-    console.log("글쓰기 화면으로 바뀌어야함");
     navigation.navigate("Post", { boardType: boardType });
   };
 

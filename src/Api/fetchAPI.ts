@@ -59,7 +59,6 @@ function fetchAPI<T extends statusResponse>(
   const url_complete = `${constraints.SERVER_URL}${url}`;
   return fetch(url_complete, options)
     .catch(err => {
-      console.log(err);
       if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
         return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
       }

@@ -33,8 +33,6 @@ const ConfirmEmail = ({
         // 이메일 인증 성공
         setCertificationEmail(true);
       }
-      console.log(result);
-      console.log(email);
     });
 
     startTimer();
@@ -49,8 +47,6 @@ const ConfirmEmail = ({
         // 인증 완료 처리
         setShowNextButton(true);
       }
-      console.log(result);
-      console.log(authcode);
     });
   };
 
@@ -73,8 +69,6 @@ const ConfirmEmail = ({
     };
   }, [minutes, seconds]);
   const width: number = useWindowDimensions().width;
-  // const { height, width } = useWindowDimensions();
-  // console.log(height, width);
 
   return (
     <Container>

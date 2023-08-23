@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 
 import { GetAPI } from "../../Api/fetchAPI";
@@ -32,7 +32,7 @@ function Mycomment(): JSX.Element {
     GetAPI(`/profile/comment?page=${pages}&recordSize=${recordSize}&targetUserId=${userID}`).then(
       res => {
         if (res.success === false) {
-          console.log(res.errors);
+          Alert.alert("댓글을 불러오는데 실패했습니다.");
           return;
         } else {
           setComments([...comments, ...res.data.list]);

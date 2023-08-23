@@ -1,3 +1,5 @@
+import { Alert } from "react-native";
+
 import UserStorage from "../../storage/UserStorage";
 import { PostAPI } from "../fetchAPI";
 import UserAPI from "../memberAPI";
@@ -7,11 +9,11 @@ const getOldData = () => {
     if (res.success === true) {
       return res["data"];
     } else {
-      console.log(res.errors);
+      Alert.alert(res.errors);
       return;
     }
   });
-  return console.log("서버 통신 오류");
+  return Alert.alert("서버 통신 오류");
 };
 
 const changePassword = (password: string, confirmPassword: string) => {

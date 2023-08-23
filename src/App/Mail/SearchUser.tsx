@@ -11,6 +11,7 @@ import Search from "../../components/Input/Search";
 import { NavigationProps } from "../../Navigator/Routes";
 import { INickname } from "../../types/SearchUser";
 import { MessageList } from "../../types/DM";
+import { Alert } from "react-native";
 
 const SearchUser: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
@@ -53,7 +54,7 @@ const SearchUser: React.FC = () => {
           res.data.map(item => ({ id: item.id.toString(), title: item.nickname })),
         );
       })
-      .catch(error => console.log(error));
+      .catch(error => Alert.alert(error));
   }, [nickname]);
 
   const userNickname: INickname = {

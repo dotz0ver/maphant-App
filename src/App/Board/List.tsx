@@ -4,6 +4,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   FlatList,
   Pressable,
   RefreshControl,
@@ -37,7 +38,6 @@ const DetailList: React.FC = () => {
     listSortCriterion()
       .then(data => {
         setsortType(data.data as SortType[]);
-        console.log(data.data);
       })
       .catch(err => alert(err));
   }, [boardType]);
@@ -59,7 +59,7 @@ const DetailList: React.FC = () => {
         setboardData(data.data.list as BoardArticle[]);
       }
     } catch (err) {
-      console.log(err);
+      Alert.alert(err);
     } finally {
       setRefreshing(false);
     }
@@ -83,6 +83,7 @@ const DetailList: React.FC = () => {
     if (searchText.trim() === "") {
       setSearchResults([]);
       console.log("searchText is empty");
+
       return;
     }
     try {
@@ -146,7 +147,6 @@ const DetailList: React.FC = () => {
                 key={sort.id}
                 onPress={() => {
                   handleSortChange(sort.id);
-                  console.log(sort);
                 }} // 선택된 정렬 유형 id를 핸들러에 전달합니다.
                 style={styles.sortKey}
                 fontColor="#666666"

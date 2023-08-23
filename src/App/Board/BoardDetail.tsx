@@ -57,7 +57,6 @@ const BoardDetail = () => {
   const { id, preRender } = params;
   const navigation = useNavigation<NavigationProps>();
 
-  console.log("아이디", id);
   const [comments, setComments] = useState<commentType[]>([]);
   const [replies, setReplies] = useState<commentType[]>([]);
   // const [post, setPost] = useState({ board: {} } as BoardPost);
@@ -102,13 +101,11 @@ const BoardDetail = () => {
       const response = await boardDelete(id);
       handlePollDelete();
       navigation.goBack();
-
-      console.log(response);
+      Alert.alert("삭제되었습니다.");
     } catch (error) {
-      alert(error);
+      Alert.alert(error);
     }
   };
-  // console.log(boardData);
   const handleUpdate = () => {
     navigation.navigate("editPost", { post: post });
   };
@@ -131,13 +128,12 @@ const BoardDetail = () => {
   const handlecommentInsert = async () => {
     try {
       const response = await commentInsert(id, body, isAnonymous);
-      console.log(response);
       setBody("");
       setIsAnonymous(0);
       setCommentLength(commentLength + 1);
       Keyboard.dismiss();
     } catch (error) {
-      console.log("댓글 작성 오류", error);
+      Alert.alert(error);
     }
   };
 
@@ -145,7 +141,7 @@ const BoardDetail = () => {
     commentDelete(id)
       .then(data => {
         setCommentLength(commentLength - 1);
-        console.log(data);
+        Alert.alert("삭제되었습니다.");
       })
       .catch(error => Alert.alert(error));
   };
@@ -153,12 +149,11 @@ const BoardDetail = () => {
   const handleReplyInput = async (parent_id: number, body: string) => {
     try {
       const response = await commentReply(parent_id, id, body, isAnonymous);
-      console.log(response);
       setCommentLength(commentLength + 1);
       setReplyBody("");
       setIsAnonymous(0);
     } catch (error) {
-      console.log("대댓글 오류", error);
+      Alert.alert(error);
     }
   };
 
@@ -174,17 +169,14 @@ const BoardDetail = () => {
     getArticle(id)
       .then(data => {
         setPost(data.data as BoardPost);
-        // console.error(data.data);
       })
       .catch();
   }, []);
-  console.info(post);
   useEffect(() => {
     commentArticle(id, 1, 50)
       .then(response => {
         setComments(response.data.list as commentType[]);
         setCommentLength(comments.length);
-        console.log(response.data.list);
         setReplies(comments.filter(comment => comment.parent_id > 0));
       })
       .catch();
@@ -194,16 +186,14 @@ const BoardDetail = () => {
     listReportType()
       .then(data => {
         setReportType(data.data as ReportType[]);
-        // console.log( data.data);
       })
-      .catch(err => console.log(err));
+      .catch(err => Alert.alert(err));
   }, []);
 
   useEffect(() => {
     getArticle(id)
       .then(data => {
         setPost(data.data as BoardPost);
-        // console.error(data.data);
       })
       .catch();
   }, []);
@@ -212,12 +202,10 @@ const BoardDetail = () => {
     getPollId(id)
       .then(response => {
         setPoll_id(response.data.poll_id);
-        // setPoll(poll_id);
         pollStatus(poll_id);
       })
       .catch();
   }, []);
-  // let results: Record<string, number> = {};
 
   useEffect(() => {
     if (post?.poll?.pollOptions) {
@@ -299,7 +287,6 @@ const BoardDetail = () => {
     try {
       const response = await ReportPost(board_id, reportType_id);
       Alert.alert("신고되었습니다.");
-      console.log(response);
     } catch (error) {
       Alert.alert(error);
     }
@@ -312,7 +299,6 @@ const BoardDetail = () => {
     try {
       const response = await ReportComment(commentId, reportId);
       Alert.alert("신고되었습니다.");
-      console.log(response);
     } catch (error) {
       Alert.alert(error);
     }
@@ -326,7 +312,7 @@ const BoardDetail = () => {
       const response = await insertLikePost(id);
       post.board.isLike = true;
       setLikeCnt(likeCnt + 1);
-      console.log(response);
+      Alert.alert("추천되었습니다.");
     } catch (error) {
       Alert.alert(error);
     }
@@ -336,7 +322,6 @@ const BoardDetail = () => {
       const response = await deleteLikeBoard(id);
       post.board.isLike = false;
       setLikeCnt(likeCnt - 1);
-      console.log("취소", response);
     } catch (error) {
       Alert.alert(error);
     }
@@ -403,7 +388,6 @@ const BoardDetail = () => {
       </Modal>
     );
   };
-  console.log(post.board);
 
   // const profileNavi = () => {
   //   navigation.navigate("Profile", { id: post.board.userId } as never);
@@ -441,11 +425,9 @@ const BoardDetail = () => {
               <TextButton
                 style={styles.modalConfirmBtn}
                 onPress={() => {
-                  // 수정된 닉네임 server 전송
                   if (selectedCommentReportIndex !== null) {
                     handleCommentReport(commentId, selectedCommentReportIndex);
-                    console.log(selectedCommentReportIndex);
-                    console.log(commentId);
+                    Alert.alert("신고되었습니다.");
                   }
                   setReportCommentModal(false);
                 }}

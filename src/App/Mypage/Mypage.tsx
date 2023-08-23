@@ -58,7 +58,6 @@ function uploadAPI<T extends statusResponse>(
 
     return fetch(url_complete, options)
       .catch(err => {
-        console.warn(method, url_complete, body, err);
         if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
           return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
         }
@@ -66,8 +65,6 @@ function uploadAPI<T extends statusResponse>(
         return Promise.reject("서버와 통신 중 오류가 발생했습니다.");
       })
       .then(res => {
-        // console.log(res);
-
         // 특수 처리 (로그인 실패시에도 401이 들어옴)
         // 로그인의 경우는 바로 내려 보냄
         if (url == "/user/login") {
@@ -200,7 +197,6 @@ const MyView = () => {
     // setUserID(useSelector(UserStorage.userProfileSelector)!.id);
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        // console.log(res.data);
         setIntroduceTxt(res.data[0].body);
       }
     });
@@ -209,7 +205,6 @@ const MyView = () => {
   useEffect(() => {
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        // console.log(res.data);
         setIntroduceTxt(res.data[0].body);
       }
     });
@@ -218,10 +213,8 @@ const MyView = () => {
   const editIntro = async () => {
     const formData = new FormData();
     formData.append("body", confirmedIntroTxt);
-    // console.log(formData);
     try {
       const res = await uploadAPI("PATCH", "/profile", formData);
-      // console.log(res);
       setIntroduceTxt(confirmedIntroTxt);
     } catch (err) {
       alert(err);
@@ -231,16 +224,8 @@ const MyView = () => {
     const formData = new FormData();
     formData.append("body", "");
 
-    // console.log(formData);
     try {
       const res = await uploadAPI("PATCH", "/profile", formData);
-      // console.log();
-      // console.log();
-      // console.log();
-      // console.log(res);
-      // console.log();
-      // console.log();
-      // console.log();
 
       setIntroduceTxt("");
     } catch (err) {

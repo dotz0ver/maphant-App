@@ -1,7 +1,15 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { GetAPI } from "../../Api/fetchAPI";
 import { TextThemed } from "../../components/common";
@@ -26,7 +34,7 @@ function Mylike(): JSX.Element {
   useEffect(() => {
     GetAPI(`/profile/like?page=${pages}&recordSize=${recordSize}`).then(res => {
       if (res.success === false) {
-        console.log(res.errors);
+        Alert.alert(res.errors);
         return;
       } else {
         setLikes([...likes, ...res.data.list]);

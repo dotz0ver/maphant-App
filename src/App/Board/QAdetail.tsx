@@ -43,14 +43,12 @@ const QAdetail = () => {
       const response = await boardDelete(id);
       navigation.goBack();
 
-      console.log("삭제 성공", response);
+      Alert.alert("삭제되었습니다.");
     } catch (error) {
       alert(error);
     }
   };
-  // console.log(boardData)
-  console.log(post);
-  console.log(user);
+
   const handleUpdate = () => {
     navigation.navigate("editPost", { post: post });
   };
