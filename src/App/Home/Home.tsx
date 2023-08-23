@@ -276,7 +276,7 @@ const SearchBar: React.FC<{ text: string; onTextChanged: (text: string) => void 
           value={text}
           onChangeText={onTextChanged}
           returnKeyType="search"
-          onEndEditing={() => console.log("Search Text Update Done")}
+          onEndEditing={() => {}}
           style={{
             flex: 1,
             height: "100%",
