@@ -11,6 +11,7 @@ import UserStorage from "../../storage/UserStorage";
 import { UserData } from "../../types/User";
 import { useSelector } from "react-redux";
 import * as Notifications from "expo-notifications";
+import { sendFcm } from "../../Api/member/Fcm";
 const Uncertified: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +24,7 @@ const Uncertified: React.FC = () => {
   const route = useRoute();
   const params = route.params as SignUpFormParams;
   const profile = useSelector(UserStorage.userProfileSelector);
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (params && params.email) setEmail(params.email);
@@ -46,6 +48,7 @@ const Uncertified: React.FC = () => {
         UserStorage.setUserToken(res["pubKey"], res["privKey"]).then(() => {
           return UserAPI.getProfile().then(res => {
             UserStorage.setUserProfile(res.data);
+            Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
           });
         });
       })
@@ -64,28 +67,20 @@ const Uncertified: React.FC = () => {
       .then(res => {
         console.log(res);
         if (res.success) {
-          Alert.alert("Success", "인증이 완료되었습니다.");
+          Alert.alert("인증이 완료되었습니다\n로그인 페이지로 이동합니다");
+          navigation.navigate("Login" as never);
           // 인증 완료 처리
-          setShowNextButton(true);
+          //setShowNextButton(true);
         }
         // Internal Server Error때문에 res가 안받아져서 임시로 완료 처리(state는 잘 바뀜)
-        else if (res.success !== false) {
-          Alert.alert("Success", "인증이 완료되었습니다.1");
-          // 인증 완료 처리
-          setShowNextButton(true);
-        }
+        // else if (res.success !== false) {
+        //   Alert.alert("Success", "인증이 완료되었습니다.1");
+        //   // 인증 완료 처리
+        //   setShowNextButton(true);
+        // }
       })
       .catch(error => Alert.alert(error))
-      .finally(() => {
-        return UserAPI.getProfile()
-          .then(res => {
-            console.info(res.data);
-            UserStorage.setUserProfile(res.data);
-          })
-          .then(() => {
-            console.info("state : " + profile?.state);
-          });
-      });
+      .finally(() => {});
   };
 
   useEffect(() => {
