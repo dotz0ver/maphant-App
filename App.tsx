@@ -13,7 +13,6 @@ import Login from "./src/App/Login/Index";
 import { ThemeContext } from "./src/App/Style/ThemeContext";
 import reduxStore from "./src/storage/reduxStore";
 import UserStorage from "./src/storage/UserStorage";
-import UserAPI from "./src/Api/memberAPI";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

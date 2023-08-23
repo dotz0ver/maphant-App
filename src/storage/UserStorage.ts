@@ -1,4 +1,3 @@
-import Toast from "react-native-root-toast";
 
 import { UserCategory, UserData } from "../types/User";
 import reduxStore, { RootState, userCategorySlice, userSlice } from "./reduxStore";

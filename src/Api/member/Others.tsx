@@ -3,8 +3,6 @@ import {
   OtherUserData,
   OWriteBoardList,
   OWriteContentList,
-  UserCategory,
-  UserData,
 } from "../../types/User";
 import { dataResponse, GetAPI, statusResponse } from "../fetchAPI";
 
