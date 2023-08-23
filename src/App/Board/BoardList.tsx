@@ -199,7 +199,7 @@ const VotePost: React.FC = () => {
     return (
       <View style={styles.votePostBox}>
         <View style={styles.boxTitleBox}>
-          <TextThemed style={styles.boxTitle}>투표 게시글</TextThemed>
+          <TextThemed style={styles.boxTitle}>오늘의 핫한 주제는? </TextThemed>
         </View>
         <View style={styles.line}></View>
         <View style={styles.noVotePostBox}>
@@ -227,20 +227,6 @@ const VotePost: React.FC = () => {
         </View>
         <View style={styles.titleAndbodyBox}>
           <TextThemed style={styles.postTitle}>{truncateText(votePost[0].title, 20)}</TextThemed>
-          <View style={styles.tagsBox}>
-            {votePost[0].tags && votePost[0].tags.length > 0 ? (
-              votePost[0].tags.slice(0, 3).map((tag, index) => (
-                <TextThemed style={styles.tags} key={index}>
-                  #{tag}{" "}
-                </TextThemed>
-              ))
-            ) : (
-              <View />
-            )}
-            {votePost[0].tags && votePost[0].tags.length > 3 && (
-              <TextThemed style={styles.tags}>...</TextThemed>
-            )}
-          </View>
         </View>
         <View style={styles.timeAndlikeAndcomment}>
           <View style={{ width: "70%", flexDirection: "row" }}>
@@ -273,20 +259,6 @@ const VotePost: React.FC = () => {
         </View>
         <View style={styles.titleAndbodyBox}>
           <TextThemed style={styles.postTitle}>{truncateText(votePost[1].title, 20)}</TextThemed>
-          <View style={styles.tagsBox}>
-            {votePost[0].tags && votePost[0].tags.length > 0 ? (
-              votePost[0].tags.slice(0, 3).map((tag, index) => (
-                <TextThemed style={styles.tags} key={index}>
-                  #{tag}{" "}
-                </TextThemed>
-              ))
-            ) : (
-              <View />
-            )}
-            {votePost[0].tags && votePost[0].tags.length > 3 && (
-              <TextThemed style={styles.tags}>...</TextThemed>
-            )}
-          </View>
         </View>
         <View style={styles.timeAndlikeAndcomment}>
           <View style={{ width: "70%", flexDirection: "row" }}>
