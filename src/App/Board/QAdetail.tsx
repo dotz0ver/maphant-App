@@ -66,6 +66,7 @@ const QAdetail = () => {
   useEffect(() => {
     listArticle(7, 1, 10, 1, 1, id).then(data => {
       setAnswer(data.data.list as BoardArticle[]);
+      console.log(data.data.list);
     });
   }, [post]);
 
@@ -302,7 +303,7 @@ const QAdetail = () => {
       </View>
       <ScrollView style={styles.scroll}>
         {!answer ? (
-          <></>
+          <View></View>
         ) : (
           answer.map(answer => (
             <View style={styles.answerBox} key={answer.id}>
@@ -344,7 +345,7 @@ const QAdetail = () => {
                   </View>
                 </View>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("BoardDetail", { id: answer.id })}
+                  onPress={() => navigation.navigate("BoardDetail", { id: answer.boardId })}
                 >
                   <View style={styles.answercontext}>
                     <Text style={styles.qatitle}>{answer.title}</Text>
