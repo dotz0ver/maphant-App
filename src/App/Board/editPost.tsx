@@ -39,8 +39,8 @@ const Edit: React.FC = () => {
     setBody(post.board.body);
     setIsHide(post.board.isHide);
     setIsAnonymous(post.board.isAnonymous);
-    if (post.board.tags) setHashtags(post.board.tags.map(word => "#" + word));
     if (post.board.imagesUrl) setPostImageUrl(post.board.imagesUrl);
+    if (post.board.tags) setHashtags(post.board.tags.map(word => "#" + word.name));
   }, []);
 
   const check = (name: string, isChecked: boolean) => {
@@ -60,7 +60,7 @@ const Edit: React.FC = () => {
         body,
         isHide,
         postImageUrl.length == 0 ? undefined : postImageUrl,
-        DBnewHashtags,
+        DBnewHashtags.length == 0 ? undefined : DBnewHashtags,
       );
       console.log(response);
       navigation.goBack();
@@ -70,10 +70,8 @@ const Edit: React.FC = () => {
   };
   const updateHashtags = () => {
     const words = hashtagInput.split(" ");
-    console.log("words", words);
     const newHashtags = words.filter(word => word.startsWith("#"));
-    console.log("newHashtags ", newHashtags);
-    setHashtags(newHashtags);
+    setHashtags(prevHashtags => [...prevHashtags, ...newHashtags]);
   };
 
   const addHashtag = () => {
