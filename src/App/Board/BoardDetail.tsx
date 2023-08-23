@@ -467,7 +467,7 @@ const BoardDetail = () => {
                 <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate("Profile", { id: post.board.isAnonymous } as never);
+                      navigation.navigate("Profile", { id: post.board.userId } as never);
                     }}
                     disabled={post.board.isAnonymous == 1}
                   >
