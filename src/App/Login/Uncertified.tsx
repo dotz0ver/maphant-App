@@ -29,17 +29,6 @@ const Uncertified: React.FC = () => {
   }, [route]);
 
   const login = () => {
-    // return UserAPI.getProfile()
-    //   .then(res => {
-    //     console.warn(res);
-    //     UserStorage.setUserProfile(res.data);
-    //   })
-    //   .catch(err => {
-    //     alert(err);
-    //   })
-    //   .finally(() => {
-    //     console.info(profile?.state);
-    //   });
     UserAPI.login(email, params.password)
       .then(res => {
         UserStorage.setUserToken(res["pubKey"], res["privKey"]).then(() => {
@@ -49,9 +38,7 @@ const Uncertified: React.FC = () => {
           });
         });
       })
-      .finally(() => {
-        console.log(UserStorage.getUserToken());
-      });
+      .finally(() => {});
   };
   const verifyCode = () => {
     if (!verificationCode) {
@@ -62,7 +49,6 @@ const Uncertified: React.FC = () => {
     // API를 호출하여 인증 번호 검증 로직 구현
     confirmEmail(email, verificationCode)
       .then(res => {
-        console.log(res);
         if (res.success) {
           Alert.alert("인증이 완료되었습니다");
           //navigation.navigate("Login" as never);
