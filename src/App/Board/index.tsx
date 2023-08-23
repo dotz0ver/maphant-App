@@ -18,11 +18,7 @@ export default function BoardIndex(): JSX.Element {
       <Stack.Screen name="HotDetailList" component={Routes[9].component} />
       <Stack.Screen name="VoteBoard" component={Routes[10].component} />
       <Stack.Screen name="VoteDetailList" component={Routes[11].component} />
-      <Stack.Screen
-        name="Profile"
-        component={Routes[12].component}
-        options={{ headerShown: false }}
-      />
+      <Stack.Screen name="Profile" component={Routes[12].component} />
     </Stack.Navigator>
   );
 }
