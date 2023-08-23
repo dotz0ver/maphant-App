@@ -76,8 +76,8 @@ function Mylike(): JSX.Element {
   return (
     <>
       <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
-        {likes.map(like => (
-          <>
+        {likes.map((like, index) => (
+          <React.Fragment key={index}>
             <Pressable onPress={() => detailContent(like)}>
               <View style={styles.container}>
                 <View style={styles.head}>
@@ -108,7 +108,7 @@ function Mylike(): JSX.Element {
               </View>
             </Pressable>
             <View style={{ borderBottomWidth: 1, borderColor: "#e8eaec", height: 0 }}></View>
-          </>
+          </React.Fragment>
         ))}
         {(isLoading || isComplete) && (
           <View style={styles.loadingContainer}>
