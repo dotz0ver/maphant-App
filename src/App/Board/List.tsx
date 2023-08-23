@@ -142,6 +142,7 @@ const DetailList: React.FC = () => {
       </View>
 
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={displayData}
         renderItem={({ item: board }) => (
           <View key={board.boardId} style={styles.body}>
@@ -171,9 +172,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   body: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
+    borderTopColor: "#E0E0E0",
+    borderTopWidth: 1,
     paddingVertical: 10,
+    paddingHorizontal: 5,
   },
   btn: {
     backgroundColor: "#CBD7E6",
