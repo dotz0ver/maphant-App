@@ -7,9 +7,10 @@ const listArticle = (
   recordSize: number,
   pageSize: number,
   sortCriterion: number,
+  parent_id: number,
 ): Promise<dataResponse<{ name?: string; list: BoardArticle[] }>> =>
   GetAPI(
-    `/board/?boardTypeId=${boardType_id}&page=${page}&recordSize=${recordSize}&pageSize=${pageSize}&sortCriterionId=${sortCriterion}`,
+    `/board/?boardTypeId=${boardType_id}&page=${page}&recordSize=${recordSize}&pageSize=${pageSize}&sortCriterionId=${sortCriterion}&parentId=${parent_id}`,
   );
 
 const listBoardType = (): Promise<dataResponse> => GetAPI<dataResponse>(`/board/boardType/`);

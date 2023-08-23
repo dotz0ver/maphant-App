@@ -54,7 +54,7 @@ const DetailList: React.FC = () => {
         return;
       }
       // const data = await listArticle(boardType.id, 1, 1, 1);
-      const data = await listArticle(boardType.id, 1, 10, 10, sort);
+      const data = await listArticle(boardType.id, 1, 10, 10, sort, -1);
       if (data.data) {
         setboardData(data.data.list as BoardArticle[]);
       }
@@ -67,7 +67,7 @@ const DetailList: React.FC = () => {
 
   const pageFunc = async () => {
     setPage(page + 1);
-    await listArticle(boardType.id, page, 10, 10, sort).then(data => {
+    await listArticle(boardType.id, page, 10, 10, sort, -1).then(data => {
       setboardData(boardData.concat(data.data.list as BoardArticle[]));
     });
   };

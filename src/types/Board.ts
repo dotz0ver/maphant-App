@@ -30,7 +30,6 @@ type BoardArticle = {
 type BoardPost = {
   board: { isMyBoard: boolean; isBookmarked: boolean } & BoardArticle;
   poll: PollInfo;
-  answerList?: BoardArticle[]; //질문 게시판 답변
 };
 
 type BoardListItem = {
