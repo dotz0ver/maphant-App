@@ -10,19 +10,21 @@ import { readProfile } from "../../Api/member/Others";
 import { Container, ImageBox, TextButton } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { MessageList } from "../../types/DM";
-import { OtherUserData, OtherUserId } from "../../types/User";
+import { OtherUserData, OtherUserId, UserCategory } from "../../types/User";
 
 const Profile: React.FC = () => {
   const route = useRoute();
   const params = route.params as OtherUserId;
   const navigation = useNavigation<NavigationProps>();
-  const [otherUserProfileList, setOtherUserProfileList] = useState<OtherUserData[]>([]);
+  const [otherUserProfileList, setOtherUserProfileList] = useState<OtherUserData>();
   const [cmpid, setCmpId] = useState<MessageList[]>([]);
+  const [categoryLists, setCategoryLists] = useState<UserCategory[]>([]);
+
   useEffect(() => {
     // 불러온 id로 상대방 프로필, 소개글, 닉네임을 받아옴
     readProfile(params.id)
       .then(res => {
-        setOtherUserProfileList(res.data as OtherUserData[]);
+        setOtherUserProfileList(res.data as OtherUserData);
       })
       .catch(e => console.log(e));
     //채팅방 목록 불러오기
@@ -39,7 +41,7 @@ const Profile: React.FC = () => {
     // 여기 상대방 닉네임이랑, 그 상대방의 id를 같이 넘겨줘야함. id는 board에서 상대 닉네임 클릭시 id랑 같이 넘겨 받아야함. MypageRoute에 추가해줘서 넘어감 이게 맞는 방법인지 잘모르겠음
     navigation.navigate("Chatroom", {
       id: params.id,
-      nickname: otherUserProfileList[0]?.user_nickname,
+      nickname: otherUserProfileList?.nickname,
       roomId: roomId,
     } as never);
   };
@@ -51,7 +53,7 @@ const Profile: React.FC = () => {
       navigation.navigate("WriteContent", { id: params.id } as never);
     }
   };
-
+  console.log(categoryLists);
   function OtherProfile() {
     return (
       <Container
@@ -68,8 +70,8 @@ const Profile: React.FC = () => {
           <ImageBox
             // 기본 이미지 설정 되면 나중에 변경해야함
             source={
-              otherUserProfileList[0]?.profile_img
-                ? { uri: otherUserProfileList[0]?.profile_img }
+              otherUserProfileList?.profileImg
+                ? { uri: otherUserProfileList?.profileImg }
                 : require("../../../assets/user.png")
             }
             width={110}
@@ -79,7 +81,7 @@ const Profile: React.FC = () => {
           />
           <Container style={{ alignItems: "center" }}>
             <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              {otherUserProfileList[0]?.user_nickname}
+              {otherUserProfileList?.nickname}
             </Text>
           </Container>
         </Container>
@@ -87,8 +89,8 @@ const Profile: React.FC = () => {
           <Container style={{}}>
             {
               // 소개글 유무로 내용을 정함
-              otherUserProfileList[0]?.body ? (
-                <Text>{otherUserProfileList[0]?.body}</Text>
+              otherUserProfileList?.body ? (
+                <Text>{otherUserProfileList?.body}</Text>
               ) : (
                 <Text> 소개글을 남겨보세요!</Text>
               )
@@ -102,9 +104,9 @@ const Profile: React.FC = () => {
             />
           </Container>
           <Container>
-            {otherUserProfileList.map((major, index) => (
+            {otherUserProfileList?.category.map((major, index) => (
               <Text key={index} style={{ color: "gray" }}>
-                {major.major_name}
+                {major.majorName}
               </Text>
             ))}
           </Container>

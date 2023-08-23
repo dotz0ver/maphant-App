@@ -7,30 +7,9 @@ import { deleteChat, receiveChatrooms } from "../../Api/member/FindUser";
 import { Container, TextButton, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { MessageList } from "../../types/DM";
+import { formatTimeDifference } from "../../utils/Time";
 
 const Mail: React.FC = () => {
-  function formatTimeDifference(targetDate: Date): string {
-    const currentDate = new Date();
-    const timeDifference = currentDate.getTime() - targetDate.getTime();
-
-    const seconds = Math.floor(timeDifference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const months = Math.floor(days / 30);
-
-    if (seconds < 60) {
-      return `${seconds}초 전`;
-    } else if (minutes < 60) {
-      return `${minutes}분 전`;
-    } else if (hours < 24) {
-      return `${hours}시간 전`;
-    } else if (days < 30) {
-      return `${days}일 전`;
-    } else {
-      return `${months}개월 전`;
-    }
-  }
   const [chatList, setChatList] = useState<MessageList[]>([]);
   const navigation = useNavigation<NavigationProps>();
   const del = (id: number) => {

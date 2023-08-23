@@ -4,16 +4,17 @@ import { useEffect, useState } from "react";
 import { TAutocompleteDropdownItem } from "react-native-autocomplete-dropdown";
 import * as Yup from "yup";
 
-import { SearchNickname } from "../../Api/member/FindUser";
+import { receiveChatrooms, SearchNickname } from "../../Api/member/FindUser";
 import { validateNickname } from "../../Api/member/signUp";
 import { Container, TextButton } from "../../components/common";
 import Search from "../../components/Input/Search";
 import { NavigationProps } from "../../Navigator/Routes";
 import { INickname } from "../../types/SearchUser";
+import { MessageList } from "../../types/DM";
 
 const SearchUser: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();
-
+  const [chatList, setChatList] = useState<MessageList[]>([]);
   const [nickname, setNickname] = useState("");
   const [nicknameAutocompleteList, setNicknameAutocompleteList] = useState<
     TAutocompleteDropdownItem[]
@@ -58,6 +59,9 @@ const SearchUser: React.FC = () => {
   const userNickname: INickname = {
     nickname: "",
   };
+  receiveChatrooms().then(res => {
+    setChatList(res.data);
+  });
   return (
     <Container isFullScreen={true} isForceKeyboardAvoiding={true} style={{ padding: 20, flex: 1 }}>
       <Formik
@@ -68,10 +72,12 @@ const SearchUser: React.FC = () => {
           const userId = nicknameAutocompleteList.find(item => item.title === values.nickname)?.id;
           if (!userId) return alert("존재하지 않는 상대방입니다.");
           if (values.nickname.length === 0) return alert("에바야");
+          const i = chatList.filter(item => item.other_nickname === values.nickname);
+          const ID = i.length === 0 ? 0 : i[0].id;
           return navigation.navigate("Chatroom", {
             id: parseInt(userId),
             nickname: values.nickname,
-            roomId: 0,
+            roomId: ID,
           } as never);
         }}
       >

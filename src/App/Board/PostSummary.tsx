@@ -1,9 +1,10 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import { BoardArticle, BoardType, HotBoard } from "../../types/Board";
 import { TextThemed } from "../../components/common";
+import { BoardArticle, BoardType, HotBoard } from "../../types/Board";
+import { formatTimeDifference } from "../../utils/Time";
 
 export default function ({
   post,
@@ -46,34 +47,11 @@ function PostSummary(post: BoardArticle | HotBoard): JSX.Element {
           </>
         ) : null}
         <TextThemed style={{ justifyContent: "flex-end", fontSize: 10 }}>
-          {dateToString(post.createdAt)}
+          {formatTimeDifference(new Date(post.createdAt))}
         </TextThemed>
       </View>
     </>
   );
-}
-
-function dateToString(date: string): string {
-  const start = new Date(date);
-  const end = new Date();
-
-  const diff = end.getTime() - start.getTime();
-  const diffDate = new Date(diff);
-
-  const year = diffDate.getFullYear() - 1970;
-  const month = diffDate.getMonth();
-  const day = diffDate.getDate() - 1;
-  const hour = diffDate.getHours();
-  const minute = diffDate.getMinutes();
-  const second = diffDate.getSeconds();
-
-  if (year > 0) return `${year}년 전`;
-  if (month > 0) return `${month}달 전`;
-  if (day > 0) return `${day}일 전`;
-  if (hour > 0) return `${hour}시간 전`;
-  if (minute > 0) return `${minute}분 전`;
-  if (second > 0) return `${second}초 전`;
-  return "방금 전";
 }
 
 const styles = StyleSheet.create({

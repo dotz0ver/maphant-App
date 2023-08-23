@@ -1,5 +1,6 @@
 //글자 흰색으로
 import { Entypo } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
@@ -25,6 +26,7 @@ const DetailList: React.FC = () => {
   const [boardData, setboardData] = useState<BoardArticle[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation<NavigationProps>();
+  const [searchText, setSearchText] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<BoardArticle[]>([]);
   const [sortType, setsortType] = React.useState<SortType[]>([]);
@@ -76,6 +78,7 @@ const DetailList: React.FC = () => {
   };
 
   const handleSearch = async (searchText: string) => {
+    setSearchText(searchText);
     setSearchQuery(searchText);
     if (searchText.trim() === "") {
       setSearchResults([]);
@@ -84,7 +87,7 @@ const DetailList: React.FC = () => {
     }
     try {
       const data = await searchArticle(searchText, boardType.id); // Implement your searchArticle function to call the API for search results
-      setSearchResults(data.data as BoardArticle[]);
+      setSearchResults(data.data.list as BoardArticle[]);
       console.log(data.data);
     } catch (err) {
       console.log(err);
@@ -96,7 +99,6 @@ const DetailList: React.FC = () => {
   }, [sort]);
 
   const createBoard = () => {
-    console.log("글쓰기 화면으로 바뀌어야함");
     navigation.navigate("Post", { boardType: boardType });
   };
 
@@ -112,25 +114,54 @@ const DetailList: React.FC = () => {
 
   return (
     <Container style={styles.container}>
-      <SearchBar onSearchChange={handleSearch} />
-      <TouchableOpacity style={styles.sortContainer}>
-        {sortType.map((sort, index) => (
-          <View key={index}>
-            <TextButton
-              key={sort.id}
-              onPress={() => {
-                handleSortChange(sort.id);
-                console.log(sort);
-              }} // 선택된 정렬 유형 id를 핸들러에 전달합니다.
-              style={styles.sortKey}
-            >
-              {sort.name}
-            </TextButton>
-          </View>
-        ))}
-      </TouchableOpacity>
+      <SearchBar
+        onSearchChange={handleSearch}
+        onClearText={() => {
+          setSearchQuery("");
+          setSearchText("");
+        }}
+        searchQuery={searchText}
+      />
+      <View style={styles.sortContainer}>
+        <View
+          style={{
+            borderRightColor: "#aaa",
+            borderRightWidth: 2,
+          }}
+        >
+          <TouchableOpacity onPress={createBoard} style={styles.sortKey}>
+            <Entypo name="plus" size={20} color="#666666" />
+            <Text style={{ color: "#666666", fontSize: 14 }}> 글 작성하기</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
+        >
+          {sortType.map((sort, index) => (
+            <TouchableOpacity key={index}>
+              <TextButton
+                key={sort.id}
+                onPress={() => {
+                  handleSortChange(sort.id);
+                  console.log(sort);
+                }} // 선택된 정렬 유형 id를 핸들러에 전달합니다.
+                style={styles.sortKey}
+                fontColor="#666666"
+                fontSize={14}
+              >
+                {sort.id === 1 ? "최신 순" : sort.id === 2 ? "좋아요 순" : ""}
+              </TextButton>
+            </TouchableOpacity>
+          ))}
+          <FontAwesome name="sort" size={24} color="#666666" />
+        </View>
+      </View>
 
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={displayData}
         renderItem={({ item: board }) => (
           <View key={board.boardId} style={styles.body}>
@@ -142,13 +173,6 @@ const DetailList: React.FC = () => {
         onEndReached={() => pageFunc()}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
-      <View style={styles.btn}>
-        <TouchableOpacity onPress={createBoard}>
-          <Text>
-            <Entypo name="plus" size={24} color="black" />
-          </Text>
-        </TouchableOpacity>
-      </View>
     </Container>
   );
 };
@@ -160,27 +184,32 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   body: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
+    borderTopColor: "#E0E0E0",
+    borderTopWidth: 1,
     paddingVertical: 10,
+    paddingHorizontal: 5,
   },
   btn: {
-    backgroundColor: "#e9ecef",
+    backgroundColor: "#CBD7E6",
     borderRadius: 30,
-    zIndex: 99,
-    position: "absolute",
-    right: "10%",
-    bottom: "5%",
     padding: 10,
   },
   sortContainer: {
     flexDirection: "row",
+    marginHorizontal: 15,
+    marginVertical: 10,
+    justifyContent: "center",
+    alignItems: "center",
   },
   sortKey: {
-    backgroundColor: "#5299EB",
-    marginRight: "5%",
-    width: 120, // 원하는 너비로 조절
-    height: 50,
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 11,
+    marginHorizontal: 10,
+    backgroundColor: "#CBD7E6",
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
   },
 });
 

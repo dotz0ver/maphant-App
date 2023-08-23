@@ -1,4 +1,5 @@
 import BoardDetail from "../App/Board/BoardDetail";
+import Edit from "../App/Board/EditPost";
 import Chatroom from "../App/Mail/Chatroom";
 import Bookmark from "../App/Mypage/Bookmark";
 import LikeContent from "../App/Mypage/LikeContent";
@@ -43,6 +44,10 @@ const Routes: RouteType[] = [
   {
     name: "Mycomment",
     component: Mycomment,
+  },
+  {
+    name: "editPost",
+    component: Edit,
   },
   {
     name: "Profile",

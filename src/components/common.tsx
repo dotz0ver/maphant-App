@@ -1,6 +1,6 @@
 import { useHeaderHeight } from "@react-navigation/elements";
 import { useTheme } from "@react-navigation/native";
-import { LegacyRef, useEffect, useState } from "react";
+import { LegacyRef, useEffect, useRef, useState } from "react";
 import {
   ColorValue,
   Dimensions,
@@ -11,6 +11,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   KeyboardTypeOptions,
+  LayoutRectangle,
   ScrollView,
   StyleProp,
   Text,
@@ -123,7 +124,7 @@ const Container: React.FC<ContainerProps> = props => {
   };
   // 높이와 키보드 높이를 상태로 관리
   const [height, setHeight] = useState<number | string>(adjustedHeight());
-  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
+  const [, setKeyboardHeight] = useState<number>(0);
 
   // 컴포넌트 마운트될 때, 높이와 키보드 높이 설정 이벤트 리스너 추가
   useEffect(() => {
@@ -144,7 +145,7 @@ const Container: React.FC<ContainerProps> = props => {
   }, []);
 
   let paddingBottom = 0;
-  if (isForceKeyboardAvoiding) paddingBottom = 10;
+  if (isForceKeyboardAvoiding) paddingBottom = 50;
   if (isFullWindow) paddingBottom += safeAreaInsets.bottom;
 
   const style_computed: StyleProp<ViewStyle> = {
@@ -296,6 +297,9 @@ const Input: React.FC<InputProps> = props => {
     onSubmitEditing,
   } = props;
 
+  const [isLayoutCalibrated, setIsLayoutCalibrated] = useState(false);
+  const containerLayout = useRef<LayoutRectangle | null>(null);
+
   const style_container: StyleProp<ViewStyle> = {
     paddingHorizontal,
     paddingVertical,
@@ -305,11 +309,27 @@ const Input: React.FC<InputProps> = props => {
   };
   const style_text: StyleProp<TextStyle> = {
     fontSize: 16,
-    color: theme.colors.text,
+    width: "100%",
   };
 
+  if (isLayoutCalibrated) {
+    style_text.height = containerLayout.current?.height;
+  }
+
   return (
-    <View style={style_container}>
+    <View
+      style={style_container}
+      onLayout={event => {
+        event.stopPropagation();
+        const data = event.nativeEvent.layout;
+
+        if (isLayoutCalibrated) return;
+
+        containerLayout.current = data;
+
+        setIsLayoutCalibrated(true);
+      }}
+    >
       <TextInput
         ref={inputRef}
         style={style_text}
@@ -349,9 +369,9 @@ const IconButton: React.FC<IconButtonProps> = props => {
     children,
     backgroundColor = "#f2f2f2",
     paddingHorizontal = 11,
-    paddingVertical = 5,
+    paddingVertical = 3,
     marginHorizontal = 4,
-    borderRadius = 4,
+    borderRadius = 5,
     flexDirection = "row",
     onPress,
     fontSize = 9,
