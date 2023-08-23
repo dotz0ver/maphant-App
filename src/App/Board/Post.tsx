@@ -129,7 +129,10 @@ const Post: React.FC = () => {
         { title: voteTitle, options: voteOptions }, // poll
         DBnewHashtags,
       );
-      Alert.alert("게시물 작성 되었습니다.");
+
+      if (response.success == true) {
+        Alert.alert("게시물 작성 되었습니다.");
+      }
       navigation.navigate("DetailList", { boardType: boardType });
     } catch (error) {
       Alert.alert(error);

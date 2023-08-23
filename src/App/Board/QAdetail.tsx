@@ -45,7 +45,9 @@ const QAdetail = () => {
       const response = await boardDelete(id);
       navigation.goBack();
 
-      Alert.alert("삭제되었습니다.");
+      if (response.success == true) {
+        Alert.alert("삭제되었습니다.");
+      }
     } catch (error) {
       alert(error);
     }

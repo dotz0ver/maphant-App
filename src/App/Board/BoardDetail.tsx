@@ -101,7 +101,9 @@ const BoardDetail = () => {
       const response = await boardDelete(id);
       handlePollDelete();
       navigation.goBack();
-      Alert.alert("삭제되었습니다.");
+      if (response.success == true) {
+        Alert.alert("삭제되었습니다.");
+      }
     } catch (error) {
       Alert.alert(error);
     }
@@ -141,7 +143,9 @@ const BoardDetail = () => {
     commentDelete(id)
       .then(data => {
         setCommentLength(commentLength - 1);
-        Alert.alert("삭제되었습니다.");
+        if (data.success == true) {
+          Alert.alert("삭제되었습니다.");
+        }
       })
       .catch(error => Alert.alert(error));
   };
@@ -286,7 +290,9 @@ const BoardDetail = () => {
   const handleReport = async (board_id: number, reportType_id: number) => {
     try {
       const response = await ReportPost(board_id, reportType_id);
-      Alert.alert("신고되었습니다.");
+      if (response.success == true) {
+        Alert.alert("신고되었습니다.");
+      }
     } catch (error) {
       Alert.alert(error);
     }
@@ -298,7 +304,9 @@ const BoardDetail = () => {
   const handleCommentReport = async (commentId: number, reportId: number) => {
     try {
       const response = await ReportComment(commentId, reportId);
-      Alert.alert("신고되었습니다.");
+      if (response.success == true) {
+        Alert.alert("신고되었습니다.");
+      }
     } catch (error) {
       Alert.alert(error);
     }
@@ -312,7 +320,9 @@ const BoardDetail = () => {
       const response = await insertLikePost(id);
       post.board.isLike = true;
       setLikeCnt(likeCnt + 1);
-      Alert.alert("추천되었습니다.");
+      if (response.success == true) {
+        Alert.alert("추천되었습니다.");
+      }
     } catch (error) {
       Alert.alert(error);
     }
@@ -331,10 +341,14 @@ const BoardDetail = () => {
     try {
       if (isBookmarked) {
         await DeletebookMarkArticle(board_id);
-        Alert.alert("북마크 삭제되었습니다.");
+        if (response.success == true) {
+          Alert.alert("북마크 삭제되었습니다.");
+        }
       } else {
         await bookMarkArticle(id);
-        Alert.alert("북마크 추가되었습니다.");
+        if (response.success == true) {
+          Alert.alert("북마크 추가되었습니다.");
+        }
       }
       setIsBookmarked(!isBookmarked); // 토글 상태 업데이트
     } catch (error) {
@@ -427,7 +441,6 @@ const BoardDetail = () => {
                 onPress={() => {
                   if (selectedCommentReportIndex !== null) {
                     handleCommentReport(commentId, selectedCommentReportIndex);
-                    Alert.alert("신고되었습니다.");
                   }
                   setReportCommentModal(false);
                 }}
