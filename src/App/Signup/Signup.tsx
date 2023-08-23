@@ -86,7 +86,7 @@ const Signup = () => {
 
     // Toast.show("회원가입 정보를 확인해 주세요.");
   }, []);
-
+  const placeholderTextColor = "#636363";
   const getFieldPlaceholder = (fieldName: string) => {
     switch (fieldName) {
       case "email":
@@ -147,6 +147,7 @@ const Signup = () => {
                 <>
                   <Field
                     placeholder={getFieldPlaceholder(item)}
+                    placeholderTextColor={placeholderTextColor}
                     name={item}
                     component={item === "university" ? SearchByFilter : CustomInput}
                     list={item === "university" ? universityList : undefined}
