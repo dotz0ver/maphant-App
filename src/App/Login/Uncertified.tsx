@@ -1,20 +1,19 @@
-import { NavigationProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import * as Notifications from "expo-notifications";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text } from "react-native";
+import { useSelector } from "react-redux";
 
+import { PostAPI } from "../../Api/fetchAPI";
+import { sendFcm } from "../../Api/member/Fcm";
 import { confirmEmail } from "../../Api/member/signUp";
+import UserAPI from "../../Api/memberAPI";
 import { Container, Input, Spacer, TextButton } from "../../components/common";
 import { SignUpFormParams } from "../../Navigator/SigninRoutes";
-import { PostAPI } from "../../Api/fetchAPI";
-import UserAPI from "../../Api/memberAPI";
 import UserStorage from "../../storage/UserStorage";
-import { UserData } from "../../types/User";
-import { useSelector } from "react-redux";
-import * as Notifications from "expo-notifications";
-import { sendFcm } from "../../Api/member/Fcm";
+
 const Uncertified: React.FC = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [minutes, setMinutes] = useState(10);
   const [seconds, setSeconds] = useState(0);
   const [verificationCode, setVerificationCode] = useState("");
@@ -23,12 +22,10 @@ const Uncertified: React.FC = () => {
   const [sendEmail, setSendEmail] = useState(0);
   const route = useRoute();
   const params = route.params as SignUpFormParams;
-  const profile = useSelector(UserStorage.userProfileSelector);
   const navigation = useNavigation();
 
   useEffect(() => {
     if (params && params.email) setEmail(params.email);
-    else if (params && params.password) setPassword(params.password);
   }, [route]);
 
   const login = () => {
@@ -67,10 +64,10 @@ const Uncertified: React.FC = () => {
       .then(res => {
         console.log(res);
         if (res.success) {
-          Alert.alert("인증이 완료되었습니다\n로그인 페이지로 이동합니다");
-          navigation.navigate("Login" as never);
+          Alert.alert("인증이 완료되었습니다");
+          //navigation.navigate("Login" as never);
           // 인증 완료 처리
-          //setShowNextButton(true);
+          setShowNextButton(true);
         }
         // Internal Server Error때문에 res가 안받아져서 임시로 완료 처리(state는 잘 바뀜)
         // else if (res.success !== false) {
