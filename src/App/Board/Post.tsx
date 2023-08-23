@@ -123,6 +123,12 @@ const Post: React.FC = () => {
     console.log("hashtags", hashtags);
     const DBnewHashtags = hashtags.map(word => word.replace(/^#/, ""));
     console.log("DBnewHashtags", DBnewHashtags);
+
+    if (voteOptions.some(option => option.trim() === "")) {
+      alert("옵션 내용을 입력해 주세요.");
+      return;
+    }
+
     try {
       const response = await boardPost(
         null,
