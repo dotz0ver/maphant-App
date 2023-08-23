@@ -39,7 +39,10 @@ const QA_answer: React.FC = () => {
         isanonymous,
         //hashtags.join(" "),
       );
-      Alert.alert("게시물이 작성되었습니다.");
+
+      if (response.success == true) {
+        Alert.alert("게시물이 작성되었습니다.");
+      }
       navigation.goBack();
     } catch (error) {
       console.error("게시물 작성 오류", error);

@@ -70,7 +70,9 @@ const Edit: React.FC = () => {
         postImageUrl.length == 0 ? undefined : postImageUrl,
         DBnewHashtags.length == 0 ? undefined : DBnewHashtags,
       );
-      Alert.alert("게시글 수정 완료");
+      if (response.success == true) {
+        Alert.alert("수정되었습니다.");
+      }
 
       navigation.goBack();
     } catch (error) {
