@@ -42,7 +42,7 @@ const Chatroom: React.FC = () => {
         }
       })
       .catch(e => {
-        console.error("fetchChatLists에러", e);
+        if (params.roomId != 0) console.error("fetchChatLists에러", e);
       })
       .finally(() => (isChatLoading.current = false));
   };
@@ -83,7 +83,7 @@ const Chatroom: React.FC = () => {
 
         fetchNewChatLists(params.roomId);
       })
-      .catch(e => console.error("send에러", e));
+      .catch(e => alert(e));
     setContent("");
   };
 

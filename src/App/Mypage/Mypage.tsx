@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 
 import { GetAPI, PostAPI, statusResponse } from "../../Api/fetchAPI";
 import DeleteAPI from "../../Api/member/DeleteUser";
-import { Container, Input, Spacer, TextButton, TextThemed } from "../../components/common";
+import { Input, Spacer, TextButton, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
 import { UserData } from "../../types/User";
