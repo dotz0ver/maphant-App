@@ -82,8 +82,8 @@ function MyPost(): JSX.Element {
   return (
     <>
       <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
-        {posts.map(post => (
-          <>
+        {posts.map((post, index) => (
+          <React.Fragment key={index}>
             <Pressable onPress={() => detailContent(post)}>
               <View style={styles.container}>
                 <View style={styles.head}>
@@ -114,7 +114,7 @@ function MyPost(): JSX.Element {
               </View>
             </Pressable>
             <View style={{ borderBottomWidth: 1, borderColor: "#e8eaec", height: 0 }}></View>
-          </>
+          </React.Fragment>
         ))}
         {(isLoading || isComplete) && (
           <View style={styles.loadingContainer}>

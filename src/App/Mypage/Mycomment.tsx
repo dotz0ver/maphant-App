@@ -75,8 +75,8 @@ function Mycomment(): JSX.Element {
   return (
     <>
       <ScrollView onScroll={handleScroll} scrollEventThrottle={16}>
-        {comments.map(comment => (
-          <>
+        {comments.map((comment, index) => (
+          <React.Fragment key={index}>
             <Pressable onPress={() => detailContent(comment)}>
               <View style={styles.container}>
                 <View style={styles.head}>
@@ -119,7 +119,7 @@ function Mycomment(): JSX.Element {
               </View>
             </Pressable>
             <View style={{ borderBottomWidth: 1, borderColor: "#e8eaec", height: 0 }}></View>
-          </>
+          </React.Fragment>
         ))}
         {(isLoading || isComplete) && (
           <View style={styles.loadingContainer}>
