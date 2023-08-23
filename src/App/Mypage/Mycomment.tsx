@@ -1,11 +1,11 @@
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 
-import { DeleteAPI, GetAPI, PostAPI } from "../../Api/fetchAPI";
-import { TextButton, TextThemed } from "../../components/common";
+import { GetAPI } from "../../Api/fetchAPI";
+import { TextThemed } from "../../components/common";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
 
@@ -68,7 +68,6 @@ function Mycomment(): JSX.Element {
   }
 
   const detailContent = (comments: BoardArticle) => {
-    console.log(comments.board_id);
     navigation.navigate("BoardDetail", { id: comments.board_id });
   };
 

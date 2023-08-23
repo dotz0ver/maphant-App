@@ -1,6 +1,6 @@
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Field, Formik, FormikErrors } from "formik";
+import { FormikErrors } from "formik";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
@@ -13,17 +13,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Toast from "react-native-root-toast";
 import { useSelector } from "react-redux";
 
 import { DeleteAPI, GetAPI, PostAPI } from "../../Api/fetchAPI";
-import { categoryList, majorList } from "../../Api/member/signUp";
 import UserAPI from "../../Api/memberAPI";
 import { Container, Input, Spacer, TextButton, TextThemed } from "../../components/common";
-import SearchByFilter from "../../components/Input/SearchByFilter";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
-import { set } from "react-native-reanimated";
 
 interface ISearchForm {
   field: string;
@@ -83,7 +79,6 @@ const ProfileModify: React.FC = () => {
   useEffect(() => {
     PostAPI("/user/changeinfo/olddata").then(res => {
       if (res.success == true) {
-        console.log(res.data);
         setUserEmail(res.data.email);
         setPassword(res.data.password);
         setNickname(res.data.nickname);
@@ -347,7 +342,6 @@ const ProfileModify: React.FC = () => {
                         })
                           .then(res => {
                             if (res.success == true) {
-                              console.log(tmpNickname, "으로 닉네임 수정 성공");
                               setNickname(tmpNickname);
                               setModyfyingNicknameModal(false);
                             }
@@ -449,9 +443,7 @@ const ProfileModify: React.FC = () => {
                           phNum: tmpPhoneNumber,
                         })
                           .then(res => {
-                            console.log(res);
                             if (res.success == true) {
-                              console.log("핸드폰번호 수정 성공");
                               setPhoneNumber(tmpPhoneNumber);
                               setModyfyingPhoneNumModal(false);
                             }
@@ -484,7 +476,6 @@ const ProfileModify: React.FC = () => {
                         ]}
                         onPress={() => {
                           handlePress(index);
-                          console.log(profile.category.at(index));
                         }}
                       >
                         <TextThemed style={styles.fieldtext}>{category.categoryName}</TextThemed>

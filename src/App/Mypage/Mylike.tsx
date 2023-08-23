@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { GetAPI } from "../../Api/fetchAPI";
-import { TextButton, TextThemed } from "../../components/common";
+import { TextThemed } from "../../components/common";
 import { BoardArticle } from "../../types/Board";
 
 export default function (): JSX.Element {
@@ -61,7 +61,6 @@ function Mylike(): JSX.Element {
   }
 
   const detailContent = (likes: BoardArticle) => {
-    console.log(likes);
     navigation.navigate("BoardDetail", { id: likes.id });
   };
 

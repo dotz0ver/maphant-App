@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { GetAPI } from "../../Api/fetchAPI";
-import { TextButton } from "../../components/common";
 import { BoardArticle } from "../../types/Board";
 
 export default function (): JSX.Element {
@@ -46,8 +45,7 @@ function Bookmark(): JSX.Element {
   useEffect(() => {
     extractBoardIds().then(async props => {
       const { boardIds, endPage } = props;
-      console.log(boardIds);
-      console.log(endPage);
+
       const bookmarks: BoardArticle[] = [];
       for (let i = boardIds.length - 1; i >= 0; i--) {
         await GetAPI(`/board/${boardIds[i]}/`).then(res => {
@@ -91,7 +89,6 @@ function Bookmark(): JSX.Element {
   }
 
   const detailContent = (boards: BoardArticle) => {
-    console.log(boards.id);
     navigation.navigate("BoardDetail", { id: boards.id });
   };
 

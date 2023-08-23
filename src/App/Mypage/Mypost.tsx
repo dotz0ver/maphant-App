@@ -5,9 +5,9 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 import { useSelector } from "react-redux";
 
 import { GetAPI } from "../../Api/fetchAPI";
+import { TextThemed } from "../../components/common";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
-import { TextThemed } from "../../components/common";
 
 export default function (): JSX.Element {
   switch (0) {
@@ -67,7 +67,6 @@ function MyPost(): JSX.Element {
   }
 
   const detailContent = (posts: BoardArticle) => {
-    console.log(posts);
     navigation.navigate("BoardDetail", { id: posts.id });
   };
 

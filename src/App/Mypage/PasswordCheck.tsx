@@ -17,7 +17,6 @@ const PasswordCheck: React.FC = () => {
     })
       .then(res => {
         if (res.success == true) {
-          console.log(res.success);
           setPassword("");
           navigation.navigate("ProfileModify");
         }

@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 
 import { GetAPI, PostAPI, statusResponse } from "../../Api/fetchAPI";
 import DeleteAPI from "../../Api/member/DeleteUser";
-import { Container, Input, Spacer, TextButton, TextThemed } from "../../components/common";
+import { Input, Spacer, TextButton, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
 import { UserData } from "../../types/User";
@@ -37,7 +37,7 @@ function uploadAPI<T extends statusResponse>(
       signal: abortSignal,
       headers: {},
     };
-    console.info(token);
+
     if (token != undefined) {
       // @ts-expect-error
       options.headers["x-auth"] = token.token;
@@ -55,7 +55,7 @@ function uploadAPI<T extends statusResponse>(
     }
 
     const url_complete = `https://dev.api.tovelop.esm.kr${url}`;
-    console.info(url_complete, options);
+
     return fetch(url_complete, options)
       .catch(err => {
         console.warn(method, url_complete, body, err);
@@ -67,7 +67,7 @@ function uploadAPI<T extends statusResponse>(
       })
       .then(res => {
         // console.log(res);
-        console.info(res.body);
+
         // 특수 처리 (로그인 실패시에도 401이 들어옴)
         // 로그인의 경우는 바로 내려 보냄
         if (url == "/user/login") {
@@ -83,7 +83,6 @@ function uploadAPI<T extends statusResponse>(
         return res.json();
       })
       .then(json => {
-        console.log(json);
         const resp = json as T;
 
         return Promise.resolve({ json: resp });
@@ -193,7 +192,6 @@ const MyView = () => {
   const [introduceTxt, setIntroduceTxt] = useState("");
   let confirmedIntroTxt: string = "";
 
-  console.warn(useSelector(UserStorage.userProfileSelector));
   // const [userID, setUserID] = useState(0);
   const userID = useSelector(UserStorage.userProfileSelector)?.id;
   useEffect(() => {
@@ -226,7 +224,7 @@ const MyView = () => {
       // console.log(res);
       setIntroduceTxt(confirmedIntroTxt);
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
   const deleteIntro = async () => {
@@ -235,7 +233,6 @@ const MyView = () => {
 
     // console.log(formData);
     try {
-      console.log();
       const res = await uploadAPI("PATCH", "/profile", formData);
       // console.log();
       // console.log();
@@ -247,7 +244,7 @@ const MyView = () => {
 
       setIntroduceTxt("");
     } catch (err) {
-      console.log(err);
+      alert(err);
     }
   };
 
