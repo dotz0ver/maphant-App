@@ -48,8 +48,6 @@ const App = () => {
   const isUserDataLoading = useSelector(UserStorage.isUserDataLoadingSelector);
   const profile = useSelector(UserStorage.userProfileSelector);
 
-  console.warn([profile, isUserDataLoading, isLogged]);
-
   const [showImage, setShowImage] = useState(true);
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
@@ -83,8 +81,6 @@ const App = () => {
       }, 1000);
   }, [isUserDataLoading]);
 
-  console.error(profile?.state);
-
   if (showImage)
     return (
       <View
@@ -105,14 +101,7 @@ const App = () => {
         />
       </View>
     );
-  return (
-    <>
-      {isLogged && !isUserDataLoading && profile?.state === 1 ? <MainScreen /> : <Login />}
-      {console.log(
-        `isLogged must be true : ${isLogged} \n isUserDataLoading must be false :${isUserDataLoading} \n state must be 1 : ${profile?.state}`,
-      )}
-    </>
-  );
+  return <>{isLogged && !isUserDataLoading && profile?.state === 1 ? <MainScreen /> : <Login />}</>;
 };
 
 const AppWrapper = () => {
