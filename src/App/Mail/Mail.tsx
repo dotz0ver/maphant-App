@@ -1,7 +1,7 @@
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { deleteChat, receiveChatrooms } from "../../Api/member/FindUser";
 import { Container, TextButton, TextThemed } from "../../components/common";

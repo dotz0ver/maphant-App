@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Field, Formik, FormikErrors } from "formik";
 import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 import { TAutocompleteDropdownItem } from "react-native-autocomplete-dropdown";
 import * as Yup from "yup";
 
@@ -9,9 +10,8 @@ import { validateNickname } from "../../Api/member/signUp";
 import { Container, TextButton } from "../../components/common";
 import Search from "../../components/Input/Search";
 import { NavigationProps } from "../../Navigator/Routes";
-import { INickname } from "../../types/SearchUser";
 import { MessageList } from "../../types/DM";
-import { Alert } from "react-native";
+import { INickname } from "../../types/SearchUser";
 
 const SearchUser: React.FC = () => {
   const navigation = useNavigation<NavigationProps>();

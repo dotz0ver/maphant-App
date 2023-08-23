@@ -3,7 +3,6 @@ import { BottomSheetFlatList, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
-  Dimensions,
   Image,
   ImageSourcePropType,
   NativeScrollEvent,
@@ -15,7 +14,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TextStyle,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -29,8 +27,8 @@ import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
 import { UserCategory } from "../../types/User";
-import { ThemeContext } from "../Style/ThemeContext";
 import { formatTimeDifference } from "../../utils/Time";
+import { ThemeContext } from "../Style/ThemeContext";
 
 interface Tags {
   id: string | undefined;

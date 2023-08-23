@@ -2,7 +2,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text } from "react-native";
-import { useSelector } from "react-redux";
 
 import { PostAPI } from "../../Api/fetchAPI";
 import { sendFcm } from "../../Api/member/Fcm";

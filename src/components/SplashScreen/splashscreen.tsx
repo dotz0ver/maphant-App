@@ -1,4 +1,4 @@
-import { ActivityIndicator, View, Image, StyleSheet } from "react-native";
+import { ActivityIndicator, Image, StyleSheet,View } from "react-native";
 
 const SplashScreen = () => {
   return (

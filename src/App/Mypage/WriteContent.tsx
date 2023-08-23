@@ -1,7 +1,6 @@
 import { Feather } from "@expo/vector-icons";
-import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useDebugValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 
 import { writeContentList } from "../../Api/member/Others";
