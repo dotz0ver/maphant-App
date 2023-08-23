@@ -763,13 +763,15 @@ const BoardDetail = () => {
                                   >
                                     신고
                                   </IconButton>
-                                  <IconButton
-                                    name=""
-                                    color="red"
-                                    onPress={() => handleCommentDelete(reply.id)}
-                                  >
-                                    삭제
-                                  </IconButton>
+                                  {reply.isMyComment && (
+                                    <IconButton
+                                      name=""
+                                      color="red"
+                                      onPress={() => handleCommentDelete(reply.id)}
+                                    >
+                                      삭제
+                                    </IconButton>
+                                  )}
                                 </View>
                               </View>
                               <View style={styles.commentContext}>
