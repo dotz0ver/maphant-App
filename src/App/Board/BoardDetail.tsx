@@ -741,14 +741,17 @@ const BoardDetail = () => {
                             <View style={{ margin: "2%" }}>
                               <View style={styles.commentHeader}>
                                 <View style={{ flexDirection: "column" }}>
-                                  <TextThemed
-                                    style={styles.commentName}
-                                    onPress={() =>
-                                      navigation.navigate("Profile", { id: comment.user_id })
-                                    }
+                                  <TouchableOpacity
+                                    onPress={() => {
+                                      navigation.navigate("Profile", { id: reply.user_id });
+                                      console.error(reply.user_id);
+                                    }}
+                                    disabled={reply.is_anonymous == 1}
                                   >
-                                    {reply.nickname}
-                                  </TextThemed>
+                                    <TextThemed style={styles.commentName}>
+                                      {reply.nickname}
+                                    </TextThemed>
+                                  </TouchableOpacity>
                                   <Text style={styles.commentDate}>
                                     {dateFormat(reply.created_at)}
                                   </Text>
