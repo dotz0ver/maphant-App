@@ -1,7 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { listArticle, listHotBoard, listVoteBoard } from "../../Api/board";
 import { Container, Spacer, TextThemed } from "../../components/common";
@@ -21,7 +21,7 @@ const QnABoard: React.FC = () => {
       .then(data => {
         if (data.data) setHotBoard(data.data.list as HotBoard[]);
       })
-      .catch(err => console.log(err));
+      .catch(err => Alert.alert(err));
   }, []);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const QnABoard: React.FC = () => {
       .then(data => {
         if (data.data) setboardData(data.data.list as BoardArticle[]);
       })
-      .catch(err => console.log(err));
+      .catch(err => Alert.alert(err));
   }, []);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const QnABoard: React.FC = () => {
       .then(data => {
         if (data.data) setVoteBoard(data.data.list as VoteBoard[]);
       })
-      .catch(err => console.log(err));
+      .catch(err => Alert.alert(err));
   }, []);
 
   return (

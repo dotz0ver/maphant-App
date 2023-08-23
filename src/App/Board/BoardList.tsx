@@ -286,7 +286,6 @@ const BoardList = () => {
   const [boardTypeData, setboardTypeData] = React.useState<BoardType[]>([]);
   const navigation = useNavigation<NavigationProps>();
 
-  console.log(boardTypeData);
   const splitIntoRows = (data: BoardType[], itemsPerRow: number) => {
     const rows = [];
     for (let i = 0; i < 6; i += itemsPerRow) {

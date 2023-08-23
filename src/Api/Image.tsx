@@ -47,7 +47,6 @@ export function uploadAPI<T extends statusResponse>(
         return Promise.reject("서버와 통신 중 오류가 발생했습니다.");
       })
       .then(res => {
-        console.log(res);
         console.info(res.body);
         // 특수 처리 (로그인 실패시에도 401이 들어옴)
         // 로그인의 경우는 바로 내려 보냄
@@ -64,7 +63,6 @@ export function uploadAPI<T extends statusResponse>(
         return res.json();
       })
       .then(json => {
-        console.log(json);
         const resp = json as T;
 
         return Promise.resolve({ json: resp });

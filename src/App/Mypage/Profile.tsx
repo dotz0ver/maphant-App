@@ -1,7 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -26,13 +26,13 @@ const Profile: React.FC = () => {
       .then(res => {
         setOtherUserProfileList(res.data as OtherUserData);
       })
-      .catch(e => console.log(e));
+      .catch(e => Alert.alert(e));
     //채팅방 목록 불러오기
     receiveChatrooms()
       .then(res => {
         setCmpId(res.data);
       })
-      .catch(e => console.error(e));
+      .catch(e => Alert.alert(e));
   }, []);
 
   const chat = () => {
@@ -53,7 +53,6 @@ const Profile: React.FC = () => {
       navigation.navigate("WriteContent", { id: params.id } as never);
     }
   };
-  console.log(categoryLists);
   function OtherProfile() {
     return (
       <Container

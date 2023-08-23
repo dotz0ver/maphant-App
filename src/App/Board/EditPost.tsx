@@ -4,6 +4,7 @@ import CheckBox from "expo-checkbox";
 import * as ImagePicker from "expo-image-picker";
 import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
   KeyboardAvoidingView,
   Platform,
@@ -39,7 +40,6 @@ const Edit: React.FC = () => {
 
   const editparams = useRoute().params as { post: BoardPost };
   const post = editparams?.post;
-  console.log("post", post.board.imagesUrl);
 
   useEffect(() => {
     // 받아온 게시판 타입(boardType)을 이용하여 필요한 작업 수행
@@ -70,10 +70,11 @@ const Edit: React.FC = () => {
         postImageUrl.length == 0 ? undefined : postImageUrl,
         DBnewHashtags.length == 0 ? undefined : DBnewHashtags,
       );
-      console.log(response);
+      Alert.alert("게시글 수정 완료");
+
       navigation.goBack();
     } catch (error) {
-      console.error(error);
+      Alert.alert(error);
     }
   };
   const updateHashtags = () => {
@@ -100,7 +101,6 @@ const Edit: React.FC = () => {
   };
 
   const uploadImage = async () => {
-    console.log("사진 올려지나여");
     if (!requsetpermission?.granted) {
       const permission = await setRequestPermission();
       if (!permission.granted) {
@@ -123,7 +123,7 @@ const Edit: React.FC = () => {
       // Call the uploadImageAsync function to upload the selected images
       await uploadImageAsync(selectedImages);
     } catch (error) {
-      console.error("Image upload error:", error);
+      Alert.alert(error);
       // Handle the error
     }
     setImageUrl(selectedImages.map(image => image.uri));
@@ -131,7 +131,6 @@ const Edit: React.FC = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function uploadImageAsync(images: any[]) {
       const formData = new FormData();
-      console.log(images);
 
       images.forEach((image, index) => {
         // @ts-expect-error
@@ -143,9 +142,7 @@ const Edit: React.FC = () => {
       });
 
       try {
-        // const response = await uploadAPI(formData);
         const response = uploadAPI("POST", "/image", formData);
-        // console.log("Image upload response:", (await response).json);
         const jsonResponse = (await response).json;
         for (const item of jsonResponse) {
           const imageUrl = item.url;
@@ -154,7 +151,7 @@ const Edit: React.FC = () => {
         }
         setPostImageUrl(postImageUrl);
       } catch (error) {
-        console.error("Image upload error:", error);
+        Alert.alert("이미지 업로드에 실패했습니다.");
       }
     }
   };

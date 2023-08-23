@@ -2,20 +2,12 @@ import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { sha512 } from "js-sha512";
 import React, { useEffect, useState } from "react";
-import { Image, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 
 import { GetAPI, statusResponse } from "../../Api/fetchAPI";
 import { Spacer, TextButton } from "../../components/common";
 import UserStorage from "../../storage/UserStorage";
-
-// const getUserImg = (userID: number) => {
-//   GetAPI(`/profile?targetUserId=${userID}`).then(res => {
-//     console.log(res.success);
-//   });
-// };
-
-// const img = getUserImg(userID);
 
 function uploadAPI<T extends statusResponse>(
   method: string = "PATCH",
@@ -32,7 +24,6 @@ function uploadAPI<T extends statusResponse>(
       signal: abortSignal,
       headers: {},
     };
-    console.info(token);
     if (token != undefined) {
       // @ts-expect-error
       options.headers["x-auth"] = token.token;
@@ -50,10 +41,8 @@ function uploadAPI<T extends statusResponse>(
     }
 
     const url_complete = `https://dev.api.tovelop.esm.kr${url}`;
-    console.info(url_complete, options);
     return fetch(url_complete, options)
       .catch(err => {
-        console.warn(method, url_complete, body, err);
         if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
           return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
         }
@@ -61,8 +50,6 @@ function uploadAPI<T extends statusResponse>(
         return Promise.reject("서버와 통신 중 오류가 발생했습니다.");
       })
       .then(res => {
-        console.log(res);
-        console.info(res.body);
         // 특수 처리 (로그인 실패시에도 401이 들어옴)
         // 로그인의 경우는 바로 내려 보냄
         if (url == "/user/login") {
@@ -78,7 +65,6 @@ function uploadAPI<T extends statusResponse>(
         return res.json();
       })
       .then(json => {
-        console.log(json);
         const resp = json as T;
 
         return Promise.resolve({ json: resp });
@@ -100,15 +86,12 @@ const Myimg: React.FC = () => {
   useEffect(() => {
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        // console.log("res.data is ", res.data[0]);
-        // console.log("res.data.profile_img is ", res.data[0].profile_img);
         setDefaultImgSrc(res.data[0].profile_img);
       }
     });
   }, []);
 
   const uploadImage = async () => {
-    // console.log("hi");
     //권한 승인
     if (!requsetpermission?.granted) {
       const permission = await setRequestPermission();
@@ -129,7 +112,7 @@ const Myimg: React.FC = () => {
       return null;
     }
     //이미지 업로드 결과 및 이미지 경로 업데이트
-    // console.log(result.assets[0].uri);
+
     setImageUrl(result.assets[0].uri);
 
     const formData = new FormData();
@@ -139,19 +122,14 @@ const Myimg: React.FC = () => {
       uri: result.assets[0].uri,
     });
 
-    // console.log(formData);
     try {
       const res = await uploadAPI("PATCH", "/profile", formData);
-      // console.log(res);
     } catch (err) {
-      console.log(err);
+      Alert.alert(err);
     }
   };
 
   const deleteImage = async () => {
-    // console.log("hi");
-    //권한 승인
-
     const formData = new FormData();
     formData.append("file", {
       name: "default_profile_img.jpg",
@@ -159,18 +137,15 @@ const Myimg: React.FC = () => {
       uri: "https://tovelope.s3.ap-northeast-2.amazonaws.com/image_1.jpg",
     });
 
-    // console.log(formData);
     try {
       const res = await uploadAPI("PATCH", "/profile", formData);
-      console.log(res);
+      Alert.alert("프로필 사진이 삭제되었습니다.");
     } catch (err) {
-      console.log(err);
+      Alert.alert(err);
     }
 
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        // console.log(res.data[0].profile_img);
-        // console.log(res.data[0]);
         setDefaultImgSrc(res.data[0].profile_img);
       }
     });
@@ -181,7 +156,6 @@ const Myimg: React.FC = () => {
       <TouchableOpacity
         onPress={() => {
           setImgUploadModal(true);
-          // console.log(defaultImgSrc);
         }}
       >
         <Image
@@ -248,12 +222,6 @@ const Myimg: React.FC = () => {
                 onPress={() => {
                   uploadImage();
                   setDefaultImg(false);
-                  // console.log();
-                  // console.log();
-                  // console.log("defaultImg is ", defaultImg);
-                  // console.log("defaultImgSrc is ", defaultImgSrc);
-                  // console.log();
-                  // console.log();
                 }}
               >
                 수정
