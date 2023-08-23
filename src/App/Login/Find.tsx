@@ -24,6 +24,7 @@ const validationSchema = Yup.object().shape({
 const Find: React.FC = () => {
   const [email, setEmail] = useState("");
   const [authcode, setAuthcode] = useState("");
+  const placeholderTextColor = "#636363";
 
   return (
     <Formik
@@ -54,13 +55,20 @@ const Find: React.FC = () => {
               email={email}
               authcode={authcode}
             />
-            <Field placeholder="비밀번호" name="password" component={CustomInput} secureTextEntry />
+            <Field
+              placeholder="비밀번호"
+              name="password"
+              component={CustomInput}
+              secureTextEntry
+              placeholderTextColor={placeholderTextColor}
+            />
             <Spacer size={10} />
             <Field
               placeholder="비밀번호 확인"
               name="confirmPassword"
               component={CustomInput}
               secureTextEntry
+              placeholderTextColor={placeholderTextColor}
             />
             <Spacer size={20} />
             <TextButton fontSize={16} onPress={handleSubmit}>
