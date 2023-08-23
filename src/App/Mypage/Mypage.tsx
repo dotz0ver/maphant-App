@@ -189,14 +189,16 @@ const MyView = () => {
   const profile = useSelector(UserStorage.userProfileSelector)! as UserData;
   const category = useSelector(UserStorage.userCategorySelector);
 
-  console.log(profile);
-
   const [visibleIntroModal, setVisibleIntoModal] = useState(false);
   const [introduceTxt, setIntroduceTxt] = useState("");
   let confirmedIntroTxt: string = "";
+
+  console.warn(useSelector(UserStorage.userProfileSelector));
   // const [userID, setUserID] = useState(0);
-  const userID = useSelector(UserStorage.userProfileSelector)!.id;
+  const userID = useSelector(UserStorage.userProfileSelector)?.id;
   useEffect(() => {
+    if (userID === null) return;
+
     // setUserID(useSelector(UserStorage.userProfileSelector)!.id);
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
@@ -204,7 +206,7 @@ const MyView = () => {
         setIntroduceTxt(res.data[0].body);
       }
     });
-  }, []);
+  }, [userID]);
 
   useEffect(() => {
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {

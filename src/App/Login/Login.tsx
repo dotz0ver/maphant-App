@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
+import { red100 } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import Toast from "react-native-root-toast";
 
 import { sendFcm } from "../../Api/member/Fcm";
@@ -28,12 +29,17 @@ const Login: React.FC = () => {
     UIStore.showLoadingOverlay();
     UserAPI.login(email, password)
       .then(res => {
+        // UserStorage.removeUserData();
         UserStorage.setUserToken(res["pubKey"], res["privKey"]).then(() => {
           return UserAPI.getProfile().then(res => {
-            console.warn(res.data.state);
-            if (res.data["state"] == "0") {
-              navigation.navigate("Uncertified", { email: email });
-            } else {
+            if (res.data.state === 0) {
+              console.info("hello");
+              UserStorage.removeUserData();
+              Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
+              UserStorage.setUserProfile(res.data);
+              navigation.navigate("Uncertified", { email: email, password: password });
+            } else if (res.data.state === 1) {
+              console.info("hello2");
               Notifications.getDevicePushTokenAsync().then(res => sendFcm(res.data));
               UserStorage.setUserProfile(res.data);
             }
@@ -55,6 +61,7 @@ const Login: React.FC = () => {
       })
       .finally(() => {
         UIStore.hideLoadingOverlay();
+        UserStorage.loadUserDataOnStartUp();
       });
   };
   return (
