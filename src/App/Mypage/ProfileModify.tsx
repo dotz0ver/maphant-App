@@ -19,7 +19,7 @@ import { useSelector } from "react-redux";
 import { DeleteAPI, GetAPI, PostAPI } from "../../Api/fetchAPI";
 import { categoryList, majorList } from "../../Api/member/signUp";
 import UserAPI from "../../Api/memberAPI";
-import { Container, Input, Spacer, TextButton } from "../../components/common";
+import { Container, Input, Spacer, TextButton, TextThemed } from "../../components/common";
 import SearchByFilter from "../../components/Input/SearchByFilter";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
@@ -152,7 +152,7 @@ const ProfileModify: React.FC = () => {
   };
 
   return (
-    <Container style={{ backgroundColor: "white" }} paddingHorizontal={10}>
+    <Container paddingHorizontal={10}>
       <ScrollView
         contentContainerStyle={{
           flexDirection: "column",
@@ -166,19 +166,19 @@ const ProfileModify: React.FC = () => {
         <Container>
           <View>
             {/* -----------이메일 */}
-            <Text style={styles.text}>이메일</Text>
+            <TextThemed style={styles.text}>이메일</TextThemed>
             <View style={styles.modifyingContainer}>
-              <Text style={styles.text}>{userEmail}</Text>
+              <TextThemed style={styles.text}>{userEmail}</TextThemed>
             </View>
 
             {/* --------------비밀번호 수정 */}
             <View style={styles.childRow}>
               <View style={styles.modifyingContentWidth}>
-                <Text style={styles.text}>비밀번호</Text>
+                <TextThemed style={styles.text}>비밀번호</TextThemed>
                 <View style={styles.modifyingContainer}>
-                  <Text style={styles.text}>
+                  <TextThemed style={styles.text}>
                     {password.length >= 1 ? "**********" : "비밀번호를 확인해주세요"}
-                  </Text>
+                  </TextThemed>
                 </View>
               </View>
               <View style={styles.modifyingBtn}>
@@ -279,9 +279,9 @@ const ProfileModify: React.FC = () => {
             {/* ---------닉네임 수정 */}
             <View style={styles.childRow}>
               <View style={styles.modifyingContentWidth}>
-                <Text style={styles.text}>닉네임</Text>
+                <TextThemed style={styles.text}>닉네임</TextThemed>
                 <View style={styles.modifyingContainer}>
-                  <Text style={styles.text}>{nickname}</Text>
+                  <TextThemed style={styles.text}>{nickname}</TextThemed>
                 </View>
               </View>
               <View style={styles.modifyingBtn}>
@@ -369,25 +369,25 @@ const ProfileModify: React.FC = () => {
             </Modal>
 
             {/* ----------이름  */}
-            <Text style={styles.text}>이름</Text>
+            <TextThemed style={styles.text}>이름</TextThemed>
             <View style={styles.modifyingContainer}>
-              <Text style={styles.text}>{usetModifying.name}</Text>
+              <TextThemed style={styles.text}>{usetModifying.name}</TextThemed>
             </View>
 
             {/* ----------학번 */}
-            <Text style={styles.text}>학번</Text>
+            <TextThemed style={styles.text}>학번</TextThemed>
             <View style={styles.modifyingContainer}>
-              <Text style={styles.text}>{studentNum}</Text>
+              <TextThemed style={styles.text}>{studentNum}</TextThemed>
             </View>
 
             {/* ----------핸드폰 번호 수정 */}
             <View style={styles.childRow}>
               <View style={styles.modifyingContentWidth}>
-                <Text style={styles.text}>핸드폰 번호</Text>
+                <TextThemed style={styles.text}>핸드폰 번호</TextThemed>
                 <View style={styles.modifyingContainer}>
-                  <Text style={styles.text}>
+                  <TextThemed style={styles.text}>
                     {phoneNumber == null ? "핸드폰번호를 입력해주세요" : phoneNumber}
-                  </Text>
+                  </TextThemed>
                 </View>
               </View>
               <View style={styles.modifyingBtn}>
@@ -472,7 +472,7 @@ const ProfileModify: React.FC = () => {
             {/* 계열 추가하기 */}
             <View style={styles.childRow}>
               <View style={styles.modifyingContentWidth}>
-                <Text style={styles.text}>계열 / 학과</Text>
+                <TextThemed style={styles.text}>계열 / 학과</TextThemed>
                 <View style={styles.modifyingContainer}>
                   {profile?.category?.map((category, index) => {
                     return (
@@ -487,8 +487,8 @@ const ProfileModify: React.FC = () => {
                           console.log(profile.category.at(index));
                         }}
                       >
-                        <Text style={styles.fieldtext}>{category.categoryName}</Text>
-                        <Text style={styles.fieldtext}>- {category.majorName}</Text>
+                        <TextThemed style={styles.fieldtext}>{category.categoryName}</TextThemed>
+                        <TextThemed style={styles.fieldtext}>- {category.majorName}</TextThemed>
                         <Spacer size={10} />
                       </Pressable>
                     );

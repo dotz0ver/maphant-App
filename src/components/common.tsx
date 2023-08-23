@@ -22,7 +22,6 @@ import {
   ViewStyle,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 // 컴포넌트들에 대한 타입 정의를 함
 // 각 컴포넌트가 어떤 props를 받을 수 있는지, 해당 props들이 어떤 타입을 가져야 하는지
@@ -82,18 +81,7 @@ type InputProps = {
   ref?: LegacyRef<TextInput>;
   multiline?: boolean;
   inputRef?: LegacyRef<TextInput>;
-  onSubmitEditing?: () => void;
 } & DefaultProps;
-
-type IconButtonProps = {
-  flexDirection?: "row" | "column";
-  marginHorizontal?: number;
-  name: string;
-  color?: ColorValue;
-  size?: number;
-  fontSize?: number;
-  fontColor?: ColorValue;
-} & TextButtonProps;
 
 const Container: React.FC<ContainerProps> = props => {
   const safeAreaInsets = useSafeAreaInsets();
@@ -233,7 +221,7 @@ const TextButton: React.FC<TextButtonProps> = props => {
     children,
     backgroundColor = "#5299EB",
     fontSize = 16,
-    fontColor = "white",
+    fontColor,
     widthFull = false,
     paddingHorizontal = 20,
     paddingVertical = 15,
@@ -280,7 +268,6 @@ const Input: React.FC<InputProps> = props => {
   const theme = useTheme();
   const {
     style = {},
-    ref,
     placeholder = "",
     onChangeText,
     value,
@@ -293,7 +280,6 @@ const Input: React.FC<InputProps> = props => {
     borderRadius = 16,
     inputMode = "text",
     multiline = false,
-    onSubmitEditing,
   } = props;
 
   const style_container: StyleProp<ViewStyle> = {
@@ -305,7 +291,6 @@ const Input: React.FC<InputProps> = props => {
   };
   const style_text: StyleProp<TextStyle> = {
     fontSize: 16,
-    color: theme.colors.text,
   };
 
   return (
@@ -322,7 +307,6 @@ const Input: React.FC<InputProps> = props => {
         secureTextEntry={secureTextEntry}
         inputMode={inputMode}
         multiline={multiline}
-        onSubmitEditing={onSubmitEditing}
       />
     </View>
   );
@@ -343,46 +327,4 @@ const TextThemed: React.FC<TextThemedPropsType> = props => {
   return <Text {...propsPassed} />;
 };
 
-const IconButton: React.FC<IconButtonProps> = props => {
-  const {
-    style = {},
-    children,
-    backgroundColor = "#f2f2f2",
-    paddingHorizontal = 11,
-    paddingVertical = 5,
-    marginHorizontal = 4,
-    borderRadius = 4,
-    flexDirection = "row",
-    onPress,
-    fontSize = 9,
-    fontColor,
-    name,
-    color,
-    size = 15,
-  } = props;
-
-  const style_container: StyleProp<ViewStyle> = {
-    paddingHorizontal,
-    paddingVertical,
-    marginHorizontal,
-    backgroundColor,
-    borderRadius,
-    flexDirection,
-    alignItems: "center",
-    justifyContent: "center",
-    ...(style as object),
-  };
-  const style_text: StyleProp<TextStyle> = {
-    fontSize,
-    textAlign: "center",
-    color: fontColor,
-    marginLeft: 5,
-  };
-  return (
-    <TouchableOpacity style={style_container} onPress={onPress}>
-      <Icon name={name} color={color} size={size} />
-      <Text style={style_text}>{children}</Text>
-    </TouchableOpacity>
-  );
-};
-export { Container, IconButton, ImageBox, Input, Spacer, TextButton, TextThemed };
+export { Container, ImageBox, Input, Spacer, TextButton, TextThemed };

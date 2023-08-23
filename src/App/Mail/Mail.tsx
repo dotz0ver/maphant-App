@@ -1,6 +1,5 @@
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { isEqual } from "lodash";
 import React, { useCallback, useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -22,9 +21,6 @@ const Mail: React.FC = () => {
   const searchUser = () => {
     navigation.navigate("SearchUser" as never);
   };
-
-  //useCallback을 사용하면 의존성이 변경되는 경우(chatList 변경되는 경우 인듯?), 이전에 기억하고 있던 함수 자체와 비교해서 다른 경우 리랜더
-  // 원래 object 끼리 ==, === 연산자  결과는 무조건 false인데 useCallback을 사용하면 동등성을 보장할 수 있음
   const fetchChatRooms = useCallback(async () => {
     try {
       await receiveChatrooms().then(res => {
@@ -33,13 +29,17 @@ const Mail: React.FC = () => {
         }
       });
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }, [chatList]);
 
   useEffect(() => {
-    fetchChatRooms();
-  }, [fetchChatRooms]);
+    const interval = setInterval(() => fetchChatRooms(), 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
   return (
     <Container style={{ flex: 1 }}>
       <View style={styles.header}>
@@ -51,62 +51,67 @@ const Mail: React.FC = () => {
             <View
               style={{ borderBottomWidth: 1, borderColor: "rgba(232,234,236,0.5)", height: 0 }}
             ></View>
-            {chatList.map(mail => (
-              // eslint-disable-next-line react/jsx-key
-              <>
-                <TouchableOpacity
-                  key={mail.id}
-                  onPress={() => {
-                    // console.log(mail.id);
-                    // 채티방 페이지로 상대방 아이디랑, 닉네임 같이 넘김
-                    navigation.navigate("Chatroom", {
-                      id: mail.other_id,
-                      nickname: mail.other_nickname,
-                      roomId: parseInt(mail.id),
-                    });
-                  }}
-                >
-                  <View style={[styles.mail, mail.unread_count ? styles.mail_true : styles.mail]}>
-                    <View style={styles.space}>
-                      <TextThemed style={styles.nick}>{mail.other_nickname}</TextThemed>
-
-                      <TextThemed style={{ alignContent: "space-between" }}>
-                        {/* 시간이 최근에 채팅한 시간이 아니라 최초에 채팅한 시간을 기준으로 하고 있음, 이것도 백엔드에서 해야하는 것 같음 */}
-                        {formatTimeDifference(new Date(mail.time))}
-                      </TextThemed>
-                      {/* 삭제 기능 제대로 됨 ,나중에 버튼 새로 깔끔하게 만들기 */}
+            <View style={{ marginBottom: 10 }}>
+              {chatList.map(mail => (
+                // eslint-disable-next-line react/jsx-key
+                <View key={mail.id}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Chatroom", {
+                        id: mail.other_id,
+                        nickname: mail.other_nickname,
+                        roomId: mail.id,
+                      } as never);
+                    }}
+                  >
+                    <View style={[styles.mail, mail.unread_count ? styles.mail_true : styles.mail]}>
+                      <View style={styles.space}>
+                        <TextThemed style={styles.nick}>{mail.other_nickname}</TextThemed>
+                        <TextThemed style={{ alignContent: "space-between" }}>
+                          {formatTimeDifference(new Date(mail.time))}
+                        </TextThemed>
+                      </View>
+                      <Container style={{ maxHeight: 100 }}>
+                        <TextThemed style={styles.content} numberOfLines={2}>
+                          {mail.last_content}
+                        </TextThemed>
+                        <TextButton style={{ marginLeft: 320 }} onPress={() => del(mail.id)}>
+                          삭제
+                        </TextButton>
+                      </Container>
                     </View>
-                    <Container style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                      <TextThemed style={styles.content}>{mail.last_content}</TextThemed>
-                      <TextButton
-                        style={{ justifyContent: "flex-end" }}
-                        onPress={() => del(mail.id)}
-                      >
-                        삭제
-                      </TextButton>
-                    </Container>
-                  </View>
-                </TouchableOpacity>
-                <View
-                  style={{ borderBottomWidth: 1, borderColor: "rgba(232,234,236,0.5)", height: 0 }}
-                ></View>
-              </>
-            ))}
+                  </TouchableOpacity>
+                  <View
+                    style={{
+                      borderBottomWidth: 1,
+                      borderColor: "rgba(232,234,236,0.5)",
+                      height: 0,
+                    }}
+                  ></View>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
       </ScrollView>
       <Container
         style={{
           backgroundColor: "#e9ecef",
-          borderRadius: 100,
+          borderRadius: 50,
           position: "absolute",
           right: "10%",
           bottom: "5%",
         }}
       >
         <TextButton
-          style={{ flex: 1, backgroundColor: "#e9ecef" }}
-          paddingVertical={10}
+          style={{
+            flex: 1,
+            backgroundColor: "#e9ecef",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 10,
+          }}
+          paddingVertical={16}
           onPress={searchUser}
         >
           <Entypo name="plus" size={24} color="black" />
@@ -144,7 +149,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   content: {
-    marginLeft: "7%",
+    marginLeft: "6%",
+    marginRight: "5.5%",
     paddingTop: "2%",
     fontSize: 18,
   },
@@ -159,7 +165,6 @@ const styles = StyleSheet.create({
     alignContent: "space-between",
   },
   icon: {
-    // backgroundColor: "transparent",
     color: "black",
     position: "absolute",
     right: "10%",

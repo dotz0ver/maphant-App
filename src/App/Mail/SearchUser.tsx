@@ -34,7 +34,6 @@ const SearchUser: React.FC = () => {
         return validateNickname(value)
           .then(result => {
             if (result.success)
-              // Signup에서  쓴 닉네임 검증 함수라서 success === true 이면 존재하지 않는 별명임
               return testContext.createError({ message: "존재하지 않는 별명입니다." });
             return true;
           })
@@ -60,11 +59,7 @@ const SearchUser: React.FC = () => {
     nickname: "",
   };
   return (
-    <Container
-      isFullScreen={true}
-      isForceKeyboardAvoiding={true}
-      style={{ padding: 20, backgroundColor: "white", flex: 1 }}
-    >
+    <Container isFullScreen={true} isForceKeyboardAvoiding={true} style={{ padding: 20, flex: 1 }}>
       <Formik
         validateOnChange
         initialValues={userNickname}
@@ -77,7 +72,7 @@ const SearchUser: React.FC = () => {
             id: parseInt(userId),
             nickname: values.nickname,
             roomId: 0,
-          });
+          } as never);
         }}
       >
         {({ handleSubmit, errors }) => (

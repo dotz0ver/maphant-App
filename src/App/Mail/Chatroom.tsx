@@ -1,11 +1,12 @@
 //이미지 색만 바뀨기
+import { Ionicons } from "@expo/vector-icons";
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, Text } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, KeyboardAvoidingView, Platform, Text } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 
 import { chartLists, sendContent } from "../../Api/member/FindUser";
-import { Container, ImageBox, Input, TextButton, TextThemed } from "../../components/common";
+import { Container, Input, TextButton, TextThemed } from "../../components/common";
 import { MailFormParams } from "../../Navigator/MailRoute";
 import { NavigationProps } from "../../Navigator/Routes";
 import { ReceiveList } from "../../types/DM";
@@ -15,44 +16,92 @@ const Chatroom: React.FC = () => {
   const params = route.params as MailFormParams;
 
   const [receiveContent, setReceiveContent] = useState<ReceiveList[]>([]);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState<string>("");
+  const isChatLoading = useRef<boolean>(false);
+  const prevPage = useRef<number | null>(0);
+  const [flag, setFlag] = useState<boolean>(false);
 
-  const fetchChatLists = async (roomId: number) => {
-    //대화내용 받아오는거 같음
-    chartLists(roomId) //그 대화내용의 방 id
+  const handleEndReached = () => {
+    setFlag(true);
+    fetchPrevChatLists(params.roomId);
+  };
+  const fetchPrevChatLists = (roomId: number) => {
+    if (prevPage.current === null) return;
+
+    if (isChatLoading.current) return;
+    isChatLoading.current = true;
+
+    chartLists(roomId, prevPage.current)
       .then(res => {
         if (res.success) {
-          setReceiveContent(res.data?.list);
-          console.log("fetchChatLists 받아옴");
+          const receive = res.data?.list;
+          const p = res.data?.nextCursor;
+          setReceiveContent(receiveContent => [...receiveContent, ...receive]);
+          prevPage.current = p;
+          setFlag(false);
         }
       })
-      .catch(e => console.error("fetchChatLists에러", e));
+      .catch(e => {
+        console.error("fetchChatLists에러", e);
+      })
+      .finally(() => (isChatLoading.current = false));
   };
+
+  const fetchNewChatLists = async (roomId: number) => {
+    if (receiveContent.length == 0) return;
+
+    const currentNewestId = receiveContent[0].id;
+    let tmpNewChatList: ReceiveList[] = [];
+
+    let newPage: number | null = 0;
+
+    while (newPage == 0 || newPage > currentNewestId) {
+      await chartLists(roomId, newPage).then(res => {
+        const receive = res.data?.list;
+        newPage = res.data?.nextCursor;
+
+        tmpNewChatList = [...tmpNewChatList, ...receive];
+      });
+
+      if (newPage) break;
+    }
+
+    setReceiveContent([
+      ...tmpNewChatList.filter(item => item.id > receiveContent[0].id),
+      ...receiveContent,
+    ]);
+  };
+
   const send = async () => {
-    // 전송 버튼 눌렸을때 실행되는 함수
-    await sendContent(params.id, content) //postApi 로 id ,content 보냄
+    await sendContent(params.id, content)
       .then(res => {
-        //성공하면 return 시켜라
         if (res.success) {
-          // 채팅방 처음 만들 때 방 아이디 찾아줌
-          if (params.roomId === 0) params.roomId = res.data?.room_id;
-          fetchChatLists(params.roomId);
+          if (params.roomId === 0) {
+            params.roomId = res.data?.room_id;
+          }
         }
-        // 메세지 보낼 때 채팅방 번호 알아서 이걸 넣어 줘야함
-        console.log("send성공");
+
+        fetchNewChatLists(params.roomId);
       })
       .catch(e => console.error("send에러", e));
     setContent("");
   };
 
   useEffect(() => {
-    if (params.roomId) fetchChatLists(params.roomId);
+    if (params.roomId) fetchPrevChatLists(params.roomId);
   }, [params.roomId]);
+  useEffect(() => {
+    const interval = setInterval(() => fetchNewChatLists(params.roomId), 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  });
 
   function getCurrentTime(targetDate: Date) {
     const hours = targetDate.getHours();
     const minutes = targetDate.getMinutes();
-    // 00 : 00 분으로 표시되게 바꿈
+
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
     const formattedHours = hours < 10 ? `0${hours}` : hours;
     const currentTime = `${formattedHours}:${formattedMinutes}`;
@@ -68,7 +117,10 @@ const Chatroom: React.FC = () => {
             <Container
               style={{
                 backgroundColor: "rgba(82, 153, 235, 0.45)",
-                paddingVertical: 13,
+                alignItems: "center",
+                justifyContent: "center",
+                paddingVertical: 15,
+                paddingBottom: 15,
                 paddingHorizontal: 20,
                 borderRadius: 10,
                 flexShrink: 1,
@@ -93,7 +145,10 @@ const Chatroom: React.FC = () => {
             <Container
               style={{
                 backgroundColor: "#5299EB",
-                paddingVertical: 13,
+                alignItems: "center",
+                justifyContent: "center",
+                paddingVertical: 15,
+                paddingBottom: 15,
                 paddingHorizontal: 20,
                 borderRadius: 10,
                 flexShrink: 1,
@@ -119,17 +174,16 @@ const Chatroom: React.FC = () => {
       style={{ flex: 1 }}
       keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 25}
     >
-      <Container isFullScreen={true} style={{ flex: 1, display: "flex" }}>
-        <Container // 채팅방 이름
+      <Container isForceTopSafeArea={true} style={{ flex: 1, display: "flex", padding: 15 }}>
+        <Container
           style={{
             flex: 0.7,
             alignItems: "center",
             flexDirection: "row",
-            flexShrink: 1,
           }}
         >
           <TouchableOpacity onPress={() => navigation.dispatch(StackActions.popToTop())}>
-            <ImageBox source={require("../../../assets/arrow-circle.png")} width={35}></ImageBox>
+            <Ionicons name="arrow-back" size={24} color="gray" />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -141,23 +195,26 @@ const Chatroom: React.FC = () => {
             </TextThemed>
           </TouchableOpacity>
         </Container>
+        {flag && receiveContent.length > 20 ? (
+          <ActivityIndicator size="small" color="black" />
+        ) : null}
         <Container style={{ flex: 10 }}>
           <FlatList
             data={receiveContent}
             renderItem={renderItem}
             keyExtractor={item => item.id.toString()}
-            inverted={true} //역순 스크롤 ㅜㅜ
-            // ListHeaderComponent={}
+            inverted={true}
+            onEndReached={handleEndReached}
+            onEndReachedThreshold={0.1}
+            contentContainerStyle={{ paddingTop: 10 }}
           />
         </Container>
-        <Container // 채팅입력창
+        <Container
           paddingHorizontal={0}
           style={{
-            flex: 2, // 네비게이션 바 없어지면 1로 바꾸기
+            flex: 1,
             flexDirection: "row",
-
-            // paddingHorizontal: 10,
-            padding: "3%",
+            marginBottom: 10,
           }}
         >
           <Input
@@ -174,16 +231,15 @@ const Chatroom: React.FC = () => {
             style={{
               flex: 1,
               marginLeft: 10,
-              paddingHorizontal: 0,
+              paddingHorizontal: 10,
               paddingVertical: 0,
-              borderRadius: 300,
+              borderRadius: 100,
               width: "100%",
               height: "100%",
             }}
           >
             전송
           </TextButton>
-          {/* </Container> */}
         </Container>
       </Container>
     </KeyboardAvoidingView>
