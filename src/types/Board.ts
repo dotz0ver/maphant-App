@@ -28,7 +28,7 @@ type BoardArticle = {
 
 //글 읽기
 type BoardPost = {
-  board: { isMyBoard: boolean; bookmark: boolean } & BoardArticle;
+  board: { isMyBoard: boolean; isBookmarked: boolean } & BoardArticle;
   poll: PollInfo;
   answerList?: BoardArticle[]; //질문 게시판 답변
 };
@@ -87,7 +87,7 @@ type ReportType = {
 type commentType = {
   id: number;
   nickname: string;
-  user_id: number;  
+  user_id: number;
   board_id: number;
   parent_id: number;
   body: string;

@@ -26,6 +26,7 @@ const DetailList: React.FC = () => {
   const [boardData, setboardData] = useState<BoardArticle[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation<NavigationProps>();
+  const [searchText, setSearchText] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<BoardArticle[]>([]);
   const [sortType, setsortType] = React.useState<SortType[]>([]);
@@ -77,6 +78,7 @@ const DetailList: React.FC = () => {
   };
 
   const handleSearch = async (searchText: string) => {
+    setSearchText(searchText);
     setSearchQuery(searchText);
     if (searchText.trim() === "") {
       setSearchResults([]);
@@ -85,7 +87,7 @@ const DetailList: React.FC = () => {
     }
     try {
       const data = await searchArticle(searchText, boardType.id); // Implement your searchArticle function to call the API for search results
-      setSearchResults(data.data as BoardArticle[]);
+      setSearchResults(data.data.list as BoardArticle[]);
       console.log(data.data);
     } catch (err) {
       console.log(err);
@@ -112,7 +114,14 @@ const DetailList: React.FC = () => {
 
   return (
     <Container style={styles.container}>
-      <SearchBar onSearchChange={handleSearch} />
+      <SearchBar
+        onSearchChange={handleSearch}
+        onClearText={() => {
+          setSearchQuery("");
+          setSearchText("");
+        }}
+        searchQuery={searchText}
+      />
       <View style={styles.sortContainer}>
         <FontAwesome name="sort" size={24} color="#666666" style={{ marginRight: 10 }} />
         {sortType.map((sort, index) => (
