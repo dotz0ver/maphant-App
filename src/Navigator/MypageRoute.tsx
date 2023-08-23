@@ -49,26 +49,26 @@ const Routes: RouteType[] = [
     name: "editPost",
     component: Edit,
   },
-  // {
-  //   name: "Profile",
-  //   component: Profile,
-  // },
-  // {
-  //   name: "WriteBoard",
-  //   component: WriteBoard,
-  // },
-  // {
-  //   name: "WriteContent",
-  //   component: WriteContent,
-  // },
-  // {
-  //   name: "LikeContent",
-  //   component: LikeContent,
-  // },
-  // {
-  //   name: "Chatroom",
-  //   component: Chatroom,
-  // },
+  {
+    name: "Profile",
+    component: Profile,
+  },
+  {
+    name: "WriteBoard",
+    component: WriteBoard,
+  },
+  {
+    name: "WriteContent",
+    component: WriteContent,
+  },
+  {
+    name: "LikeContent",
+    component: LikeContent,
+  },
+  {
+    name: "Chatroom",
+    component: Chatroom,
+  },
   {
     name: "Mylike",
     component: Mylike,
