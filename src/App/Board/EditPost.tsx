@@ -198,11 +198,6 @@ const Edit: React.FC = () => {
             </Container>
           </Container>
           <Container style={{ flexDirection: "row" }}>
-            {/* <TouchableOpacity onPress={voteHandling}>
-            <AntDesign name="cloud" size={24} color="black" />
-          </TouchableOpacity> */}
-          </Container>
-          <Container style={{ flexDirection: "row" }}>
             <TouchableOpacity
               onPress={uploadImage}
               style={{ alignItems: "center", marginRight: 5 }}
@@ -230,40 +225,6 @@ const Edit: React.FC = () => {
             // multiline={true}
             onEndEditing={addHashtag}
           ></TextInput>
-          {/* {voteInputs && (
-          <>
-            <Spacer size={20} />
-            <Container style={{ flexDirection: "row" }}>
-              <Input
-                style={{ width: "80%", marginRight: 10, height: 35 }}
-                placeholder="투표 제목"
-                onChangeText={text => setVoteTitle(text)}
-                value={voteTitle}
-              />
-              <TextButton onPress={addVoteOptions}>추가</TextButton>
-            </Container>
-            <Spacer size={10} />
-            <Container>
-              {voteOptions.map((option, index) => (
-                <>
-                  <Container style={{ flexDirection: "row", alignItems: "center" }} key={index}>
-                    <Input
-                      style={{ flex: 1 }}
-                      key={index}
-                      placeholder={`투표 선택지 ${index + 1}`}
-                      onChangeText={text => handleVoteOptionChange(index, text)}
-                      value={option}
-                    />
-                    <TouchableOpacity onPress={() => handleRemoveVoteOption(index)}>
-                      <Text style={{ color: "black" }}>X</Text>
-                    </TouchableOpacity>
-                  </Container>
-                  <Spacer size={10} />
-                </>
-              ))}
-            </Container>
-          </>
-        )} */}
           <Spacer size={10} />
           <View style={{ flexDirection: "row" }}>
             {hashtags.map((tag, index) => (
