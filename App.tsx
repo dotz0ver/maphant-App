@@ -13,6 +13,7 @@ import Login from "./src/App/Login/Index";
 import { ThemeContext } from "./src/App/Style/ThemeContext";
 import reduxStore from "./src/storage/reduxStore";
 import UserStorage from "./src/storage/UserStorage";
+import UserAPI from "./src/Api/memberAPI";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -45,6 +46,8 @@ async function registerForPushNotificationsAsync() {
 const App = () => {
   const isLogged = useSelector(UserStorage.isUserLoggedInSelector);
   const isUserDataLoading = useSelector(UserStorage.isUserDataLoadingSelector);
+  const profile = useSelector(UserStorage.userProfileSelector);
+
   const [showImage, setShowImage] = useState(true);
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
@@ -98,8 +101,7 @@ const App = () => {
         />
       </View>
     );
-
-  return <>{isLogged || isUserDataLoading ? <MainScreen /> : <Login />}</>;
+  return <>{isLogged && !isUserDataLoading && profile?.state === 1 ? <MainScreen /> : <Login />}</>;
 };
 
 const AppWrapper = () => {

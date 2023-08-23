@@ -70,7 +70,7 @@ const Profile: React.FC = () => {
             source={
               otherUserProfileList[0]?.profile_img
                 ? { uri: otherUserProfileList[0]?.profile_img }
-                : require("../../../assets/image3.jpg")
+                : require("../../../assets/user.png")
             }
             width={110}
             height={110}
