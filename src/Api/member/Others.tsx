@@ -3,13 +3,15 @@ import {
   OtherUserData,
   OWriteBoardList,
   OWriteContentList,
+  UserCategory,
+  UserData,
 } from "../../types/User";
-import { GetAPI, statusResponse } from "../fetchAPI";
+import { dataResponse, GetAPI, statusResponse } from "../fetchAPI";
 
 //프로필 닉네임, 소개글, 프로필 이미지 가져오는 부분, 상대방 id 필요
-function readProfile(otherUserId: number) {
-  return GetAPI<{ data: OtherUserData[] } & statusResponse>(`/profile?targetUserId=${otherUserId}`);
-}
+const readProfile = (otherUserId: number): Promise<dataResponse<OtherUserData>> =>
+  GetAPI(`/profile?targetUserId=${otherUserId}`);
+
 // 게시글 가져오는 부분, 상대방 id 필요
 function bringBoardList(otherUserId: number) {
   return GetAPI<{ data: OWriteBoardList } & statusResponse>(

@@ -123,7 +123,7 @@ const Container: React.FC<ContainerProps> = props => {
   };
   // 높이와 키보드 높이를 상태로 관리
   const [height, setHeight] = useState<number | string>(adjustedHeight());
-  const [keyboardHeight, setKeyboardHeight] = useState<number>(0);
+  const [, setKeyboardHeight] = useState<number>(0);
 
   // 컴포넌트 마운트될 때, 높이와 키보드 높이 설정 이벤트 리스너 추가
   useEffect(() => {
@@ -144,7 +144,7 @@ const Container: React.FC<ContainerProps> = props => {
   }, []);
 
   let paddingBottom = 0;
-  if (isForceKeyboardAvoiding) paddingBottom = 10;
+  if (isForceKeyboardAvoiding) paddingBottom = 50;
   if (isFullWindow) paddingBottom += safeAreaInsets.bottom;
 
   const style_computed: StyleProp<ViewStyle> = {
