@@ -319,7 +319,8 @@ const QAdetail = () => {
                       name="lightbulb-o"
                       color="purple"
                       onPress={() => {
-                        handleComplete(answer.id);
+                        handleComplete(answer.boardId);
+                        Alert.alert("채택되었습니다.");
                       }}
                     >
                       채택
