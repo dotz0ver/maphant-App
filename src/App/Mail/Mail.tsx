@@ -10,9 +10,6 @@ import { MessageList } from "../../types/DM";
 import { formatTimeDifference } from "../../utils/Time";
 
 const Mail: React.FC = () => {
-  //is_read : 안 읽었을때 1 = true 읽었을 때 0 = false
-  // sendDate 가 들어왔을 때 분전 , 시간 전으로 바꾸는 코드
-
   const [chatList, setChatList] = useState<MessageList[]>([]);
   const navigation = useNavigation<NavigationProps>();
   const del = (id: number) => {
