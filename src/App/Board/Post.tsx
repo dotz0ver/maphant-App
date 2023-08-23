@@ -6,6 +6,7 @@ import * as ImagePicker from "expo-image-picker";
 import { sha512 } from "js-sha512";
 import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { boardPost } from "../../Api/board";
 import { statusResponse } from "../../Api/fetchAPI";
@@ -123,6 +124,11 @@ const Post: React.FC = () => {
     console.log("hashtags", hashtags);
     const DBnewHashtags = hashtags.map(word => word.replace(/^#/, ""));
     console.log("DBnewHashtags", DBnewHashtags);
+    if (voteOptions.some(option => option.trim() === "")) {
+      alert("옵션 내용을 입력해 주세요.");
+      return;
+    }
+
     try {
       const response = await boardPost(
         null,
@@ -237,6 +243,11 @@ const Post: React.FC = () => {
         console.error("Image upload error:", error);
       }
     }
+  };
+  const handleRemoveImage = (indexToRemove: number) => {
+    const newImageUrl = imageUrl.filter((_, index) => index !== indexToRemove);
+    setPostImageUrl(newImageUrl);
+    setImageUrl(newImageUrl);
   };
 
   return (
@@ -374,11 +385,19 @@ const Post: React.FC = () => {
           <Spacer size={20} />
           {Array.isArray(imageUrl) &&
             imageUrl.map((uri, index) => (
-              <Image
-                key={index}
-                source={{ uri: uri }}
-                style={{ width: 200, height: 200, marginRight: 5 }} // 이미지 간 간격을 조절해줍니다.
-              />
+              <>
+                <Image
+                  key={index}
+                  source={{ uri: uri }}
+                  style={{ width: 200, height: 200, marginRight: 5 }} // 이미지 간 간격을 조절해줍니다.
+                />
+                <FontAwesome
+                  name="remove"
+                  size={24}
+                  color="black"
+                  onPress={() => handleRemoveImage(index)}
+                />
+              </>
             ))}
         </ScrollView>
       </Container>
