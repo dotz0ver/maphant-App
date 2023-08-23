@@ -445,7 +445,7 @@ const BoardDetail = () => {
     <>
       <ScrollView>
         <Container style={styles.container}>
-          {/* <ModalWrapper /> */}
+          <ModalWrapper />
           <Container style={{ padding: 10 }}>
             <View>
               <View
@@ -714,57 +714,54 @@ const BoardDetail = () => {
                   {replies
                     .filter(reply => reply.parent_id === comment.id)
                     .map(reply => (
-                      <>
-                        {/* <View style={styles.commentBox}> */}
-                        <View style={styles.replyBox} key={reply.id}>
-                          <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                            <View
-                              style={{
-                                marginLeft: 5,
-                                flexDirection: "row",
-                              }}
-                            >
-                              <TextThemed style={styles.commentName}>{reply.nickname}</TextThemed>
-                              <TextThemed style={styles.commentDate}>
-                                {dateFormat(reply.created_at)}
-                              </TextThemed>
-                            </View>
-                            <View style={{ flexDirection: "row" }}>
-                              <IconButton
-                                name="thumbs-o-up"
-                                color="skyblue"
-                                onPress={() => {
-                                  handleCommentLike(reply.id, reply.like_cnt);
-                                }}
-                              >
-                                {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
-                              </IconButton>
-                              <IconButton
-                                name="exclamation-circle"
-                                color="red"
-                                onPress={() => {
-                                  setCommentId(reply.id);
-                                  setReportCommentModal(true);
-                                }}
-                              >
-                                신고
-                              </IconButton>
-                              <IconButton
-                                name=""
-                                color="red"
-                                onPress={() => handleCommentDelete(reply.id)}
-                              >
-                                삭제
-                              </IconButton>
-                            </View>
-                          </View>
-                          <View style={{ marginLeft: 5 }}>
-                            <TextThemed style={{ fontSize: 14, marginTop: 3 }}>
-                              {reply.body}
+                      <View style={styles.replyBox} key={reply.id}>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                          <View
+                            style={{
+                              marginLeft: 5,
+                              flexDirection: "row",
+                            }}
+                          >
+                            <TextThemed style={styles.commentName}>{reply.nickname}</TextThemed>
+                            <TextThemed style={styles.commentDate}>
+                              {dateFormat(reply.created_at)}
                             </TextThemed>
                           </View>
+                          <View style={{ flexDirection: "row" }}>
+                            <IconButton
+                              name="thumbs-o-up"
+                              color="skyblue"
+                              onPress={() => {
+                                handleCommentLike(reply.id, reply.like_cnt);
+                              }}
+                            >
+                              {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
+                            </IconButton>
+                            <IconButton
+                              name="exclamation-circle"
+                              color="red"
+                              onPress={() => {
+                                setCommentId(reply.id);
+                                setReportCommentModal(true);
+                              }}
+                            >
+                              신고
+                            </IconButton>
+                            <IconButton
+                              name=""
+                              color="red"
+                              onPress={() => handleCommentDelete(reply.id)}
+                            >
+                              삭제
+                            </IconButton>
+                          </View>
                         </View>
-                      </>
+                        <View style={{ marginLeft: 5 }}>
+                          <TextThemed style={{ fontSize: 14, marginTop: 3 }}>
+                            {reply.body}
+                          </TextThemed>
+                        </View>
+                      </View>
                     ))}
                 </View>
               </Container>
