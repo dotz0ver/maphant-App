@@ -1,4 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import CheckBox from "expo-checkbox";
 import * as ImagePicker from "expo-image-picker";
@@ -239,12 +240,22 @@ const Post: React.FC = () => {
   };
 
   return (
-    <Container isFullScreen={true}>
-      <Container style={{ flexDirection: "row", justifyContent: "space-between" }}>
+    <Container style={{ flex: 1, paddingHorizontal: 20, paddingVertical: 10 }}>
+      <Container
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Container
-          style={{ flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 10 }}
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingHorizontal: 10,
+          }}
         >
-          <Container style={{ flexDirection: "row", marginRight: 10 }}>
+          <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
             <CheckBox
               style={{ marginRight: 5 }}
               value={checkList.includes("private")}
@@ -255,7 +266,7 @@ const Post: React.FC = () => {
             ></CheckBox>
             <Text>비공개</Text>
           </Container>
-          <Container style={{ flexDirection: "row", marginRight: 10 }}>
+          <Container style={{ flexDirection: "row", marginRight: 10, alignItems: "center" }}>
             <CheckBox
               style={{ marginRight: 5 }}
               value={checkList.includes("anonymous")}
@@ -268,17 +279,25 @@ const Post: React.FC = () => {
           </Container>
         </Container>
         <Container style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={voteHandling}>
-            <AntDesign name="cloud" size={24} color="black" />
+          <TouchableOpacity onPress={voteHandling} style={{ alignItems: "center", marginRight: 5 }}>
+            <MaterialCommunityIcons
+              name="vote"
+              size={24}
+              color={voteInputs == false ? "#666666" : "#5299EB"}
+            />
+            <Text style={{ color: "#666666", fontSize: 13 }}>투표 만들기</Text>
           </TouchableOpacity>
         </Container>
         <Container style={{ flexDirection: "row" }}>
-          <TouchableOpacity onPress={uploadImage}>
-            <AntDesign name="camerao" size={24} color="black" />
+          <TouchableOpacity onPress={uploadImage} style={{ alignItems: "center", marginRight: 5 }}>
+            <AntDesign name="camerao" size={24} color="#666666" />
+            <Text style={{ color: "#666666", fontSize: 13 }}>사진 업로드</Text>
           </TouchableOpacity>
         </Container>
         <Container style={{ flexDirection: "row" }}>
-          <TextButton onPress={complete}>완료</TextButton>
+          <TextButton onPress={complete} fontSize={13}>
+            완료
+          </TextButton>
         </Container>
       </Container>
 
@@ -307,7 +326,9 @@ const Post: React.FC = () => {
                 onChangeText={text => setVoteTitle(text)}
                 value={voteTitle}
               />
-              <TextButton onPress={addVoteOptions}>추가</TextButton>
+              <TextButton onPress={addVoteOptions} fontSize={13}>
+                추가
+              </TextButton>
             </Container>
             <Spacer size={10} />
             <Container>

@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: "flex-start",
-    backgroundColor: "#5299EB",
+    backgroundColor: "#CBD7E6",
     justifyContent: "space-between",
     minWidth: 200,
     minHeight: 90,
