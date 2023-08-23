@@ -53,7 +53,9 @@ const VotePost: React.FC = () => {
 
   const styles = StyleSheet.create({
     votePostBox: {
-      height: "33%",
+      backgroundColor: "red",
+      flex: 2,
+      // height: "33%",
       borderWidth: 1,
       borderColor: "#d1d1d1",
       borderRadius: 10,
@@ -161,7 +163,7 @@ const VotePost: React.FC = () => {
       alignItems: "center",
       // backgroundColor: "skyblue",
     },
-    noVotePostBox: {
+    VotePostBox: {
       height: 290,
       justifyContent: "center",
       alignItems: "center",
