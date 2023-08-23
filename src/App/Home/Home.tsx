@@ -3,7 +3,6 @@ import { BottomSheetFlatList, BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useNavigation } from "@react-navigation/native";
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import {
-  Dimensions,
   Image,
   ImageSourcePropType,
   NativeScrollEvent,
@@ -15,7 +14,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TextStyle,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -29,6 +27,7 @@ import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle } from "../../types/Board";
 import { UserCategory } from "../../types/User";
+import { formatTimeDifference } from "../../utils/Time";
 import { ThemeContext } from "../Style/ThemeContext";
 
 interface Tags {
@@ -742,34 +741,12 @@ const HotPost: React.FC = () => {
             <TextThemed style={styles.iconText}>{hotPost[1].commentCnt}</TextThemed>
           </View>
           <View style={styles.timeTextWrapper}>
-            <TextThemed>{dateToString(hotPost[1].createdAt)}</TextThemed>
+            <TextThemed>{formatTimeDifference(new Date(hotPost[1].createdAt))}</TextThemed>
           </View>
         </View>
       </Pressable>
     </View>
   );
 };
-function dateToString(date: string): string {
-  const start = new Date(date);
-  const end = new Date();
-
-  const diff = end.getTime() - start.getTime();
-  const diffDate = new Date(diff);
-
-  const year = diffDate.getFullYear() - 1970;
-  const month = diffDate.getMonth();
-  const day = diffDate.getDate() - 1;
-  const hour = diffDate.getHours();
-  const minute = diffDate.getMinutes();
-  const second = diffDate.getSeconds();
-
-  if (year > 0) return `${year}년 전`;
-  if (month > 0) return `${month}달 전`;
-  if (day > 0) return `${day}일 전`;
-  if (hour > 0) return `${hour}시간 전`;
-  if (minute > 0) return `${minute}분 전`;
-  if (second > 0) return `${second}초 전`;
-  return "방금 전";
-}
 
 export default Home;

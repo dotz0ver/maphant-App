@@ -50,7 +50,7 @@ import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticleBase, BoardPost, commentType, ReportType } from "../../types/Board";
 import { UserData } from "../../types/User";
-import { dateFormat, dateTimeFormat } from "./Time";
+import { dateFormat, dateTimeFormat } from "../../utils/Time";
 
 const BoardDetail = () => {
   const params = useRoute().params as { id: number; preRender?: BoardArticleBase };
@@ -664,7 +664,8 @@ const BoardDetail = () => {
                       >
                         <TouchableOpacity
                           onPress={() => {
-                            navigation.navigate("Profile", { id: comment.user_id } as never);
+                            navigation.navigate("Profile", { id: comment.user_id });
+                            console.error(comment.user_id);
                           }}
                           disabled={comment.is_anonymous == 1}
                         >

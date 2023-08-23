@@ -21,7 +21,7 @@ import UIStore from "../../storage/UIStore";
 import UserStorage from "../../storage/UserStorage";
 import { BoardArticle, BoardPost, ReportType } from "../../types/Board";
 import { UserData } from "../../types/User";
-import { dateTimeFormat } from "./Time";
+import { dateTimeFormat } from "../../utils/Time";
 
 const QAdetail = () => {
   const params = useRoute().params as { id: number; preRender?: BoardArticle };

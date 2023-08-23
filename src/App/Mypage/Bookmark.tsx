@@ -6,6 +6,7 @@ import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from
 import { GetAPI } from "../../Api/fetchAPI";
 import { TextButton } from "../../components/common";
 import { BoardArticle } from "../../types/Board";
+import { formatTimeDifference } from "../../utils/Time";
 
 export default function (): JSX.Element {
   switch (0) {
@@ -147,7 +148,9 @@ function Bookmark(): JSX.Element {
                     <FontAwesome name="comment-o" size={13} color="blue" />
                     <Text style={styles.comment}>&#9; {bookmark.commentCnt}</Text>
                     <Text style={{ justifyContent: "flex-end", fontSize: 10 }}></Text>
-                    <Text style={styles.time}>{dateToString(bookmark.createdAt)}</Text>
+                    <Text style={styles.time}>
+                      {formatTimeDifference(new Date(bookmark.createdAt))}
+                    </Text>
                   </View>
                 </View>
               </Pressable>
@@ -171,29 +174,6 @@ function Bookmark(): JSX.Element {
       )}
     </>
   );
-}
-
-function dateToString(date: string): string {
-  const start = new Date(date);
-  const end = new Date();
-
-  const diff = end.getTime() - start.getTime();
-  const diffDate = new Date(diff);
-
-  const year = diffDate.getFullYear() - 1970;
-  const month = diffDate.getMonth();
-  const day = diffDate.getDate() - 1;
-  const hour = diffDate.getHours();
-  const minute = diffDate.getMinutes();
-  const second = diffDate.getSeconds();
-
-  if (year > 0) return `${year}년 전`;
-  if (month > 0) return `${month}달 전`;
-  if (day > 0) return `${day}일 전`;
-  if (hour > 0) return `${hour}시간 전`;
-  if (minute > 0) return `${minute}분 전`;
-  if (second > 0) return `${second}초 전`;
-  return "방금 전";
 }
 
 const styles = StyleSheet.create({
