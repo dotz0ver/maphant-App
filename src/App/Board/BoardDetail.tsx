@@ -243,7 +243,9 @@ const BoardDetail = () => {
   const handlePoll = async () => {
     try {
       const response = await doPoll(poll_id, pollOptionId);
-      console.log(response);
+      if (response.success == true) {
+        Alert.alert("투표되었습니다.");
+      }
     } catch (error) {
       console.log("투표 오류", error);
     }
@@ -332,6 +334,9 @@ const BoardDetail = () => {
       const response = await deleteLikeBoard(id);
       post.board.isLike = false;
       setLikeCnt(likeCnt - 1);
+      if (response.success == true) {
+        Alert.alert("추천이 취소되었습니다.");
+      }
     } catch (error) {
       Alert.alert(error);
     }
@@ -340,14 +345,14 @@ const BoardDetail = () => {
   const handleBookmarkToggle = async (board_id: number) => {
     try {
       if (isBookmarked) {
-        await DeletebookMarkArticle(board_id);
+        const response = await DeletebookMarkArticle(board_id);
         if (response.success == true) {
-          Alert.alert("북마크 삭제되었습니다.");
+          Alert.alert("북마크가 삭제되었습니다.");
         }
       } else {
-        await bookMarkArticle(id);
+        const response = await bookMarkArticle(id);
         if (response.success == true) {
-          Alert.alert("북마크 추가되었습니다.");
+          Alert.alert("북마크가 추가되었습니다.");
         }
       }
       setIsBookmarked(!isBookmarked); // 토글 상태 업데이트
