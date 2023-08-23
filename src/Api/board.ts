@@ -105,11 +105,12 @@ function deleteLikeBoard(board_id: number) {
   return DeleteAPI(`/board/like/${board_id}/`);
 }
 
-function searchArticle(content: string, boardType_id: number) {
-  return GetAPI(
-    `/search/boards?search=${content}&boardTypeId=${boardType_id}&page=1&recordSize=100`,
-  );
-}
+const searchArticle = (
+  content: string,
+  boardType_id: number,
+): Promise<dataResponse<{ list: BoardArticle[] }>> =>
+  GetAPI(`/search/boards?search=${content}&boardTypeId=${boardType_id}&page=1&recordSize=100`);
+
 function bookMarkArticle(board_id: number) {
   return PostAPI(`/bookmark/${board_id}`);
 }
