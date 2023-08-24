@@ -15,11 +15,10 @@ import {
 import { useSelector } from "react-redux";
 
 import { listBoardType, listVoteBoardTotal } from "../../Api/board";
-import { GetAPI } from "../../Api/fetchAPI";
 import { Spacer, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
-import { BoardArticle, BoardType, VoteBoard } from "../../types/Board";
+import { BoardType, VoteBoard } from "../../types/Board";
 import { formatTimeDifference } from "../../utils/Time";
 
 const VotePost: React.FC = () => {
@@ -57,13 +56,13 @@ const VotePost: React.FC = () => {
   const styles = StyleSheet.create({
     votePostBox: {
       // backgroundColor: "red",
-      flex: 2,
+      flex: 1.5,
       // height: "33%",
       borderWidth: 1,
       borderColor: "#d1d1d1",
       borderRadius: 10,
-      marginLeft: 10,
-      marginRight: 10,
+      marginTop: 10,
+      marginHorizontal: 15,
     },
     boxTitleBox: {
       height: 30,
@@ -337,7 +336,6 @@ const BoardList = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <Spacer size={30} />
       </View>
     </TouchableWithoutFeedback>
   );
@@ -363,7 +361,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   board: {
-    flex: 1,
+    flex: 1.1,
     flexDirection: "row",
     // alignItems: "stretch",
     alignItems: "flex-start",
