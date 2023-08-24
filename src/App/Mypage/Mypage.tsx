@@ -6,7 +6,6 @@ import {
   ColorValue,
   Modal,
   Pressable,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -38,7 +37,7 @@ function uploadAPI<T extends statusResponse>(
       signal: abortSignal,
       headers: {},
     };
-
+    console.info(token);
     if (token != undefined) {
       // @ts-expect-error
       options.headers["x-auth"] = token.token;
@@ -56,9 +55,10 @@ function uploadAPI<T extends statusResponse>(
     }
 
     const url_complete = `https://dev.api.tovelop.esm.kr${url}`;
-
+    console.info(url_complete, options);
     return fetch(url_complete, options)
       .catch(err => {
+        console.warn(method, url_complete, body, err);
         if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
           return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
         }
@@ -66,6 +66,7 @@ function uploadAPI<T extends statusResponse>(
         return Promise.reject("서버와 통신 중 오류가 발생했습니다.");
       })
       .then(res => {
+        console.info(res.body);
         // 특수 처리 (로그인 실패시에도 401이 들어옴)
         // 로그인의 경우는 바로 내려 보냄
         if (url == "/user/login") {
@@ -81,6 +82,7 @@ function uploadAPI<T extends statusResponse>(
         return res.json();
       })
       .then(json => {
+        console.log(json);
         const resp = json as T;
 
         return Promise.resolve({ json: resp });
@@ -102,7 +104,6 @@ type sectionItem = {
 
   contents: {
     title: string;
-    // description: string;
     href: string;
     onclick?: () => void;
   }[];
@@ -184,33 +185,40 @@ function Section({ item }: { item: sectionItem }) {
 
 const MyView = () => {
   const profile = useSelector(UserStorage.userProfileSelector)! as UserData;
-  console.log(profile.nickname);
   const category = useSelector(UserStorage.userCategorySelector);
 
+  console.log(profile);
+
   const [visibleIntroModal, setVisibleIntoModal] = useState(false);
-  const [introduceTxt, setIntroduceTxt] = useState<profile>("");
+  const [introduceTxt, setIntroduceTxt] = useState("");
   let confirmedIntroTxt: string = "";
+  const userID = useSelector(UserStorage.userProfileSelector)!.id;
 
-  // const [userID, setUserID] = useState(0);
-  const userID = useSelector(UserStorage.userProfileSelector)?.id;
   useEffect(() => {
-    if (userID === null) return;
-
-    // setUserID(useSelector(UserStorage.userProfileSelector)!.id);
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        if (res && res.data && res.data && res.data.body !== undefined) {
-          setIntroduceTxt(res.data.body);
-        }
+        // console.log(res.data);
+        setIntroduceTxt(res.data[0].body);
       }
     });
-  }, [userID]);
+  }, []);
+
+  useEffect(() => {
+    GetAPI(`/profile?targerUserId=${userID}`).then(res => {
+      if (res.success == true) {
+        // console.log(res.data);
+        setIntroduceTxt(res.data[0].body);
+      }
+    });
+  }, [introduceTxt]);
 
   const editIntro = async () => {
     const formData = new FormData();
     formData.append("body", confirmedIntroTxt);
+    // console.log(formData);
     try {
       const res = await uploadAPI("PATCH", "/profile", formData);
+      // console.log(res);
       setIntroduceTxt(confirmedIntroTxt);
     } catch (err) {
       alert(err);
@@ -219,10 +227,8 @@ const MyView = () => {
   const deleteIntro = async () => {
     const formData = new FormData();
     formData.append("body", "");
-
     try {
       const res = await uploadAPI("PATCH", "/profile", formData);
-
       setIntroduceTxt("");
     } catch (err) {
       alert(err);
@@ -292,7 +298,6 @@ const MyView = () => {
             >
               <AntDesign name="closecircle" size={20} color="#aaa" />
             </TouchableOpacity>
-            {/* <Spacer size={5} /> */}
             <View style={{ alignItems: "center" }}>
               <Text style={styles.Moaltext}>소개글을 수정해주세요</Text>
             </View>
@@ -435,7 +440,6 @@ export default function MyPage() {
         {
           title: "회원탈퇴",
           onclick: () => {
-            //setVisibleWithdrawModal(true);
             setVisibleAuthentication(true);
           },
           href: "6",
@@ -445,9 +449,8 @@ export default function MyPage() {
   ];
 
   return (
-    <SafeAreaView>
+    <View style={{}}>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        {/* ------------ 로그아웃 모달창 */}
         <Modal animationType="fade" transparent={true} visible={visibleLogoutModal}>
           <View
             style={{
@@ -456,14 +459,13 @@ export default function MyPage() {
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "rgba(0, 0, 0, 0.5)",
-              // backgroundColor: "skyblue",
             }}
           >
             <View
               style={{
                 flex: 0.6,
                 borderRadius: 25,
-                backgroundColor: "#ffffff", //모달 이부분 고치기
+                backgroundColor: "#ffffff",
                 padding: 25,
               }}
             >
@@ -507,8 +509,6 @@ export default function MyPage() {
             </View>
           </View>
         </Modal>
-
-        {/* ------------ 회원탈퇴 전 인증 모달창 */}
         <Modal animationType="fade" transparent={true} visible={visibleAuthentication}>
           <View
             style={{
@@ -517,7 +517,6 @@ export default function MyPage() {
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "rgba(0, 0, 0, 0.5)",
-              // backgroundColor: "skyblue",
             }}
           >
             <View
@@ -578,7 +577,6 @@ export default function MyPage() {
             </View>
           </View>
         </Modal>
-        {/* ------------ 회원탈퇴 모달창 */}
         <Modal animationType="fade" transparent={true} visible={visibleWithdrawModal}>
           <View
             style={{
@@ -587,7 +585,6 @@ export default function MyPage() {
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "rgba(0, 0, 0, 0.5)",
-              // backgroundColor: "skyblue",
             }}
           >
             <View
@@ -645,7 +642,7 @@ export default function MyPage() {
           <Section key={index.toString()} item={section} />
         ))}
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -658,14 +655,14 @@ const styles = StyleSheet.create({
   view: {
     flex: 1,
     marginTop: 18,
-    backgroundColor: "#CBD7E6",
+    backgroundColor: "rgba(82, 153, 235, 0.3)",
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   profileView: {
     marginTop: 18,
-    backgroundColor: "#CBD7E6",
+    backgroundColor: "rgba(82, 153, 235, 0.5)",
     borderRadius: 8,
     paddingHorizontal: 14,
     paddingVertical: 8,
@@ -684,7 +681,6 @@ const styles = StyleSheet.create({
   },
   fieldtxt: {
     fontSize: 16,
-    // backgroundColor: "red",
     textAlign: "right",
   },
   info: {
@@ -704,13 +700,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     alignItems: "flex-end",
-    // backgroundColor: "skyblue",
   },
   paddingVerticalCategory: {
-    // paddingHorizontal: 10,
-    // paddingVertical: 5,
     alignItems: "flex-end",
-    // backgroundColor: "skyblue",
   },
   introTxtContainer: {
     marginTop: 10,
