@@ -177,8 +177,8 @@ const commentReply = (
     is_anonymous,
   });
 
-const commentLike = (userId: number, commentId: number): Promise<dataResponse> =>
-  PostAPI<dataResponse>(`/comment/like`, { userId, commentId });
+const commentLike = (commentId: number): Promise<dataResponse> =>
+  PostAPI<dataResponse>(`/comment/like`, { commentId });
 
 const commentLikeCnt = (comment_id: number): Promise<dataResponse> =>
   GetAPI<dataResponse>(`/comment/cnt-like/${comment_id}`);
