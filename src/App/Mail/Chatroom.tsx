@@ -224,7 +224,7 @@ const Chatroom: React.FC = () => {
             onChangeText={setContent}
           />
           <TextButton
-            disabled={content.length === 0 ? true : false}
+            disabled={content.length === 0 || content.match(/\n{2,}/g) ? true : false}
             onPress={() => {
               send();
             }}
