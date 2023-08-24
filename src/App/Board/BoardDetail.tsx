@@ -99,11 +99,11 @@ const BoardDetail = () => {
   const handleDelete = async () => {
     try {
       const response = await boardDelete(id);
-      handlePollDelete();
-      navigation.goBack();
+      if (post.poll !== null) handlePollDelete();
       if (response.success == true) {
         Alert.alert("삭제되었습니다.");
       }
+      navigation.goBack();
     } catch (error) {
       Alert.alert(error);
     }
@@ -569,7 +569,7 @@ const BoardDetail = () => {
                           <View key={options.optionId} style={{ position: "relative" }}>
                             <View
                               style={{
-                                width: `${results[options.optionId]}%`,
+                                width: `50%`,
                                 height: 20,
                                 backgroundColor: "#f0f6fd",
                                 position: "relative",
