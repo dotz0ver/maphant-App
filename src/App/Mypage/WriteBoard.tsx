@@ -5,7 +5,7 @@ import { Alert, Pressable, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import { bringBoardList } from "../../Api/member/Others";
-import { Container } from "../../components/common";
+import { Container, TextThemed } from "../../components/common";
 import { OtherUserForm } from "../../Navigator/MypageRoute";
 import { NavigationProps } from "../../Navigator/Routes";
 import { OWriteBoardList, Pagination } from "../../types/User";
@@ -27,8 +27,10 @@ const WriteBoard: React.FC = () => {
 
   return (
     <View style={{ display: "flex", flex: 1 }}>
-      <View style={{ padding: 10, backgroundColor: "#fff" }}>
-        <Text style={{ fontWeight: "bold" }}>Total page : {page.totalRecordCount} </Text>
+      <View style={{ padding: 10 }}>
+        <TextThemed style={{ fontWeight: "bold" }}>
+          Total page : {page.totalRecordCount}{" "}
+        </TextThemed>
       </View>
       <FlatList
         style={{ marginTop: 3 }}
@@ -36,7 +38,7 @@ const WriteBoard: React.FC = () => {
         renderItem={({ item }) => (
           <>
             <Pressable
-              style={{ flex: 1, padding: 5, backgroundColor: "#fff" }}
+              style={{ flex: 1, padding: 5 }}
               key={item.id}
               onPress={() => {
                 navigation.navigate("BoardDetail", { id: item.id });
@@ -48,15 +50,15 @@ const WriteBoard: React.FC = () => {
                 }}
               >
                 <View>
-                  <Text style={{ color: "gray" }}>{item.type}</Text>
+                  <TextThemed style={{ color: "gray" }}>{item.type}</TextThemed>
                 </View>
                 <Container>
-                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.title}</Text>
+                  <TextThemed style={{ fontSize: 16, fontWeight: "bold" }}>{item.title}</TextThemed>
                 </Container>
                 <Container>
-                  <Text style={{ fontSize: 13 }} numberOfLines={2}>
+                  <TextThemed style={{ fontSize: 13 }} numberOfLines={2}>
                     {item.body}
-                  </Text>
+                  </TextThemed>
                 </Container>
                 <View
                   style={{
@@ -68,13 +70,16 @@ const WriteBoard: React.FC = () => {
                   <Container style={{ flexDirection: "row" }}>
                     <Feather name="thumbs-up" size={13} color="tomato" />
 
-                    <Text style={{ fontSize: 10, marginRight: 10 }}> &#9;{item.like_cnt}</Text>
+                    <TextThemed style={{ fontSize: 10, marginRight: 10 }}>
+                      {" "}
+                      &#9;{item.like_cnt}
+                    </TextThemed>
 
                     <FontAwesome name="comment-o" size={13} color="blue" />
-                    <Text style={{ fontSize: 10 }}> &#9;{item.comment_cnt}</Text>
+                    <TextThemed style={{ fontSize: 10 }}> &#9;{item.comment_cnt}</TextThemed>
                   </Container>
                   <Container>
-                    <Text>{getCurrentTime(new Date(item.created_at))}</Text>
+                    <TextThemed>{getCurrentTime(new Date(item.created_at))}</TextThemed>
                   </Container>
                 </View>
               </Container>

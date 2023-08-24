@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 
 import { writeContentList } from "../../Api/member/Others";
-import { Container } from "../../components/common";
+import { Container, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { OtherUserId, OWriteContentList } from "../../types/User";
 import getCurrentTime from "../Time";
@@ -29,7 +29,7 @@ const WriteContent: React.FC = () => {
         renderItem={({ item }) => (
           <>
             <Pressable
-              style={{ flex: 1, padding: 5, backgroundColor: "#fff" }}
+              style={{ flex: 1, padding: 5 }}
               key={item.id}
               onPress={() => {
                 navigation.navigate("BoradDetail", { id: item.board_id });
@@ -41,13 +41,15 @@ const WriteContent: React.FC = () => {
                 }}
               >
                 <View>
-                  <Text style={{ color: "gray" }}>{item.board_type}</Text>
+                  <TextThemed style={{ color: "gray" }}>{item.board_type}</TextThemed>
                 </View>
                 <Container>
-                  <Text style={{ fontSize: 15, fontWeight: "bold" }}>{item.board_title}</Text>
+                  <TextThemed style={{ fontSize: 15, fontWeight: "bold" }}>
+                    {item.board_title}
+                  </TextThemed>
                 </Container>
                 <Container>
-                  <Text style={{ fontSize: 12 }}>내 댓글 :{item.body}</Text>
+                  <TextThemed style={{ fontSize: 12 }}>내 댓글 :{item.body}</TextThemed>
                 </Container>
                 <View
                   style={{
@@ -58,10 +60,10 @@ const WriteContent: React.FC = () => {
                 >
                   <Container style={{ flexDirection: "row" }}>
                     <Feather name="thumbs-up" size={13} color="tomato" />
-                    <Text style={{ fontSize: 10 }}> &#9;{item.like_cnt}</Text>
+                    <TextThemed style={{ fontSize: 10 }}> &#9;{item.like_cnt}</TextThemed>
                   </Container>
                   <Container>
-                    <Text>{getCurrentTime(new Date(item.created_at))}</Text>
+                    <TextThemed>{getCurrentTime(new Date(item.created_at))}</TextThemed>
                   </Container>
                 </View>
               </Container>

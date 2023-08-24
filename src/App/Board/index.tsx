@@ -19,6 +19,8 @@ export default function BoardIndex(): JSX.Element {
       <Stack.Screen name="VoteBoard" component={Routes[10].component} />
       <Stack.Screen name="VoteDetailList" component={Routes[11].component} />
       <Stack.Screen name="Profile" component={Routes[12].component} />
+      <Stack.Screen name="WriteBoard" component={Routes[13].component} />
+      <Stack.Screen name="WriteContent" component={Routes[14].component} />
     </Stack.Navigator>
   );
 }
