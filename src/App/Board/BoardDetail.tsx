@@ -249,7 +249,7 @@ const BoardDetail = () => {
   };
 
   const handleCommentLike = (comment_id: number, likeCnt: number) => {
-    commentLike(user.id, comment_id)
+    commentLike(comment_id)
       .then(res => {
         if (res.success) setLikeCnt(likeCnt);
       })
