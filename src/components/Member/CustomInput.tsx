@@ -58,9 +58,7 @@ const CustomInput = (props: CustomInputProps) => {
     func();
   }
 
-  function saveInput() {
-    console.log("Saving data to the server");
-  }
+  function saveInput() {}
 
   const processChange = () => debounce(() => saveInput());
 
