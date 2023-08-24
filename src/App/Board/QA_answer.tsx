@@ -45,7 +45,7 @@ const QA_answer: React.FC = () => {
       }
       navigation.goBack();
     } catch (error) {
-      console.error("게시물 작성 오류", error);
+      Alert.alert(error);
     }
   };
 

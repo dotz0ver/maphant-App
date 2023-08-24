@@ -333,21 +333,19 @@ const Post: React.FC = () => {
             <Spacer size={10} />
             <Container>
               {voteOptions.map((option, index) => (
-                <>
-                  <Container style={{ flexDirection: "row", alignItems: "center" }} key={index}>
-                    <Input
-                      style={{ flex: 1 }}
-                      key={index}
-                      placeholder={`투표 선택지 ${index + 1}`}
-                      onChangeText={text => handleVoteOptionChange(index, text)}
-                      value={option}
-                    />
-                    <TouchableOpacity onPress={() => handleRemoveVoteOption(index)}>
-                      <Text style={{ color: "black" }}>X</Text>
-                    </TouchableOpacity>
-                  </Container>
+                <Container style={{ flexDirection: "row", alignItems: "center" }} key={index}>
+                  <Input
+                    style={{ flex: 1 }}
+                    key={index}
+                    placeholder={`투표 선택지 ${index + 1}`}
+                    onChangeText={text => handleVoteOptionChange(index, text)}
+                    value={option}
+                  />
+                  <TouchableOpacity onPress={() => handleRemoveVoteOption(index)}>
+                    <Text style={{ color: "black" }}>X</Text>
+                  </TouchableOpacity>
                   <Spacer size={10} />
-                </>
+                </Container>
               ))}
             </Container>
           </>

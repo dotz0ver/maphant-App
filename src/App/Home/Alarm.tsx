@@ -19,9 +19,8 @@ const Alarm: React.FC = () => {
   }, []);
   const fetchData = async () => {
     try {
-      const response = notificationsList(1, 50).catch(err => alert(err));
+      await notificationsList(1, 50);
       // setFcmType(response.data as fcmList[]);
-      console.log(response);
     } catch (err) {
       Alert.alert(err);
     }

@@ -44,7 +44,7 @@ const Confirm: React.FC = () => {
           setShowNextButton(true);
         }
       })
-      .catch(error => console.error(error));
+      .catch(error => Alert.alert(error));
   };
 
   useEffect(() => {

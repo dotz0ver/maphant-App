@@ -312,7 +312,7 @@ const Input: React.FC<InputProps> = props => {
   };
 
   if (isLayoutCalibrated) {
-    style_text.height = containerLayout.current?.height;
+    style_text.minHeight = containerLayout.current?.height;
   }
 
   return (
@@ -326,7 +326,9 @@ const Input: React.FC<InputProps> = props => {
 
         containerLayout.current = data;
 
-        setIsLayoutCalibrated(true);
+        if ("height" in style) {
+          setIsLayoutCalibrated(true);
+        }
       }}
     >
       <TextInput
