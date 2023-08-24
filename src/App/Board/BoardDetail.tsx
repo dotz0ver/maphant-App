@@ -559,7 +559,6 @@ const BoardDetail = () => {
                               pollOptionId === options.optionId ? "#f0f6fd" : "white",
                             position: "relative",
                             zIndex: 1000,
-                            width: "100%",
                           }}
                           key={options.optionId}
                           onPress={() => setPollOptionId(options.optionId)}
@@ -822,7 +821,7 @@ const BoardDetail = () => {
             style={{
               flex: 1,
               backgroundColor: "#D8E1EC",
-              paddingVertical: 15,
+              paddingVertical: 10,
               paddingHorizontal: 12,
               marginRight: 5,
               borderRadius: 50,
