@@ -20,7 +20,6 @@ const Chatroom: React.FC = () => {
   const isChatLoading = useRef<boolean>(false);
   const prevPage = useRef<number | null>(0);
   const [flag, setFlag] = useState<boolean>(false);
-
   const handleEndReached = () => {
     setFlag(true);
     fetchPrevChatLists(params.roomId);
@@ -225,6 +224,7 @@ const Chatroom: React.FC = () => {
             onChangeText={setContent}
           />
           <TextButton
+            disabled={content.length === 0 ? true : false}
             onPress={() => {
               send();
             }}
