@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { receiveChatrooms } from "../../Api/member/FindUser";
 import { readProfile } from "../../Api/member/Others";
-import { Container, ImageBox, TextButton } from "../../components/common";
+import { Container, ImageBox, TextButton, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import { MessageList } from "../../types/DM";
 import { OtherUserData, OtherUserId } from "../../types/User";
@@ -65,7 +65,7 @@ const Profile: React.FC = () => {
           flexShrink: 1,
         }}
       >
-        <Container style={{ flex: 2, justifyContent: "flex-end" }}>
+        <View style={{ flex: 2, justifyContent: "flex-end" }}>
           <ImageBox
             // 기본 이미지 설정 되면 나중에 변경해야함
             source={
@@ -79,19 +79,19 @@ const Profile: React.FC = () => {
             style={{ borderColor: "#5299EB", borderWidth: 3, borderRadius: 100 }}
           />
           <Container style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+            <TextThemed style={{ fontSize: 25, fontWeight: "bold" }}>
               {otherUserProfileList?.nickname}
-            </Text>
+            </TextThemed>
           </Container>
-        </Container>
+        </View>
         <Container style={{ alignItems: "center" }}>
           <Container style={{}}>
             {
               // 소개글 유무로 내용을 정함
               otherUserProfileList?.body ? (
-                <Text>{otherUserProfileList?.body}</Text>
+                <TextThemed>{otherUserProfileList?.body}</TextThemed>
               ) : (
-                <Text> 소개글을 남겨보세요!</Text>
+                <TextThemed> 소개글을 남겨보세요!</TextThemed>
               )
             }
             <View
@@ -104,9 +104,9 @@ const Profile: React.FC = () => {
           </Container>
           <Container>
             {otherUserProfileList?.category.map((major, index) => (
-              <Text key={index} style={{ color: "gray" }}>
+              <TextThemed key={index} style={{ color: "gray" }}>
                 {major.majorName}
-              </Text>
+              </TextThemed>
             ))}
           </Container>
         </Container>
@@ -136,7 +136,9 @@ const Profile: React.FC = () => {
         <Container style={{ padding: 20 }}>
           <Container style={{ flexDirection: "row" }}>
             <FontAwesome name="user" color="#5299EB" size={18} />
-            <Text style={{ fontWeight: "bold", fontSize: 16, marginLeft: 10 }}>계정 기능</Text>
+            <TextThemed style={{ fontWeight: "bold", fontSize: 16, marginLeft: 10 }}>
+              계정 기능
+            </TextThemed>
           </Container>
           <Container style={{}}>
             {["작성한 게시글 목록", "작성한 댓글 목록"].map((item, index, array) => (
@@ -152,7 +154,7 @@ const Profile: React.FC = () => {
                   }}
                 >
                   <Container>
-                    <Text style={{ fontWeight: "600" }}>{item}</Text>
+                    <TextThemed style={{ fontWeight: "600" }}>{item}</TextThemed>
                   </Container>
                   <Container>
                     <FontAwesome name="angle-right" color="#5299EB" />
@@ -169,7 +171,7 @@ const Profile: React.FC = () => {
     );
   }
   return (
-    <SafeAreaView style={{ display: "flex", flex: 1, padding: 20, shadowColor: "black" }}>
+    <SafeAreaView style={{ display: "flex", flex: 1, shadowColor: "black" }}>
       <OtherProfile />
       <Otherfunction />
     </SafeAreaView>

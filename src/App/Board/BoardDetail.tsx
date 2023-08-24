@@ -470,7 +470,11 @@ const BoardDetail = () => {
           <Container style={{ padding: 10 }}>
             <View>
               <View
-                style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginBottom: 10,
+                }}
               >
                 <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
                   <TouchableOpacity
@@ -480,13 +484,14 @@ const BoardDetail = () => {
                     disabled={post.board.isAnonymous == 1}
                   >
                     <View>
-                      <Text style={styles.nickname}>{post.board.userNickname}</Text>
+                      <TextThemed style={styles.nickname}>{post.board.userNickname}</TextThemed>
                     </View>
                   </TouchableOpacity>
                   <View style={{ marginLeft: 5 }}>
                     <Text style={styles.date}>{dateTimeFormat(post.board.createdAt)}</Text>
                   </View>
                 </View>
+
                 {post.board.isMyBoard && (
                   <View style={styles.buttonBox}>
                     <TextButton
@@ -508,6 +513,8 @@ const BoardDetail = () => {
                   </View>
                 )}
               </View>
+              <View style={styles.line} />
+
               <View style={{ padding: 20 }}>
                 <View>
                   <TextThemed style={styles.title}>{post.board.title}</TextThemed>
