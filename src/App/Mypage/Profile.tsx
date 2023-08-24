@@ -133,7 +133,7 @@ const Profile: React.FC = () => {
           flex: 1,
         }}
       >
-        <Container style={{ padding: 20 }}>
+        <Container style={{ paddingHorizontal: 20 }}>
           <Container style={{ flexDirection: "row" }}>
             <FontAwesome name="user" color="#5299EB" size={18} />
             <TextThemed style={{ fontWeight: "bold", fontSize: 16, marginLeft: 10 }}>
@@ -171,10 +171,10 @@ const Profile: React.FC = () => {
     );
   }
   return (
-    <SafeAreaView style={{ display: "flex", flex: 1, shadowColor: "black" }}>
+    <Container style={{ display: "flex", flex: 1, shadowColor: "black", margin: 20 }}>
       <OtherProfile />
       <Otherfunction />
-    </SafeAreaView>
+    </Container>
   );
 };
 
