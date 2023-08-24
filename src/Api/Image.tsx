@@ -18,7 +18,6 @@ export function uploadAPI<T extends statusResponse>(
       signal: abortSignal,
       headers: {},
     };
-    console.info(token);
     if (token != undefined) {
       // @ts-expect-error
       options.headers["x-auth"] = token.token;
@@ -36,10 +35,8 @@ export function uploadAPI<T extends statusResponse>(
     }
 
     const url_complete = `https://dev.api.tovelop.esm.kr${url}`;
-    console.info(url_complete, options);
     return fetch(url_complete, options)
       .catch(err => {
-        console.warn(method, url_complete, body, err);
         if (err.name && (err.name === "AbortError" || err.name === "TimeoutError")) {
           return Promise.reject("서버와 통신에 실패 했습니다 (Timeout)");
         }
@@ -47,7 +44,6 @@ export function uploadAPI<T extends statusResponse>(
         return Promise.reject("서버와 통신 중 오류가 발생했습니다.");
       })
       .then(res => {
-        console.info(res.body);
         // 특수 처리 (로그인 실패시에도 401이 들어옴)
         // 로그인의 경우는 바로 내려 보냄
         if (url == "/user/login") {

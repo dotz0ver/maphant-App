@@ -1,7 +1,7 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Alert, Pressable, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 
 import { bringBoardList } from "../../Api/member/Others";
@@ -22,7 +22,7 @@ const WriteBoard: React.FC = () => {
         setWriteBoardList(res.data.list);
         setPage(res.data.pagination);
       })
-      .catch(e => console.error(e));
+      .catch(e => Alert.alert(e));
   }, []);
 
   return (
