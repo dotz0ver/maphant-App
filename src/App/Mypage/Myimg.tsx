@@ -86,8 +86,10 @@ const Myimg: React.FC = () => {
   useEffect(() => {
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        if (res && res.data && res.data[0] && res.data[0].profile_img)
-          setDefaultImgSrc(res.data[0].profile_img);
+        console.log(res.data);
+
+        if (res && res.data && res.data && res.data.profileImg)
+          setDefaultImgSrc(res.data.profileImg);
       }
     });
   }, []);
@@ -147,8 +149,8 @@ const Myimg: React.FC = () => {
 
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        if (res && res.data && res.data[0] && res.data[0].profile_img)
-          setDefaultImgSrc(res.data[0].profile_img);
+        if (res && res.data && res.data && res.data.profileImg)
+          setDefaultImgSrc(res.data.profileImg);
       }
     });
   };
