@@ -68,11 +68,21 @@ const Mail: React.FC = () => {
                           {formatTimeDifference(new Date(mail.time))}
                         </TextThemed>
                       </View>
-                      <Container style={{ maxHeight: 100 }}>
+                      <Container
+                        style={{
+                          justifyContent: "space-between",
+                          flexDirection: "row",
+                          maxHeight: 100,
+                          // backgroundColor: "red",
+                        }}
+                      >
                         <TextThemed style={styles.content} numberOfLines={2}>
                           {mail.last_content}
                         </TextThemed>
-                        <TextButton style={{ marginLeft: 320 }} onPress={() => del(mail.id)}>
+                        <TextButton
+                          // style={{ marginLeft: 320 }}
+                          onPress={() => del(mail.id)}
+                        >
                           삭제
                         </TextButton>
                       </Container>
@@ -146,8 +156,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   content: {
-    marginLeft: "6%",
-    marginRight: "5.5%",
+    flex: 1,
+    marginHorizontal: "5%",
     paddingTop: "2%",
     fontSize: 18,
   },
