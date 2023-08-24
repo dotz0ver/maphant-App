@@ -562,7 +562,10 @@ const BoardDetail = () => {
                           <View key={options.optionId} style={{ position: "relative" }}>
                             <View
                               style={{
-                                width: `${results[options.optionId]}%`,
+                                width:
+                                  results[options.optionId] !== undefined
+                                    ? `${results[options.optionId]}%`
+                                    : "0%",
                                 height: 20,
                                 backgroundColor: "#f0f6fd",
                                 position: "relative",
