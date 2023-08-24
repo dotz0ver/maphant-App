@@ -46,7 +46,7 @@ const SearchUniversity: React.FC = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1 }}>
       <ScrollView>
         <Formik
           initialValues={SearchForm}
@@ -110,7 +110,6 @@ const SearchUniversity: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     justifyContent: "center",
     paddingHorizontal: 40,
     paddingTop: 80,

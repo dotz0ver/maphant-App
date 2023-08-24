@@ -111,7 +111,7 @@ const Signup = () => {
   };
 
   return (
-    <Container isForceKeyboardAvoiding={true} style={{ backgroundColor: "white" }}>
+    <Container isForceKeyboardAvoiding={true}>
       <Formik
         validateOnChange
         initialValues={SignupForm}
@@ -134,13 +134,12 @@ const Signup = () => {
           <Container
             style={{
               flex: 1,
-              backgroundColor: "#fff",
               justifyContent: "center",
             }}
           >
             <FlatList
               keyboardShouldPersistTaps="handled"
-              contentContainerStyle={{ backgroundColor: "white", paddingHorizontal: 30 }}
+              contentContainerStyle={{ paddingHorizontal: 30 }}
               nestedScrollEnabled={true}
               data={Object.keys(SignupForm)} // 각 필드 키를 배열로 전달
               renderItem={({ item }) => (
@@ -160,7 +159,6 @@ const Signup = () => {
                 <Container
                   style={{
                     flex: 1,
-                    backgroundColor: "#fff",
                     justifyContent: "center",
                     paddingHorizontal: 30,
                   }}

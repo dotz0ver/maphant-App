@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TAutocompleteDropdownItem } from "react-native-autocomplete-dropdown";
 import { FlatList } from "react-native-gesture-handler";
+import { TextThemed } from "../common";
 
 type Props = {
   field: unknown;
@@ -69,7 +70,7 @@ const Search: React.FC<Props> = props => {
             style={styles.itemContainer}
             onPress={() => (item && item.title ? handleItemClick(item.title) : null)}
           >
-            <Text style={styles.itemText}>{item.title}</Text>
+            <TextThemed style={styles.itemText}>{item.title}</TextThemed>
           </TouchableOpacity>
         )}
       />

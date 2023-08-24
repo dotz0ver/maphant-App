@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text } from "react-native";
 
 import { confirmEmail } from "../../Api/member/signUp";
-import { Container, Input, TextButton } from "../../components/common";
+import { Container, Input, TextButton, TextThemed } from "../../components/common";
 import { SignUpFormParams } from "../../Navigator/SigninRoutes";
 import { ISignupForm } from "../../types/SignUp";
 
@@ -67,14 +67,14 @@ const Confirm: React.FC = () => {
   }, [minutes, seconds]);
 
   return (
-    <Container style={{ flex: 1, backgroundColor: "#fff", paddingHorizontal: 40, paddingTop: 80 }}>
+    <Container style={{ flex: 1, paddingHorizontal: 40, paddingTop: 80 }}>
       <Container style={{ alignItems: "flex-end", marginRight: 10 }}>
-        <Text style={{ color: "#0055FF", fontSize: 12 }}>
+        <TextThemed style={{ fontSize: 12 }}>
           {`${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`}
-        </Text>
+        </TextThemed>
       </Container>
       <Container style={{ marginBottom: 20 }}>
-        <Text style={{ fontSize: 16, paddingLeft: 10 }}>이메일</Text>
+        <TextThemed style={{ fontSize: 16, paddingLeft: 10 }}>이메일</TextThemed>
         <Input
           value={email}
           placeholder="이메일을 입력해주세요."
@@ -85,7 +85,7 @@ const Confirm: React.FC = () => {
       </Container>
 
       <Container style={{ marginBottom: 20 }}>
-        <Text style={{ fontSize: 16, paddingLeft: 10 }}>인증 번호</Text>
+        <TextThemed style={{ fontSize: 16, paddingLeft: 10 }}>인증 번호</TextThemed>
         <Input
           // inputRef={verificationCodeInputRef}
           value={verificationCode}
@@ -109,7 +109,7 @@ const Confirm: React.FC = () => {
           style={[
             styles.button,
             {
-              backgroundColor: verificationCode === "" ? "#999" : "$0055FF",
+              backgroundColor: verificationCode === "" ? "#999" : "#0055FF",
               borderColor: verificationCode === "" ? "#999" : "#0055FF",
               width: 80,
             },
@@ -145,9 +145,9 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 300,
     height: 40,
-    padding: 8,
     borderColor: "#aaa",
     marginTop: 10,
+    justifyContent: "center",
   },
   button: {
     borderWidth: 1,
