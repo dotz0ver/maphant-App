@@ -86,8 +86,6 @@ const Myimg: React.FC = () => {
   useEffect(() => {
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        console.log(res.data);
-
         if (res && res.data && res.data && res.data.profileImg)
           setDefaultImgSrc(res.data.profileImg);
       }
@@ -137,7 +135,7 @@ const Myimg: React.FC = () => {
     formData.append("file", {
       name: "default_profile_img.jpg",
       type: "image/jpeg",
-      uri: "https://tovelope.s3.ap-northeast-2.amazonaws.com/image_1.jpg",
+      uri: "https://tovelope.s3.ap-northeast-2.amazonaws.com/default_profile_img.jpg",
     });
 
     try {
