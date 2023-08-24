@@ -197,22 +197,22 @@ const MyView = () => {
     // setUserID(useSelector(UserStorage.userProfileSelector)!.id);
     GetAPI(`/profile?targerUserId=${userID}`).then(res => {
       if (res.success == true) {
-        if (res && res.data && res.data[0] && res.data[0].body !== undefined) {
-          setIntroduceTxt(res.data[0].body);
+        if (res && res.data && res.data && res.data.body !== undefined) {
+          setIntroduceTxt(res.data.body);
         }
       }
     });
   }, [userID]);
 
-  useEffect(() => {
-    GetAPI(`/profile?targerUserId=${userID}`).then(res => {
-      if (res.success == true) {
-        if (res && res.data && res.data[0] && res.data[0].body !== undefined) {
-          setIntroduceTxt(res.data[0].body);
-        }
-      }
-    });
-  }, [introduceTxt]);
+  // useEffect(() => {
+  //   GetAPI(`/profile?targerUserId=${userID}`).then(res => {
+  //     if (res.success == true) {
+  //       if (res && res.data && res.data[0] && res.data[0].body !== undefined) {
+  //         setIntroduceTxt(res.data[0].body);
+  //       }
+  //     }
+  //   });
+  // }, [introduceTxt]);
 
   const editIntro = async () => {
     const formData = new FormData();
