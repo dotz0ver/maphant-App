@@ -2,7 +2,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { StackActions, useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, KeyboardAvoidingView, Platform, Text } from "react-native";
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Text } from "react-native";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 
 import { chartLists, sendContent } from "../../Api/member/FindUser";
@@ -42,7 +42,7 @@ const Chatroom: React.FC = () => {
         }
       })
       .catch(e => {
-        if (params.roomId != 0) console.error("fetchChatLists에러", e);
+        if (params.roomId != 0) Alert.alert(e);
       })
       .finally(() => (isChatLoading.current = false));
   };

@@ -21,11 +21,11 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 
-import { GetAPI } from "../../Api/fetchAPI";
+import { listHotBoardTotal } from "../../Api/board";
 import { Container, ImageBox, Spacer, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
-import { BoardArticle, HotBoard } from "../../types/Board";
+import { HotBoard } from "../../types/Board";
 import { UserCategory } from "../../types/User";
 import { formatTimeDifference } from "../../utils/Time";
 import { ThemeContext } from "../Style/ThemeContext";
@@ -475,7 +475,7 @@ const HotPost: React.FC = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    GetAPI("/board/hot?&page=1&recordSize=2")
+    listHotBoardTotal(1, 2)
       .then(res => {
         if (res.success === true) {
           setHotPost(res.data.list);
@@ -493,8 +493,12 @@ const HotPost: React.FC = () => {
     return text;
   };
 
-  const detailContent = (boardId: number) => {
-    navigation.navigate("게시판", { screen: "BoardDetail", params: { id: boardId } });
+  const detailContent = (typeId: number, boardId: number) => {
+    if (typeId == 2) {
+      navigation.navigate("게시판", { screen: "QnAdetail", params: { id: boardId } });
+    } else {
+      navigation.navigate("게시판", { screen: "BoardDetail", params: { id: boardId } });
+    }
   };
 
   const styles = StyleSheet.create({
@@ -639,8 +643,12 @@ const HotPost: React.FC = () => {
 
       <View style={styles.line}></View>
 
-      {hotPost[0] && (
-        <Pressable style={styles.postBox} onPress={() => detailContent(hotPost[0].boardId)}>
+      {hotPost.map(board => (
+        <Pressable
+          key={board.boardId}
+          style={styles.postBox}
+          onPress={() => detailContent(board.typeId, board.boardId)}
+        >
           <Spacer size={10} />
 
           <View style={styles.nameAndtypeBox}>
@@ -649,32 +657,18 @@ const HotPost: React.FC = () => {
               style={styles.profileImage}
             />
             <View style={styles.textContainer}>
-              <TextThemed style={styles.userNickname}>{hotPost[0].userNickname}</TextThemed>
+              <TextThemed style={styles.userNickname}>{board.userNickname}</TextThemed>
 
-              <TextThemed style={styles.boardType}>{hotPost[0].type}</TextThemed>
+              <TextThemed style={styles.boardType}>{board.type}</TextThemed>
             </View>
           </View>
 
           <Spacer size={5} />
           <View style={styles.titleAndbodyBox}>
-            <TextThemed style={styles.postTitle}>{truncateText(hotPost[0].title, 20)}</TextThemed>
+            <TextThemed style={styles.postTitle}>{truncateText(board.title, 20)}</TextThemed>
             <Spacer size={2} />
-            <TextThemed style={styles.postBody}>{truncateText(hotPost[0].body, 25)}</TextThemed>
+            <TextThemed style={styles.postBody}>{truncateText(board.body, 25)}</TextThemed>
             <Spacer size={4} />
-            <View style={styles.tagsBox}>
-              {hotPost[0].tags && hotPost[0].tags.length > 0 ? (
-                hotPost[0].tags.slice(0, 3).map((tag, index) => (
-                  <TextThemed style={styles.tags} key={index}>
-                    #{tag}{" "}
-                  </TextThemed>
-                ))
-              ) : (
-                <View />
-              )}
-              {hotPost[0].tags && hotPost[0].tags.length > 3 && (
-                <TextThemed style={styles.tags}>...</TextThemed>
-              )}
-            </View>
           </View>
 
           <Spacer size={5} />
@@ -682,74 +676,20 @@ const HotPost: React.FC = () => {
             <View style={{ width: "70%", flexDirection: "row" }}>
               <View style={styles.likeTextWrapper}>
                 <Feather name="thumbs-up" size={13} color="tomato" />
-                <TextThemed style={styles.iconText}>{hotPost[0].likeCnt}</TextThemed>
+                <TextThemed style={styles.iconText}>{board.likeCnt}</TextThemed>
               </View>
               <View style={styles.commentTextWrapper}>
                 <FontAwesome name="comment-o" size={13} color="blue" />
-                <TextThemed style={styles.iconText}>{hotPost[0].commentCnt}</TextThemed>
+                <TextThemed style={styles.iconText}>{board.commentCnt}</TextThemed>
               </View>
             </View>
             <View style={styles.timeTextWrapper}>
-              <TextThemed>{formatTimeDifference(new Date(hotPost[0].createdAt))}</TextThemed>
+              <TextThemed>{formatTimeDifference(new Date(board.createdAt))}</TextThemed>
             </View>
           </View>
+          {/* <View style={styles.line}></View> */}
         </Pressable>
-      )}
-      <View style={styles.line}></View>
-      {hotPost[1] && (
-        <Pressable style={styles.postBox} onPress={() => detailContent(hotPost[1].boardId)}>
-          <Spacer size={10} />
-          <View style={styles.nameAndtypeBox}>
-            <Image
-              source={{ uri: "https://tovelope.s3.ap-northeast-2.amazonaws.com/image_1.jpg" }}
-              style={styles.profileImage}
-            />
-            <View style={styles.textContainer}>
-              <TextThemed style={styles.userNickname}>{hotPost[1].userNickname}</TextThemed>
-              <TextThemed style={styles.boardType}>{hotPost[1].type}</TextThemed>
-            </View>
-          </View>
-
-          <Spacer size={5} />
-          <View style={styles.titleAndbodyBox}>
-            <TextThemed style={styles.postTitle}>{truncateText(hotPost[1].title, 20)}</TextThemed>
-            <Spacer size={2} />
-            <TextThemed style={styles.postBody}>{truncateText(hotPost[1].body, 25)}</TextThemed>
-            <Spacer size={4} />
-            <View style={styles.tagsBox}>
-              {hotPost[0].tags && hotPost[0].tags.length > 0 ? (
-                hotPost[0].tags.slice(0, 3).map((tag, index) => (
-                  <TextThemed style={styles.tags} key={index}>
-                    #{tag}{" "}
-                  </TextThemed>
-                ))
-              ) : (
-                <View />
-              )}
-              {hotPost[0].tags && hotPost[0].tags.length > 3 && (
-                <TextThemed style={styles.tags}>...</TextThemed>
-              )}
-            </View>
-          </View>
-
-          <Spacer size={5} />
-          <View style={styles.timeAndlikeAndcomment}>
-            <View style={{ width: "70%", flexDirection: "row" }}>
-              <View style={styles.likeTextWrapper}>
-                <Feather name="thumbs-up" size={13} color="tomato" />
-                <TextThemed style={styles.iconText}>{hotPost[1].likeCnt}</TextThemed>
-              </View>
-              <View style={styles.commentTextWrapper}>
-                <FontAwesome name="comment-o" size={13} color="blue" />
-                <TextThemed style={styles.iconText}>{hotPost[1].commentCnt}</TextThemed>
-              </View>
-            </View>
-            <View style={styles.timeTextWrapper}>
-              <TextThemed>{formatTimeDifference(new Date(hotPost[1].createdAt))}</TextThemed>
-            </View>
-          </View>
-        </Pressable>
-      )}
+      ))}
     </View>
   );
 };
