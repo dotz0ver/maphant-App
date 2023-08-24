@@ -16,7 +16,7 @@ const Styles: any = (theme: Theme) => {
       borderBottomColor: "#D0D0D0",
       borderBottomWidth: 1,
       paddingVertical: 10,
-      backgroundColor: "#D8E1EC",
+      backgroundColor: theme.colors.card,
     },
     showbody: {
       borderBottomColor: "#D0D0D0",

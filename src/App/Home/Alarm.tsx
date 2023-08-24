@@ -7,6 +7,7 @@ import { notificationsList } from "../../Api/member/Fcm";
 import { fcmList } from "../../types/Fcm";
 import { formatTimeDifference } from "../../utils/Time";
 import loadDefaultStyles from "../Style/styles/Alarmcss";
+import { TextThemed } from "../../components/common";
 const Alarm: React.FC = () => {
   const [fcmType, setFcmType] = React.useState<fcmList[]>([]);
 
@@ -43,7 +44,7 @@ const Alarm: React.FC = () => {
               {/* <FontAwesome name={board.icon} size={24} color="grey" style={{ marginRight: 10 }} /> */}
               <View style={styles.content}>
                 <View style={styles.head}>
-                  <Text style={styles.title}>{fcm.title}</Text>
+                  <TextThemed style={styles.title}>{fcm.title}</TextThemed>
                 </View>
                 <View
                   style={{
@@ -52,10 +53,10 @@ const Alarm: React.FC = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Text>{fcm.body}</Text>
-                  <Text style={{ fontSize: 10, color: theme.colors.text }}>
+                  <TextThemed>{fcm.body}</TextThemed>
+                  <TextThemed style={{ fontSize: 10, color: theme.colors.text }}>
                     {formatTimeDifference(new Date(fcm.createdAt))}
-                  </Text>
+                  </TextThemed>
                 </View>
               </View>
             </View>

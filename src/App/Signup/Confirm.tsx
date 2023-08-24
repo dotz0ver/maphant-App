@@ -1,6 +1,6 @@
 import { NavigationProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, Text } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 
 import { confirmEmail } from "../../Api/member/signUp";
 import { Container, Input, TextButton, TextThemed } from "../../components/common";
@@ -32,6 +32,7 @@ const Confirm: React.FC = () => {
   const verifyCode = () => {
     if (!verificationCode) {
       Alert.alert("Error", "인증 번호를 입력해주세요.");
+
       return;
     }
 
@@ -39,8 +40,14 @@ const Confirm: React.FC = () => {
     confirmEmail(email, verificationCode)
       .then(res => {
         if (res.success) {
-          Alert.alert("Success", "인증이 완료되었습니다.");
-          // 인증 완료 처리
+          Alert.alert("Success", "인증이 완료되었습니다.", [
+            {
+              text: "이동",
+              onPress: () => {
+                navigation.navigate("SearchUniversity", params);
+              },
+            },
+          ]);
           setShowNextButton(true);
         }
       })
@@ -117,7 +124,7 @@ const Confirm: React.FC = () => {
         >
           확인
         </TextButton>
-        {showNextButton && (
+        {/* {showNextButton && (
           <TextButton
             activeOpacity={0.7}
             onPress={checkCode}
@@ -133,7 +140,7 @@ const Confirm: React.FC = () => {
           >
             다음
           </TextButton>
-        )}
+        )} */}
       </Container>
     </Container>
   );
