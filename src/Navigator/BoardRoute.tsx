@@ -11,6 +11,8 @@ import TotalList from "../App/Board/TotalList";
 import VoteDetailList from "../App/Board/VoteList";
 import VoteTotalList from "../App/Board/VoteTotalList";
 import Profile from "../App/Mypage/Profile";
+import WriteBoard from "../App/Mypage/WriteBoard";
+import WriteContent from "../App/Mypage/WriteContent";
 import { BoardArticle } from "../types/Board";
 import { RouteType } from "../types/Navigation";
 
@@ -66,6 +68,14 @@ const Routes: RouteType[] = [
   {
     name: "Profile",
     component: Profile,
+  },
+  {
+    name: "WriteBoard",
+    component: WriteBoard,
+  },
+  {
+    name: "WriteContent",
+    component: WriteContent,
   },
 ];
 
