@@ -79,6 +79,7 @@ const ProfileModify: React.FC = () => {
   useEffect(() => {
     PostAPI("/user/changeinfo/olddata").then(res => {
       if (res.success == true) {
+        console.log(res.data);
         setUserEmail(res.data.email);
         setPassword(res.data.password);
         setNickname(res.data.nickname);

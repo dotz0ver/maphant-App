@@ -112,20 +112,21 @@ const BoardDetail = () => {
     navigation.navigate("editPost", { post: post });
   };
 
-  const handlePollDelete = () => {
-    boardDeletePoll(id).then(data => {
-      console.log("투표", data);
-    });
-  };
-
-  const handlePollClose = async () => {
-    try {
-      const response = await boardClosePoll(id);
-      console.log(response);
-    } catch (error) {
-      console.log("투표 마감 오류", error);
-    }
-  };
+  function alertPollClose() {
+    Alert.alert("투표", "마감하시겠습니까?", [
+      {
+        text: "네",
+        onPress: () => {
+          boardClosePoll(id);
+          Alert.alert("투표가 마감되었습니다.");
+        },
+      },
+      {
+        text: "아니오",
+        style: "cancel",
+      },
+    ]);
+  }
 
   const handlecommentInsert = async () => {
     try {
@@ -241,21 +242,16 @@ const BoardDetail = () => {
   }, [post?.poll?.pollOptions]);
 
   const handlePoll = async () => {
-    try {
-      const response = await doPoll(poll_id, pollOptionId);
-      if (response.success == true) {
-        Alert.alert("투표되었습니다.");
-      }
-    } catch (error) {
-      console.log("투표 오류", error);
+    const response = await doPoll(poll_id, pollOptionId);
+    if (response.success == true) {
+      Alert.alert("투표되었습니다.");
     }
   };
 
   const handleCommentLike = (comment_id: number, likeCnt: number) => {
     commentLike(user.id, comment_id)
       .then(res => {
-        console.log(res.data);
-        setLikeCnt(likeCnt);
+        if (res.success) setLikeCnt(likeCnt);
       })
       .catch();
   };
@@ -266,7 +262,7 @@ const BoardDetail = () => {
         text: "네",
         onPress: () => {
           handleDelete();
-          if (post.poll !== null) handlePollDelete();
+          if (post.poll !== null) boardDeletePoll(id);
         },
       },
       {
@@ -361,7 +357,6 @@ const BoardDetail = () => {
       Alert.alert(error);
     }
   };
-  console.log(reportType);
 
   const ModalWrapper = () => {
     const [selectedReportIndex, setSelectedReportIndex] = useState<number>();
@@ -396,7 +391,6 @@ const BoardDetail = () => {
                     // 수정된 닉네임 server 전송
                     if (selectedReportIndex !== null) {
                       handleReport(id, selectedReportIndex);
-                      console.log(selectedReportIndex);
                     }
                     setReportModal(false);
                   }}
@@ -579,7 +573,10 @@ const BoardDetail = () => {
                           <View key={options.optionId} style={{ position: "relative" }}>
                             <View
                               style={{
-                                width: `50%`,
+                                width:
+                                  results[options.optionId] !== undefined
+                                    ? `${results[options.optionId]}%`
+                                    : "0%",
                                 height: 20,
                                 backgroundColor: "#f0f6fd",
                                 position: "relative",
@@ -604,7 +601,8 @@ const BoardDetail = () => {
                           fontColor={"#000"}
                           style={{ ...styles.button, justifyContent: "flex-start" }}
                           fontSize={13}
-                          onPress={handlePollClose}
+                          onPress={alertPollClose}
+                          disabled={post.poll.state == 1}
                         >
                           마감하기
                         </TextButton>
