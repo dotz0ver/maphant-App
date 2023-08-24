@@ -218,7 +218,7 @@ const Chatroom: React.FC = () => {
         >
           <Input
             multiline={true}
-            style={{ maxHeight: 100, flexShrink: 1, flex: 6 }}
+            style={{ maxHeight: 100, flexShrink: 1, flex: 6, backgroundColor: "rgb(243,243,243)" }}
             placeholder="message"
             value={content}
             onChangeText={setContent}
