@@ -184,11 +184,11 @@ function Section({ item }: { item: sectionItem }) {
 
 const MyView = () => {
   const profile = useSelector(UserStorage.userProfileSelector)! as UserData;
+  console.log(profile.nickname);
   const category = useSelector(UserStorage.userCategorySelector);
 
   const [visibleIntroModal, setVisibleIntoModal] = useState(false);
   const [introduceTxt, setIntroduceTxt] = useState<profile>("");
-  const [getNickname, setGetNickname] = useState<string>("");
   let confirmedIntroTxt: string = "";
 
   // const [userID, setUserID] = useState(0);
@@ -201,21 +201,10 @@ const MyView = () => {
       if (res.success == true) {
         if (res && res.data && res.data && res.data.body !== undefined) {
           setIntroduceTxt(res.data.body);
-          setGetNickname(res.data.nickname);
         }
       }
     });
   }, [userID]);
-
-  // useEffect(() => {
-  //   GetAPI(`/profile?targerUserId=${userID}`).then(res => {
-  //     if (res.success == true) {
-  //       if (res && res.data && res.data[0] && res.data[0].body !== undefined) {
-  //         setIntroduceTxt(res.data[0].body);
-  //       }
-  //     }
-  //   });
-  // }, [introduceTxt]);
 
   const editIntro = async () => {
     const formData = new FormData();
@@ -248,7 +237,7 @@ const MyView = () => {
         </View>
         <View style={styles.userinfoContainer}>
           <View style={styles.paddingVertical}>
-            <TextThemed style={styles.nickName}>{getNickname}</TextThemed>
+            <TextThemed style={styles.nickName}>{profile.nickname}</TextThemed>
           </View>
           <View style={styles.paddingVertical}>
             <TextThemed style={styles.name}>
