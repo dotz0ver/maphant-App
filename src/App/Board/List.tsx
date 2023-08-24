@@ -82,17 +82,10 @@ const DetailList: React.FC = () => {
     setSearchQuery(searchText);
     if (searchText.trim() === "") {
       setSearchResults([]);
-      console.log("searchText is empty");
-
       return;
     }
-    try {
-      const data = await searchArticle(searchText, boardType.id); // Implement your searchArticle function to call the API for search results
-      setSearchResults(data.data.list as BoardArticle[]);
-      console.log(data.data);
-    } catch (err) {
-      console.log(err);
-    }
+    const data = await searchArticle(searchText, boardType.id); // Implement your searchArticle function to call the API for search results
+    setSearchResults(data.data.list as BoardArticle[]);
   };
 
   useEffect(() => {
@@ -122,6 +115,7 @@ const DetailList: React.FC = () => {
           setSearchText("");
         }}
         searchQuery={searchText}
+        placeholder="두 글자 이상 입력해주세요."
       />
       <View style={styles.sortContainer}>
         <View

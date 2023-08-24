@@ -5,8 +5,14 @@ interface SearchBarProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
   onClearText: () => void;
+  placeholder?: string;
 }
-const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChange, onClearText }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  searchQuery,
+  onSearchChange,
+  onClearText,
+  placeholder,
+}) => {
   const clearTextHandler = () => {
     onClearText();
   };
@@ -27,6 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ searchQuery, onSearchChange, onCl
             marginLeft: "3%",
             marginRight: "3%",
           }}
+          placeholder={placeholder}
         />
 
         <TouchableOpacity onPress={clearTextHandler}>
