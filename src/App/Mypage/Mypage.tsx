@@ -6,6 +6,7 @@ import {
   ColorValue,
   Modal,
   Pressable,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -187,6 +188,7 @@ const MyView = () => {
 
   const [visibleIntroModal, setVisibleIntoModal] = useState(false);
   const [introduceTxt, setIntroduceTxt] = useState<profile>("");
+  const [getNickname, setGetNickname] = useState<string>("");
   let confirmedIntroTxt: string = "";
 
   // const [userID, setUserID] = useState(0);
@@ -199,6 +201,7 @@ const MyView = () => {
       if (res.success == true) {
         if (res && res.data && res.data && res.data.body !== undefined) {
           setIntroduceTxt(res.data.body);
+          setGetNickname(res.data.nickname);
         }
       }
     });
@@ -245,7 +248,7 @@ const MyView = () => {
         </View>
         <View style={styles.userinfoContainer}>
           <View style={styles.paddingVertical}>
-            <TextThemed style={styles.nickName}>{profile.nickname}</TextThemed>
+            <TextThemed style={styles.nickName}>{getNickname}</TextThemed>
           </View>
           <View style={styles.paddingVertical}>
             <TextThemed style={styles.name}>
@@ -453,7 +456,7 @@ export default function MyPage() {
   ];
 
   return (
-    <View style={{}}>
+    <SafeAreaView>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
         {/* ------------ 로그아웃 모달창 */}
         <Modal animationType="fade" transparent={true} visible={visibleLogoutModal}>
@@ -653,7 +656,7 @@ export default function MyPage() {
           <Section key={index.toString()} item={section} />
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -666,14 +669,14 @@ const styles = StyleSheet.create({
   view: {
     flex: 1,
     marginTop: 18,
-    backgroundColor: "rgba(82, 153, 235, 0.3)",
+    backgroundColor: "#CBD7E6",
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
   profileView: {
     marginTop: 18,
-    backgroundColor: "rgba(82, 153, 235, 0.5)",
+    backgroundColor: "#CBD7E6",
     borderRadius: 8,
     paddingHorizontal: 14,
     paddingVertical: 8,
