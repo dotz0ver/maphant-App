@@ -14,22 +14,22 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 
-import { listBoardType } from "../../Api/board";
+import { listBoardType, listVoteBoardTotal } from "../../Api/board";
 import { GetAPI } from "../../Api/fetchAPI";
 import { Spacer, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
-import { BoardArticle, BoardType } from "../../types/Board";
+import { BoardArticle, BoardType, VoteBoard } from "../../types/Board";
 import { formatTimeDifference } from "../../utils/Time";
 
 const VotePost: React.FC = () => {
-  const [votePost, setVotePost] = useState<BoardArticle[]>([]);
+  const [votePost, setVotePost] = useState<VoteBoard[]>([]);
   const category = useSelector(UserStorage.userCategorySelector);
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    GetAPI("/board/poll?&page=1&recordSize=2")
+    listVoteBoardTotal(1, 3)
       .then(res => {
         if (res.success === true) {
           setVotePost(res.data.list);
@@ -47,10 +47,13 @@ const VotePost: React.FC = () => {
     return text;
   };
 
-  const detailContent = (boardId: number) => {
-    navigation.navigate("게시판", { screen: "BoardDetail", params: { id: boardId } });
+  const detailContent = (typeId: number, boardId: number) => {
+    if (typeId == 2) {
+      navigation.navigate("QnAdetail", { id: boardId });
+    } else {
+      navigation.navigate("BoardDetail", { id: boardId });
+    }
   };
-
   const styles = StyleSheet.create({
     votePostBox: {
       // backgroundColor: "red",
@@ -217,69 +220,32 @@ const VotePost: React.FC = () => {
           <TextThemed style={{ fontSize: 20 }}> 오늘의 핫한 주제는? </TextThemed>
         </View>
       </View>
-      {votePost.length != 0 && (
-        <Pressable style={styles.postBox} onPress={() => detailContent(votePost[0].boardId)}>
-          <View style={styles.nameAndtypeBox}>
-            {/* <Image
-            source={{ uri: "https://tovelope.s3.ap-northeast-2.amazonaws.com/image_1.jpg" }}
-            style={styles.profileImage}
-          /> */}
-            {/* <View style={styles.textContainer}>
-            <TextThemed style={styles.boardType}>{votePost[0].type}</TextThemed>
-          </View> */}
-          </View>
+      {votePost.map(board => (
+        <Pressable
+          style={styles.postBox}
+          onPress={() => detailContent(board.typeId, board.boardId)}
+          key={board.boardId}
+        >
           <View style={styles.titleAndbodyBox}>
-            <TextThemed style={styles.postTitle}>{truncateText(votePost[0].title, 20)}</TextThemed>
+            <TextThemed style={styles.postTitle}>{truncateText(board.title, 20)}</TextThemed>
           </View>
           <View style={styles.timeAndlikeAndcomment}>
             <View style={{ width: "70%", flexDirection: "row" }}>
               <View style={styles.likeTextWrapper}>
                 <Feather name="thumbs-up" size={13} color="tomato" />
-                <TextThemed style={styles.iconText}>{votePost[0].likeCnt}</TextThemed>
+                <TextThemed style={styles.iconText}>{board.likeCnt}</TextThemed>
               </View>
               <View style={styles.commentTextWrapper}>
                 <FontAwesome name="comment-o" size={13} color="blue" />
-                <TextThemed style={styles.iconText}>{votePost[0].commentCnt}</TextThemed>
+                <TextThemed style={styles.iconText}>{board.commentCnt}</TextThemed>
               </View>
             </View>
             <View style={styles.timeTextWrapper}>
-              <TextThemed>{formatTimeDifference(new Date(votePost[0].createdAt))}</TextThemed>
+              <TextThemed>{formatTimeDifference(new Date(board.createdAt))}</TextThemed>
             </View>
           </View>
         </Pressable>
-      )}
-      <Spacer size={20} />
-      <View style={styles.line}></View>
-      <Spacer size={10} />
-      <Pressable style={styles.postBox} onPress={() => detailContent(votePost[1].boardId)}>
-        <View style={styles.nameAndtypeBox}>
-          {/* <Image
-            source={{ uri: "https://tovelope.s3.ap-northeast-2.amazonaws.com/image_1.jpg" }}
-            style={styles.profileImage}
-          /> */}
-          <View style={styles.textContainer}>
-            <TextThemed style={styles.boardType}>{votePost[1].type}</TextThemed>
-          </View>
-        </View>
-        <View style={styles.titleAndbodyBox}>
-          <TextThemed style={styles.postTitle}>{truncateText(votePost[1].title, 20)}</TextThemed>
-        </View>
-        <View style={styles.timeAndlikeAndcomment}>
-          <View style={{ width: "70%", flexDirection: "row" }}>
-            <View style={styles.likeTextWrapper}>
-              <Feather name="thumbs-up" size={13} color="tomato" />
-              <TextThemed style={styles.iconText}>{votePost[1].likeCnt}</TextThemed>
-            </View>
-            <View style={styles.commentTextWrapper}>
-              <FontAwesome name="comment-o" size={13} color="blue" />
-              <TextThemed style={styles.iconText}>{votePost[1].commentCnt}</TextThemed>
-            </View>
-          </View>
-          <View style={styles.timeTextWrapper}>
-            <TextThemed>{formatTimeDifference(new Date(votePost[1].createdAt))}</TextThemed>
-          </View>
-        </View>
-      </Pressable>
+      ))}
     </View>
   );
 };
