@@ -755,39 +755,39 @@ const BoardDetail = () => {
                               {dateFormat(reply.created_at)}
                             </TextThemed>
                           </View>
-                          <View style={{ flexDirection: "row" }}>
-                            <IconButton
-                              name="thumbs-o-up"
-                              color="skyblue"
-                              onPress={() => {
-                                handleCommentLike(reply.id, reply.like_cnt);
-                              }}
-                            >
-                              {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
-                            </IconButton>
-                            <IconButton
-                              name="exclamation-circle"
-                              color="red"
-                              onPress={() => {
-                                setCommentId(reply.id);
-                                setReportCommentModal(true);
-                              }}
-                            >
-                              신고
-                            </IconButton>
-                            <IconButton
-                              name=""
-                              color="red"
-                              onPress={() => handleCommentDelete(reply.id)}
-                            >
-                              삭제
-                            </IconButton>
-                          </View>
                         </View>
                         <View style={{ marginLeft: 5 }}>
                           <TextThemed style={{ fontSize: 14, marginTop: 3 }}>
                             {reply.body}
                           </TextThemed>
+                        </View>
+                        <View style={{ marginTop: 10, flexDirection: "row" }}>
+                          <IconButton
+                            name="thumbs-o-up"
+                            color="skyblue"
+                            onPress={() => {
+                              handleCommentLike(reply.id, reply.like_cnt);
+                            }}
+                          >
+                            {reply.like_cnt === 0 ? "추천" : reply.like_cnt}
+                          </IconButton>
+                          <IconButton
+                            name="exclamation-circle"
+                            color="red"
+                            onPress={() => {
+                              setCommentId(reply.id);
+                              setReportCommentModal(true);
+                            }}
+                          >
+                            신고
+                          </IconButton>
+                          <IconButton
+                            name="trash"
+                            color="black"
+                            onPress={() => handleCommentDelete(reply.id)}
+                          >
+                            삭제
+                          </IconButton>
                         </View>
                       </View>
                     ))}
