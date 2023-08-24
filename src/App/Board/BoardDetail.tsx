@@ -360,6 +360,7 @@ const BoardDetail = () => {
       Alert.alert(error);
     }
   };
+  console.log(reportType);
 
   const ModalWrapper = () => {
     const [selectedReportIndex, setSelectedReportIndex] = useState<number>();
@@ -368,40 +369,42 @@ const BoardDetail = () => {
       <Modal animationType="fade" transparent={true} visible={reportModal}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
-            {reportType.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => {
-                  setSelectedReportIndex(index);
-                }}
-                style={[
-                  styles.reportItem,
-                  selectedReportIndex === index && styles.selectedReportItem,
-                  // 선택된 항목의 경우 스타일 적용
-                ]}
-              >
-                <TextThemed style={styles.reportContent}>{item.name}</TextThemed>
-              </TouchableOpacity>
-            ))}
-            <View style={styles.modalBtnDirection}>
-              <TextButton style={styles.modalConfirmBtn} onPress={() => setReportModal(false)}>
-                취소
-              </TextButton>
-              <TextButton
-                style={styles.modalConfirmBtn}
-                onPress={() => {
-                  // 수정된 닉네임 server 전송
-                  if (selectedReportIndex !== null) {
-                    handleReport(id, selectedReportIndex);
-                    console.log(selectedReportIndex);
-                  }
-                  setReportModal(false);
-                }}
-              >
-                신고
-              </TextButton>
-            </View>
-            <Spacer size={5} />
+            <>
+              {reportType.map(item => (
+                <TouchableOpacity
+                  key={item.id}
+                  onPress={() => {
+                    setSelectedReportIndex(item.id);
+                  }}
+                  style={[
+                    styles.reportItem,
+                    selectedReportIndex === item.id && styles.selectedReportItem,
+                    // 선택된 항목의 경우 스타일 적용
+                  ]}
+                >
+                  <TextThemed style={styles.reportContent}>{item.name}</TextThemed>
+                </TouchableOpacity>
+              ))}
+              <View style={styles.modalBtnDirection}>
+                <TextButton style={styles.modalConfirmBtn} onPress={() => setReportModal(false)}>
+                  취소
+                </TextButton>
+                <TextButton
+                  style={styles.modalConfirmBtn}
+                  onPress={() => {
+                    // 수정된 닉네임 server 전송
+                    if (selectedReportIndex !== null) {
+                      handleReport(id, selectedReportIndex);
+                      console.log(selectedReportIndex);
+                    }
+                    setReportModal(false);
+                  }}
+                >
+                  신고
+                </TextButton>
+              </View>
+              <Spacer size={5} />
+            </>
           </View>
         </View>
       </Modal>
@@ -419,15 +422,15 @@ const BoardDetail = () => {
       <Modal animationType="fade" transparent={true} visible={reportCommentModal}>
         <View style={styles.modalBackground}>
           <View style={styles.modalContainer}>
-            {reportType.map((item, index) => (
+            {reportType.map(item => (
               <TouchableOpacity
-                key={index}
+                key={item.id}
                 onPress={() => {
-                  setSelectedCommentReportIndex(index); // 댓글 신고의 경우
+                  setSelectedCommentReportIndex(item.id); // 댓글 신고의 경우
                 }}
                 style={[
                   styles.reportItem,
-                  selectedCommentReportIndex === index && styles.selectedReportItem,
+                  selectedCommentReportIndex === item.id && styles.selectedReportItem,
                   // 선택된 항목의 경우 스타일 적용
                 ]}
               >
