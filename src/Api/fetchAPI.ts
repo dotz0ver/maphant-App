@@ -69,12 +69,10 @@ function fetchAPI<T extends statusResponse>(
       // 특수 처리 (로그인 실패시에도 401이 들어옴)
       // 로그인의 경우는 바로 내려 보냄
       if (url == "/user/login") {
-        console.info(res);
         return res.json();
       }
 
       if (res.status === 401) {
-        res.json().then(j => console.error(j));
         // 로그인 안됨 (unauthorized)
         UserStorage.removeUserData();
         return Promise.reject("로그인 토큰이 만료되었습니다.");
