@@ -25,7 +25,7 @@ import { GetAPI } from "../../Api/fetchAPI";
 import { Container, ImageBox, Spacer, TextThemed } from "../../components/common";
 import { NavigationProps } from "../../Navigator/Routes";
 import UserStorage from "../../storage/UserStorage";
-import { BoardArticle } from "../../types/Board";
+import { BoardArticle, HotBoard } from "../../types/Board";
 import { UserCategory } from "../../types/User";
 import { formatTimeDifference } from "../../utils/Time";
 import { ThemeContext } from "../Style/ThemeContext";
@@ -469,7 +469,7 @@ const TodaysHot: React.FC = () => {
 };
 
 const HotPost: React.FC = () => {
-  const [hotPost, setHotPost] = useState<BoardArticle[]>([]);
+  const [hotPost, setHotPost] = useState<HotBoard[]>([]);
   const category = useSelector(UserStorage.userCategorySelector);
 
   const navigation = useNavigation();

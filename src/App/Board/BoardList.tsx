@@ -217,35 +217,37 @@ const VotePost: React.FC = () => {
           <TextThemed style={{ fontSize: 20 }}> 오늘의 핫한 주제는? </TextThemed>
         </View>
       </View>
-      <Pressable style={styles.postBox} onPress={() => detailContent(votePost[0].boardId)}>
-        <View style={styles.nameAndtypeBox}>
-          {/* <Image
+      {votePost.length != 0 && (
+        <Pressable style={styles.postBox} onPress={() => detailContent(votePost[0].boardId)}>
+          <View style={styles.nameAndtypeBox}>
+            {/* <Image
             source={{ uri: "https://tovelope.s3.ap-northeast-2.amazonaws.com/image_1.jpg" }}
             style={styles.profileImage}
           /> */}
-          <View style={styles.textContainer}>
+            {/* <View style={styles.textContainer}>
             <TextThemed style={styles.boardType}>{votePost[0].type}</TextThemed>
+          </View> */}
           </View>
-        </View>
-        <View style={styles.titleAndbodyBox}>
-          <TextThemed style={styles.postTitle}>{truncateText(votePost[0].title, 20)}</TextThemed>
-        </View>
-        <View style={styles.timeAndlikeAndcomment}>
-          <View style={{ width: "70%", flexDirection: "row" }}>
-            <View style={styles.likeTextWrapper}>
-              <Feather name="thumbs-up" size={13} color="tomato" />
-              <TextThemed style={styles.iconText}>{votePost[0].likeCnt}</TextThemed>
+          <View style={styles.titleAndbodyBox}>
+            <TextThemed style={styles.postTitle}>{truncateText(votePost[0].title, 20)}</TextThemed>
+          </View>
+          <View style={styles.timeAndlikeAndcomment}>
+            <View style={{ width: "70%", flexDirection: "row" }}>
+              <View style={styles.likeTextWrapper}>
+                <Feather name="thumbs-up" size={13} color="tomato" />
+                <TextThemed style={styles.iconText}>{votePost[0].likeCnt}</TextThemed>
+              </View>
+              <View style={styles.commentTextWrapper}>
+                <FontAwesome name="comment-o" size={13} color="blue" />
+                <TextThemed style={styles.iconText}>{votePost[0].commentCnt}</TextThemed>
+              </View>
             </View>
-            <View style={styles.commentTextWrapper}>
-              <FontAwesome name="comment-o" size={13} color="blue" />
-              <TextThemed style={styles.iconText}>{votePost[0].commentCnt}</TextThemed>
+            <View style={styles.timeTextWrapper}>
+              <TextThemed>{formatTimeDifference(new Date(votePost[0].createdAt))}</TextThemed>
             </View>
           </View>
-          <View style={styles.timeTextWrapper}>
-            <TextThemed>{formatTimeDifference(new Date(votePost[0].createdAt))}</TextThemed>
-          </View>
-        </View>
-      </Pressable>
+        </Pressable>
+      )}
       <Spacer size={20} />
       <View style={styles.line}></View>
       <Spacer size={10} />
