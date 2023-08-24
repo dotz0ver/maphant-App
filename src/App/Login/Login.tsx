@@ -82,7 +82,7 @@ const Login: React.FC = () => {
           {/* <Spacer size={20} /> */}
           <Container style={{ width: "100%" }} isItemCenter={true} paddingHorizontal={0}>
             <Input
-              style={{ paddingVertical: "5%" }}
+              style={{ paddingVertical: "5%", backgroundColor: "rgb(242,242,242)" }}
               paddingHorizontal={20}
               borderRadius={30}
               placeholder="E-MAIL"
@@ -91,7 +91,7 @@ const Login: React.FC = () => {
             ></Input>
             <Spacer size={15} />
             <Input
-              style={{ paddingVertical: "5%" }}
+              style={{ paddingVertical: "5%", backgroundColor: "rgb(242,242,242)" }}
               paddingHorizontal={20}
               borderRadius={30}
               placeholder="PW"
