@@ -47,7 +47,6 @@ const Styles: any = (theme: Theme) => {
   });
 
   styleMap.set(theme, styles);
-  console.warn(styleMap.get(theme));
   return styleMap.get(theme);
 };
 export default Styles;

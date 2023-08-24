@@ -50,22 +50,6 @@ const HotDetailList: React.FC = () => {
     fetchData();
   };
 
-  const handleSearch = async (searchText: string) => {
-    setSearchQuery(searchText);
-    if (searchText.trim() === "") {
-      setSearchResults([]);
-      console.log("searchText is empty");
-      return;
-    }
-    try {
-      const data = await searchArticle(searchText, boardType.id); // Implement your searchArticle function to call the API for search results
-      setSearchResults(data.data as HotBoard[]);
-      // console.log(data.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -82,7 +66,6 @@ const HotDetailList: React.FC = () => {
 
   return (
     <Container style={styles.container}>
-      <SearchBar onSearchChange={handleSearch} />
       <FlatList
         data={displayData}
         renderItem={({ item: board }) => (
