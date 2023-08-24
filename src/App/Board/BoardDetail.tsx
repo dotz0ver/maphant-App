@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import {
   boardClosePoll,
   boardDelete,
+  boardDeletePoll,
   bookMarkArticle,
   commentArticle,
   commentDelete,
@@ -99,7 +100,6 @@ const BoardDetail = () => {
   const handleDelete = async () => {
     try {
       const response = await boardDelete(id);
-      if (post.poll !== null) handlePollDelete();
       if (response.success == true) {
         Alert.alert("삭제되었습니다.");
       }
@@ -113,7 +113,7 @@ const BoardDetail = () => {
   };
 
   const handlePollDelete = () => {
-    deletePoll(id).then(data => {
+    boardDeletePoll(id).then(data => {
       console.log("투표", data);
     });
   };
@@ -266,6 +266,7 @@ const BoardDetail = () => {
         text: "네",
         onPress: () => {
           handleDelete();
+          if (post.poll !== null) handlePollDelete();
         },
       },
       {
